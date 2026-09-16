@@ -130,6 +130,37 @@
   border-radius: 0 !important;
 }
 
+/* El catálogo por sucursal pertenece a Sucursales, no al menú principal. */
+.sidebar .menu-opcion[href$="catalogo-sucursal.html"],
+.side .menu-opcion[href$="catalogo-sucursal.html"] {
+  display: none !important;
+}
+
+.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"],
+.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] {
+  color: var(--sidebar-active-text) !important;
+  background: var(--sidebar-active-bg) !important;
+  border-radius: 0 !important;
+  padding-left: 17px !important;
+  font-weight: 700 !important;
+}
+
+.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before,
+.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before {
+  content: "";
+  width: 6px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--sidebar-active);
+}
+
+.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono,
+.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono {
+  color: var(--sidebar-active-text) !important;
+}
+
 .menu-icono {
   width: 20px;
   height: 20px;

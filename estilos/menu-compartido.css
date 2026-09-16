@@ -1,5 +1,5 @@
 :root {
-  --ancho-menu: 258px;
+  --ancho-menu: 258px !important;
   --sidebar-bg: #151a23;
   --sidebar-bg-2: #1c222d;
   --sidebar-text: #f4f7fb;
@@ -15,23 +15,39 @@
   --sidebar-active-bg: rgba(198, 66, 125, 0.34);
 }
 
+/* El menú compartido manda sobre los estilos antiguos de cada maqueta. */
 .sidebar,
 .side {
-  width: var(--ancho-menu) !important;
+  box-sizing: border-box !important;
+  width: 258px !important;
+  min-width: 258px !important;
+  max-width: 258px !important;
   height: 100vh !important;
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
   z-index: 1000 !important;
   display: flex !important;
+  flex: 0 0 258px !important;
   flex-direction: column !important;
   padding: 22px 16px 18px !important;
   color: var(--sidebar-text) !important;
   background: linear-gradient(180deg, var(--sidebar-bg), var(--sidebar-bg-2)) !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgba(120,120,130,.28) transparent;
+  transition: none !important;
+  animation: none !important;
+  transform-origin: left top !important;
+}
+
+.sidebar *,
+.side * {
+  box-sizing: border-box;
 }
 
 .sidebar::-webkit-scrollbar,
@@ -41,19 +57,23 @@
 
 .sidebar .marca,
 .side .marca {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 8px 20px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--sidebar-line);
+  width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 0 8px 20px !important;
+  margin: 0 0 4px !important;
+  border-bottom: 1px solid var(--sidebar-line) !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .sidebar .marca img,
 .side .marca img {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+  width: 44px !important;
+  height: 44px !important;
+  flex: 0 0 44px !important;
   object-fit: contain;
   border-radius: 8px;
   background: #fff;
@@ -77,40 +97,72 @@
 }
 
 .menu-seccion {
+  width: 100%;
   margin: 18px 10px 7px;
   color: var(--sidebar-section);
   font-size: .64rem;
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .menu-navegacion {
-  display: grid;
+  width: 100%;
+  min-width: 0;
+  display: grid !important;
   gap: 3px;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .menu-bloque-opcion {
-  display: grid;
+  width: 100%;
+  min-width: 0;
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .menu-opcion {
-  min-height: 44px;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: var(--sidebar-item);
-  font-size: .84rem;
-  font-weight: 650;
-  text-decoration: none;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  color: var(--sidebar-item) !important;
+  background: transparent;
+  font-size: .84rem !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .menu-opcion:hover {
-  color: var(--sidebar-text);
-  background: var(--sidebar-hover);
+  color: var(--sidebar-text) !important;
+  background: var(--sidebar-hover) !important;
 }
 
 .sidebar .menu-opcion.activa,
@@ -118,20 +170,21 @@
   color: var(--sidebar-active-text) !important;
   background: var(--sidebar-active-bg) !important;
   border-radius: 0 !important;
-  padding-left: 17px !important;
+  padding: 10px 12px !important;
   font-weight: 700 !important;
 }
 
 .sidebar .menu-opcion.activa::before,
 .side .menu-opcion.activa::before {
   content: "";
-  width: 6px;
+  width: 5px;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   background: var(--sidebar-active);
   border-radius: 0 !important;
+  pointer-events: none;
 }
 
 /* Las opciones secundarias viven dentro de cada módulo, no en el sidebar. */
@@ -140,23 +193,27 @@
 }
 
 .menu-icono {
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
+  width: 20px !important;
+  height: 20px !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 20px !important;
   color: var(--sidebar-icon);
+  transition: none !important;
+  animation: none !important;
 }
 
 .menu-icono svg {
-  width: 19px;
-  height: 19px;
-  display: block;
+  width: 19px !important;
+  height: 19px !important;
+  display: block !important;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+  transition: none !important;
+  animation: none !important;
 }
 
 .sidebar .menu-opcion.activa .menu-icono,
@@ -167,7 +224,7 @@
   stroke: var(--sidebar-active-text) !important;
 }
 
-.menu-punto { display: none; }
+.menu-punto { display: none !important; }
 
 /* El usuario de sesión se muestra en la barra superior, no dentro del sidebar. */
 .menu-usuario,
@@ -210,9 +267,14 @@
 
 @media (max-width: 850px) {
   .sidebar,
-  .side { transform: translateX(-105%); }
+  .side {
+    transform: translateX(-105%) !important;
+    transition: none !important;
+  }
   .sidebar.abierta,
   .sidebar.open,
   .side.abierta,
-  .side.open { transform: translateX(0); }
+  .side.open {
+    transform: translateX(0) !important;
+  }
 }

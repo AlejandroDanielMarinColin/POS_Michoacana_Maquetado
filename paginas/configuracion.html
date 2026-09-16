@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Configuración | La Michoacana</title>
+  <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  <style>
+    :root{--principal:#ed2b85;--principal-oscuro:#d51d70;--fondo:#f5f7fa;--tarjeta:#fff;--texto:#17141d;--texto-secundario:#6e7583;--borde:#d9dfe7;--ancho-menu:258px}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Arial,sans-serif;color:var(--texto);background:var(--fondo)}a{color:inherit;text-decoration:none}.app{min-height:100vh;padding-left:var(--ancho-menu)}
+    .sidebar{width:var(--ancho-menu);height:100vh;position:fixed;left:0;top:0;padding:22px 16px;background:#171b24;color:#fff}.marca{display:flex;align-items:center;gap:12px}.marca img{width:44px;height:44px;object-fit:contain;background:#fff;border-radius:8px}.marca strong,.marca small{display:block}.marca small{margin-top:3px;font-size:.69rem;color:#9ba4b2}.usuario-menu{display:none}
+    .top{min-height:72px;display:flex;align-items:center;gap:14px;padding:10px 4vw;border-bottom:1px solid var(--borde);background:var(--tarjeta)}.hamb{display:none;width:40px;height:40px;border:1px solid var(--borde);border-radius:7px;background:#fff}.top-info{margin-right:auto}.top small{display:block;color:var(--texto-secundario);font-size:.72rem}.top strong{display:block;margin-top:2px;font-size:.9rem}
+    .contenido{max-width:1200px;margin:auto;padding:32px 4vw 50px}.encabezado{margin-bottom:22px}.encabezado h1{margin:0 0 6px;font-size:2rem;letter-spacing:-.035em}.encabezado p{margin:0;color:var(--texto-secundario)}
+    .lista{display:grid;gap:0;border:1px solid var(--borde);border-radius:8px;background:var(--tarjeta);overflow:hidden}.opcion{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;padding:20px;border-bottom:1px solid var(--borde)}.opcion:last-child{border-bottom:0}.opcion:hover{background:#fafbfc}.opcion h2{margin:0 0 5px;font-size:1rem}.opcion p{margin:0;color:var(--texto-secundario);font-size:.82rem;line-height:1.45}.ir{color:var(--principal);font-size:.8rem;font-weight:800;white-space:nowrap}
+    .grupo{margin-top:24px}.grupo h3{margin:0 0 10px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-secundario)}
+    @media(max-width:850px){.app{padding-left:0}.sidebar{transform:translateX(-105%)}.sidebar.abierta{transform:translateX(0)}.hamb{display:block}.contenido{padding:24px 16px 40px}.opcion{grid-template-columns:1fr}.ir{justify-self:start}.encabezado h1{font-size:1.6rem}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="marca"><img src="../imagenes/logogranpaleteria.jpeg" alt="Logo"><div><strong>La Michoacana</strong><small>Sistema administrativo</small></div></div>
+    <div class="usuario-menu"><strong>Administrador</strong></div>
+  </aside>
+
+  <main>
+    <header class="top">
+      <button class="hamb" id="abrirMenu" type="button">☰</button>
+      <div class="top-info"><small>Sistema</small><strong>Configuración</strong></div>
+      <div><small>Usuario</small><strong id="usuarioTop">Administrador</strong></div>
+    </header>
+
+    <section class="contenido">
+      <div class="encabezado">
+        <h1>Configuración</h1>
+        <p>Administra catálogos auxiliares y preferencias generales del sistema.</p>
+      </div>
+
+      <section class="grupo">
+        <h3>Operación</h3>
+        <div class="lista">
+          <a class="opcion" href="categorias-gasto.html">
+            <div><h2>Categorías de gasto</h2><p>Define las categorías disponibles al registrar gastos en cualquier sucursal.</p></div>
+            <span class="ir">Administrar →</span>
+          </a>
+          <a class="opcion" href="metodos-pago.html">
+            <div><h2>Formas de pago</h2><p>Administra las formas de pago compartidas por ventas y gastos.</p></div>
+            <span class="ir">Administrar →</span>
+          </a>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<script>
+  const usuarioSesion=JSON.parse(localStorage.getItem("usuarioSesion"))||{nombre:"Administrador"};
+  document.getElementById("usuarioTop").textContent=usuarioSesion.nombre||"Administrador";
+</script>
+<script src="../scripts/menu-compartido.js"></script>
+</body>
+</html>

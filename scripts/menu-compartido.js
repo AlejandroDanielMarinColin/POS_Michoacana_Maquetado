@@ -63,7 +63,7 @@
     {
       id: "michoacana-moderna",
       nombre: "Michoacana moderna",
-      descripcion: "Rosa de marca con grafito profundo",
+      descripcion: "Menú oscuro · rosa de marca con grafito",
       principal: "#ed2b85",
       secundario: "#f5c842",
       menu: "#171b24",
@@ -76,7 +76,7 @@
     {
       id: "cereza-carbon",
       nombre: "Cereza & carbón",
-      descripcion: "Elegante, cálida y con alto contraste",
+      descripcion: "Menú oscuro · elegante y cálida",
       principal: "#e11d48",
       secundario: "#f59e0b",
       menu: "#18181b",
@@ -89,7 +89,7 @@
     {
       id: "indigo-profesional",
       nombre: "Índigo profesional",
-      descripcion: "Sobria, tecnológica y administrativa",
+      descripcion: "Menú oscuro · tecnológica y administrativa",
       principal: "#4f46e5",
       secundario: "#0891b2",
       menu: "#111827",
@@ -102,7 +102,7 @@
     {
       id: "jade-grafito",
       nombre: "Jade & grafito",
-      descripcion: "Natural, limpia y muy legible",
+      descripcion: "Menú oscuro · natural y sobria",
       principal: "#059669",
       secundario: "#d97706",
       menu: "#17211e",
@@ -115,7 +115,7 @@
     {
       id: "ciruela-mauve",
       nombre: "Ciruela & mauve",
-      descripcion: "Suave, premium y menos corporativa",
+      descripcion: "Menú oscuro · violeta premium",
       principal: "#7c3aed",
       secundario: "#db2777",
       menu: "#211827",
@@ -128,7 +128,7 @@
     {
       id: "atlantico",
       nombre: "Azul Atlántico",
-      descripcion: "Fresca, clara y profesional",
+      descripcion: "Menú oscuro · fresca y profesional",
       principal: "#0284c7",
       secundario: "#0d9488",
       menu: "#0f172a",
@@ -141,7 +141,7 @@
     {
       id: "cacao-coral",
       nombre: "Cacao & coral",
-      descripcion: "Cálida, artesanal y diferente",
+      descripcion: "Menú oscuro · cálida y artesanal",
       principal: "#c2410c",
       secundario: "#d97706",
       menu: "#29231f",
@@ -150,6 +150,123 @@
       texto: "#29231f",
       textoSecundario: "#786c64",
       borde: "#e8dfd8"
+    },
+    {
+      id: "rosa-leche",
+      nombre: "Rosa leche",
+      descripcion: "Menú claro · suave, cálida y de marca",
+      principal: "#d92d78",
+      secundario: "#e9ad34",
+      menu: "#fff1f6",
+      fondo: "#fff8fb",
+      tarjeta: "#ffffff",
+      texto: "#281820",
+      textoSecundario: "#7b6570",
+      borde: "#efdce5"
+    },
+    {
+      id: "perla-azul",
+      nombre: "Perla azul",
+      descripcion: "Menú claro · limpia y corporativa",
+      principal: "#2563eb",
+      secundario: "#0891b2",
+      menu: "#f8fafc",
+      fondo: "#f1f5f9",
+      tarjeta: "#ffffff",
+      texto: "#172033",
+      textoSecundario: "#64748b",
+      borde: "#dce3ec"
+    },
+    {
+      id: "menta-fresca",
+      nombre: "Menta fresca",
+      descripcion: "Menú claro · verde suave y natural",
+      principal: "#0f766e",
+      secundario: "#ca8a04",
+      menu: "#ecfdf5",
+      fondo: "#f6fbf8",
+      tarjeta: "#ffffff",
+      texto: "#17302b",
+      textoSecundario: "#64766f",
+      borde: "#d7e8e1"
+    },
+    {
+      id: "lavanda-clara",
+      nombre: "Lavanda clara",
+      descripcion: "Menú claro · elegante sin verse pesada",
+      principal: "#7c3aed",
+      secundario: "#db2777",
+      menu: "#f5f3ff",
+      fondo: "#fbfaff",
+      tarjeta: "#ffffff",
+      texto: "#261c36",
+      textoSecundario: "#746a82",
+      borde: "#e5ddf6"
+    },
+    {
+      id: "arena-elegante",
+      nombre: "Arena elegante",
+      descripcion: "Menú claro · crema, café y acento ámbar",
+      principal: "#b45309",
+      secundario: "#0f766e",
+      menu: "#fff7ed",
+      fondo: "#faf7f2",
+      tarjeta: "#fffdfb",
+      texto: "#33261c",
+      textoSecundario: "#7c6a5c",
+      borde: "#eadfd4"
+    },
+    {
+      id: "rosa-humo",
+      nombre: "Rosa humo",
+      descripcion: "Menú claro · rosa apagado y sofisticado",
+      principal: "#be185d",
+      secundario: "#7c3aed",
+      menu: "#fdf2f8",
+      fondo: "#faf7f9",
+      tarjeta: "#ffffff",
+      texto: "#2c1b25",
+      textoSecundario: "#78636f",
+      borde: "#ecdce4"
+    },
+    {
+      id: "salvia-suave",
+      nombre: "Salvia suave",
+      descripcion: "Menú claro · verde orgánico y sereno",
+      principal: "#4d7c0f",
+      secundario: "#ca8a04",
+      menu: "#f7fee7",
+      fondo: "#fafcf5",
+      tarjeta: "#ffffff",
+      texto: "#243115",
+      textoSecundario: "#6d765d",
+      borde: "#e1e8d3"
+    },
+    {
+      id: "azul-hielo",
+      nombre: "Azul hielo",
+      descripcion: "Menú claro · frío, limpio y moderno",
+      principal: "#0369a1",
+      secundario: "#0d9488",
+      menu: "#eff6ff",
+      fondo: "#f7fafd",
+      tarjeta: "#ffffff",
+      texto: "#17283a",
+      textoSecundario: "#617284",
+      borde: "#d9e6f1"
+    },
+    {
+      id: "gris-perla",
+      nombre: "Gris perla",
+      descripcion: "Menú claro · neutral con acento índigo",
+      principal: "#4f46e5",
+      secundario: "#64748b",
+      menu: "#f4f4f5",
+      fondo: "#fafafa",
+      tarjeta: "#ffffff",
+      texto: "#18181b",
+      textoSecundario: "#71717a",
+      borde: "#dedee3"
     }
   ];
 
@@ -218,7 +335,7 @@
       raiz.style.setProperty("--principal-oscuro", oscurecer(tema.principal, 24));
       raiz.style.setProperty("--principal-claro", rgba(tema.principal, .11));
       raiz.style.setProperty("--sidebar-active", tema.principal);
-      raiz.style.setProperty("--sidebar-active-bg", rgba(tema.principal, .28));
+      raiz.style.setProperty("--sidebar-accent-contrast", luminancia(tema.principal) > .48 ? "#17141d" : "#ffffff");
     }
 
     if (tema.secundario) raiz.style.setProperty("--secundario", tema.secundario);
@@ -232,13 +349,19 @@
       const menuClaro = luminancia(tema.menu) > .48;
       raiz.style.setProperty("--menu", tema.menu);
       raiz.style.setProperty("--sidebar-bg", tema.menu);
-      raiz.style.setProperty("--sidebar-bg-2", menuClaro ? oscurecer(tema.menu, 18) : oscurecer(tema.menu, 10));
-      raiz.style.setProperty("--sidebar-text", menuClaro ? "#17141d" : "#f4f7fb");
-      raiz.style.setProperty("--sidebar-item", menuClaro ? "#34313a" : "#c2cad5");
-      raiz.style.setProperty("--sidebar-icon", menuClaro ? "#514b57" : "#939eae");
-      raiz.style.setProperty("--sidebar-muted", menuClaro ? "rgba(23,20,29,.62)" : "#8f99aa");
-      raiz.style.setProperty("--sidebar-section", menuClaro ? "rgba(23,20,29,.55)" : "#6f7a8c");
-      raiz.style.setProperty("--sidebar-line", menuClaro ? "rgba(20,20,25,.12)" : "rgba(255,255,255,.08)");
+      raiz.style.setProperty("--sidebar-bg-2", menuClaro ? oscurecer(tema.menu, 12) : oscurecer(tema.menu, 10));
+      raiz.style.setProperty("--sidebar-text", menuClaro ? "#211d24" : "#f4f7fb");
+      raiz.style.setProperty("--sidebar-item", menuClaro ? "#454049" : "#c2cad5");
+      raiz.style.setProperty("--sidebar-icon", menuClaro ? "#615a65" : "#939eae");
+      raiz.style.setProperty("--sidebar-muted", menuClaro ? "rgba(33,29,36,.62)" : "#8f99aa");
+      raiz.style.setProperty("--sidebar-section", menuClaro ? "rgba(33,29,36,.53)" : "#6f7a8c");
+      raiz.style.setProperty("--sidebar-line", menuClaro ? "rgba(30,26,32,.12)" : "rgba(255,255,255,.08)");
+      raiz.style.setProperty("--sidebar-hover", menuClaro ? "rgba(30,26,32,.055)" : "rgba(255,255,255,.045)");
+
+      if (tema.principal) {
+        raiz.style.setProperty("--sidebar-active-bg", menuClaro ? rgba(tema.principal, .12) : rgba(tema.principal, .28));
+        raiz.style.setProperty("--sidebar-active-text", menuClaro ? tema.principal : "#ffffff");
+      }
     }
   }
 
@@ -387,7 +510,7 @@
     titulo.textContent = "Paletas completas";
     const descripcion = document.createElement("p");
     descripcion.className = "menu-paletas-descripcion";
-    descripcion.textContent = "Cambia toda la interfaz con una combinación equilibrada.";
+    descripcion.textContent = "Incluye temas con menú oscuro y menú claro.";
     const grid = document.createElement("div");
     grid.className = "menu-paletas-grid";
     paletas.forEach(paleta => grid.appendChild(crearBotonPaleta(paleta)));

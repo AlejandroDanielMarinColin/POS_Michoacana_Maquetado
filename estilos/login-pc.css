@@ -4,8 +4,6 @@
   .login-imagen{position:relative;min-height:100vh;min-height:100dvh;padding:0;overflow:hidden;background-image:url("../imagenes/fondo-login.png");background-size:cover;background-position:center 48%;background-repeat:no-repeat}
   .login-imagen:after{content:none;background:none}
   .contenido-imagen,.copy-hero,.titulo-marca,.frase-principal,.detalle-amarillo,.frase-inferior{display:none}
-  .frase-movil{display:block;position:absolute;z-index:2;top:7vh;left:5.5vw;margin:0;max-width:280px;color:#f0a8c4;font-family:"Segoe Script","Bradley Hand",cursive;font-size:clamp(2.1rem,3.4vw,3.4rem);font-weight:700;line-height:.95;transform:rotate(-12deg);text-shadow:0 1px 0 rgba(255,255,255,.25)}
-  .frase-movil small{display:block;margin:6px 0 0 28px;font-size:.72em}
   .login-acceso{min-height:100vh;min-height:100dvh;padding:48px 8vw;display:flex;align-items:center;justify-content:center;background:#fff8f9}
   .formulario{width:100%;max-width:560px}
   .logo{margin:0 0 22px;justify-content:center}

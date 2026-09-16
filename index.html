@@ -4,67 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Iniciar sesión | La Michoacana</title>
-<link rel="stylesheet" href="estilos/login-pc.css">
 <style>
 :root{--rosa:#ed2b85;--rosa2:#d91c70;--negro:#19151d;--gris:#706a73;--borde:#e8e1e7}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{min-height:100dvh;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--negro);background:#fff}button,input{font:inherit}
 .login{min-height:100dvh;display:grid;grid-template-columns:minmax(420px,48%) 1fr}
-.login-imagen{position:relative;min-height:100dvh;overflow:hidden;display:flex;padding:clamp(36px,5vw,72px);color:#fff;background-image:linear-gradient(180deg,rgba(38,10,26,.06),rgba(38,10,26,.16) 50%,rgba(38,10,26,.62)),url("https://images.unsplash.com/photo-1606169109553-aa8c5e4a62b9");background-size:cover;background-position:center}
+.login-imagen{position:relative;min-height:100dvh;overflow:hidden;display:flex;padding:clamp(36px,5vw,72px);color:#fff;background-image:linear-gradient(180deg,rgba(38,10,26,.06),rgba(38,10,26,.16) 50%,rgba(38,10,26,.62)),url("imagenes/fondo-login.png");background-size:cover;background-position:center 32%;background-repeat:no-repeat}
 .login-imagen:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(237,43,133,.08),transparent 52%);pointer-events:none}.contenido-imagen{position:relative;z-index:1;width:100%;display:flex;flex-direction:column}.copy-hero{margin-top:auto;max-width:570px}.titulo-marca{margin:0;font-size:clamp(3rem,5.3vw,6rem);line-height:.9;letter-spacing:-.06em;font-weight:900;text-shadow:0 4px 24px rgba(0,0,0,.22)}.titulo-marca span{color:#ff7fba}.frase-principal{margin:22px 0 0;max-width:440px;font-size:clamp(1rem,1.25vw,1.2rem);line-height:1.55;color:rgba(255,255,255,.94);text-shadow:0 2px 14px rgba(0,0,0,.24)}.detalle-amarillo{width:72px;height:6px;margin-top:22px;border-radius:99px;background:#ffd43b}.frase-inferior{margin:18px 0 0;font-weight:700;color:rgba(255,255,255,.88)}
+.frase-movil{display:none}
 .mobile-wave{display:none}
-.login-acceso{min-height:100dvh;padding:clamp(36px,6vw,84px);display:flex;align-items:center;justify-content:center}.formulario{width:100%;max-width:500px}.logo{display:flex;justify-content:center;margin-bottom:22px}.logo-imagen{width:118px;height:118px;display:block;object-fit:contain;border-radius:24px;background:#fff;box-shadow:0 12px 30px rgba(38,24,33,.08)}h2{margin:0;text-align:center;font-size:clamp(1.85rem,2.7vw,2.3rem);letter-spacing:-.04em}.instruccion{margin:11px auto 32px;color:var(--gris);text-align:center;line-height:1.5}.etiqueta-campo{display:block;margin-bottom:10px;font-size:.88rem;font-weight:800}.codigo{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.codigo input{width:100%;min-width:0;height:62px;padding:0;border:1.5px solid var(--borde);border-radius:14px;outline:0;text-align:center;font-size:1.32rem;font-weight:850;caret-color:var(--rosa);transition:.18s}.codigo input:focus{border-color:var(--rosa);box-shadow:0 0 0 4px #fff1f7;transform:translateY(-1px)}.ayuda{margin:10px 0 24px;color:var(--gris);font-size:.8rem}.boton{width:100%;min-height:56px;border:0;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--rosa),var(--rosa2));font-weight:850;cursor:pointer;box-shadow:0 12px 26px rgba(237,43,133,.22)}.mensaje-error{min-height:21px;margin:11px 0 0;color:#c8234d;font-size:.82rem}.soporte,.problemas{display:none}.pie-login{margin:28px 0 0;color:#9b949b;text-align:center;font-size:.8rem}
+.login-acceso{min-height:100dvh;padding:clamp(36px,6vw,84px);display:flex;align-items:center;justify-content:center}.formulario{width:100%;max-width:500px}.logo{display:flex;justify-content:center;margin-bottom:22px}.logo-imagen{width:118px;height:118px;display:block;object-fit:contain;background:transparent}h2{margin:0;text-align:center;font-size:clamp(1.85rem,2.7vw,2.3rem);font-weight:600;letter-spacing:-.03em}.instruccion{margin:11px auto 32px;color:var(--gris);text-align:center;line-height:1.5}.etiqueta-campo{display:block;margin-bottom:10px;font-size:.88rem;font-weight:800}.codigo{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.codigo input{width:100%;min-width:0;height:62px;padding:0;border:1.5px solid var(--borde);border-radius:14px;outline:0;text-align:center;font-size:1.32rem;font-weight:850;caret-color:var(--rosa);transition:.18s}.codigo input:focus{border-color:var(--rosa);box-shadow:0 0 0 4px #fff1f7;transform:translateY(-1px)}.ayuda{margin:10px 0 24px;color:var(--gris);font-size:.8rem}.boton{width:100%;min-height:56px;border:0;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--rosa),var(--rosa2));font-weight:850;cursor:pointer;box-shadow:0 12px 26px rgba(237,43,133,.22)}.mensaje-error{min-height:21px;margin:11px 0 0;color:#c8234d;font-size:.82rem}.soporte,.problemas{display:none}.pie-login{margin:28px 0 0;color:#9b949b;text-align:center;font-size:.8rem;display:flex;align-items:center;justify-content:center;gap:7px}.pie-login svg{width:13px;height:13px;flex:none;opacity:.7}
 @media(max-width:980px){.login{grid-template-columns:1fr}.login-imagen{min-height:310px;padding:30px 7vw 34px;background-position:center 44%}.copy-hero{max-width:72%}.titulo-marca{font-size:clamp(2.6rem,7vw,4.2rem)}.frase-principal{margin-top:13px;font-size:.98rem}.frase-inferior{display:none}.login-acceso{min-height:auto;padding:48px 8vw 58px}.formulario{max-width:540px}}
 @media(max-width:600px){
-  html,body{background:#fff8fb}
+  html,body{background:#fff6f8}
   body{min-height:100dvh;overflow-x:hidden}
-  .login{display:block;min-height:100dvh;background:#fff8fb;overflow:hidden}
-  .login-imagen{position:relative;width:100%;height:31vh;min-height:245px;max-height:300px;padding:0;background-position:center 31%;overflow:hidden;border-radius:0;box-shadow:none}
-  .login-imagen:after{z-index:1;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(237,43,133,.035))}
-  .contenido-imagen,.copy-hero{display:none}
-  .mobile-wave{display:block;position:absolute;z-index:3;left:-1px;bottom:-1px;width:calc(100% + 2px);height:76px;pointer-events:none}
-  .login-acceso{position:relative;z-index:4;min-height:auto;margin-top:-2px;padding:0 22px 28px;background:#fff8fb;display:block}
-  .formulario{width:100%;max-width:390px;margin:0 auto;padding:10px 0 0;background:transparent}
-  .logo{margin:0 0 15px;justify-content:center}
-  .logo-imagen{width:118px;height:118px;border-radius:0;background:transparent;box-shadow:none;object-fit:contain}
-  h2{font-size:2.55rem;line-height:1.02;letter-spacing:-.055em;font-weight:850}
-  .instruccion{margin:11px auto 34px;max-width:350px;font-size:1rem;line-height:1.45;color:#817a84}
-  .etiqueta-campo{margin-bottom:11px;font-size:.98rem}
+  .login{display:flex;flex-direction:column;min-height:100dvh;background:#fff6f8;overflow:hidden}
+  .login-imagen{position:relative;width:100%;height:36vh;min-height:268px;max-height:360px;padding:0;background-image:url("imagenes/fondo-login.png");background-size:175% auto;background-position:72% 8%;overflow:hidden;border-radius:0;box-shadow:none}
+  .login-imagen:after{z-index:1;background:none}
+  .contenido-imagen,.copy-hero,.titulo-marca,.frase-principal,.detalle-amarillo,.frase-inferior{display:none}
+  .frase-movil{display:block;position:absolute;z-index:2;top:22px;left:16px;margin:0;max-width:46%;color:#efb3cb;font-family:"Segoe Script","Bradley Hand",cursive;font-size:1.28rem;font-weight:700;line-height:1.12;transform:rotate(-10deg);text-shadow:0 1px 0 rgba(255,255,255,.4)}
+  .frase-movil small{display:block;margin:4px 0 0 18px;font-size:1.05rem}
+  .mobile-wave{display:block;position:absolute;z-index:3;left:-2px;bottom:-1px;width:calc(100% + 4px);height:98px;pointer-events:none}
+  .login-acceso{position:relative;z-index:4;flex:1;min-height:0;margin-top:-72px;padding:0 24px 18px;background:transparent;display:flex}
+  .formulario{width:100%;max-width:390px;margin:0 auto;padding:0;background:transparent;display:flex;flex-direction:column;min-height:100%}
+  .logo{position:relative;z-index:5;margin:0 0 6px;justify-content:center}
+  .logo-imagen{width:148px;height:148px;border-radius:0;background:transparent;box-shadow:none;object-fit:contain}
+  h2{text-align:center;font-size:2.05rem;line-height:1.12;letter-spacing:-.03em;font-weight:600}
+  .instruccion{margin:8px auto 26px;max-width:none;text-align:center;font-size:.98rem;line-height:1.45;color:#8a838c}
+  .etiqueta-campo{margin-bottom:12px;font-size:.95rem}
   .codigo{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-  .codigo input{height:62px;border-radius:14px;border:1.5px solid #e2dce1;background:#fff;font-size:1.16rem;box-shadow:none}
-  .codigo input:focus{border-color:var(--rosa);box-shadow:0 0 0 4px rgba(237,43,133,.09);transform:none}
-  .ayuda{margin:11px 0 27px;font-size:.82rem;color:#918992}
-  .boton{min-height:62px;border-radius:14px;font-size:1.06rem;box-shadow:0 13px 26px rgba(237,43,133,.20)}
-  .mensaje-error{min-height:20px;margin-top:10px;font-size:.78rem}
-  .soporte{display:flex;align-items:center;gap:12px;margin:26px 0 0;color:#a29ca5;font-size:.8rem}
-  .soporte:before,.soporte:after{content:"";height:1px;flex:1;background:#ddd7dc}
+  .codigo input{height:56px;border-radius:16px;border:1.5px solid #eadfe6;background:#fff;font-size:1.12rem;box-shadow:none}
+  .codigo input:focus{border-color:var(--rosa);box-shadow:0 0 0 4px rgba(237,43,133,.1);transform:none}
+  .ayuda{margin:10px 0 22px;font-size:.8rem;color:#9a9299}
+  .boton{min-height:56px;border-radius:14px;font-size:1.02rem;box-shadow:0 14px 28px rgba(237,43,133,.22)}
+  .mensaje-error{min-height:16px;margin-top:8px;font-size:.78rem}
+  .soporte{display:flex;align-items:center;gap:12px;margin:22px 0 0;color:#b0a8af;font-size:.8rem}
+  .soporte:before,.soporte:after{content:"";height:1px;flex:1;background:#eadfe4}
   .soporte span{white-space:nowrap}
-  .problemas{display:block;margin:13px 0 0;text-align:center;color:var(--rosa);font-size:.9rem;font-weight:800}
-  .pie-login{margin:58px 0 0;padding-bottom:max(10px,env(safe-area-inset-bottom));font-size:.78rem;color:#9d969d}
+  .problemas{display:block;margin:14px 0 0;text-align:center;color:var(--rosa);font-size:.92rem;font-weight:800}
+  .pie-login{margin-top:auto;padding:28px 0 max(12px,env(safe-area-inset-bottom));font-size:.78rem;color:#a39ba3}
 }
 @media(max-width:380px){
-  .login-imagen{height:29vh;min-height:220px;max-height:270px;background-position:center 30%}
-  .mobile-wave{height:65px}
-  .login-acceso{padding:0 17px 22px}
-  .formulario{padding-top:6px}
-  .logo-imagen{width:98px;height:98px}
-  h2{font-size:2.1rem}
-  .instruccion{margin-bottom:27px;font-size:.9rem}
+  .login-imagen{height:32vh;min-height:220px;max-height:280px;background-position:68% 26%}
+  .mobile-wave{height:78px}
+  .login-acceso{margin-top:-58px;padding:0 18px 18px}
+  .logo-imagen{width:122px;height:122px}
+  h2{font-size:1.85rem;font-weight:600}
+  .instruccion{margin-bottom:22px;font-size:.9rem}
   .codigo{gap:5px}
-  .codigo input{height:52px;border-radius:12px;font-size:1rem}
-  .boton{min-height:55px}
+  .codigo input{height:50px;border-radius:14px;font-size:1rem}
+  .boton{min-height:52px}
   .soporte{margin-top:20px;font-size:.7rem;gap:8px}
   .problemas{font-size:.82rem}
-  .pie-login{margin-top:38px;font-size:.7rem}
+  .pie-login{margin-top:28px;font-size:.7rem}
 }
 </style>
+<link rel="stylesheet" href="estilos/login-pc.css">
 </head>
 <body>
 <main class="login">
 <section class="login-imagen">
   <div class="contenido-imagen"><div class="copy-hero"><h1 class="titulo-marca">La<br><span>Michoacana</span></h1><p class="frase-principal">Tradición, sabor y una operación más simple para administrar tu negocio todos los días.</p><div class="detalle-amarillo"></div><p class="frase-inferior">Más que paletas, es tradición.</p></div></div>
-  <svg class="mobile-wave" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true"><path d="M0 2 C17 13 31 17 48 15 C66 13 82 7 100 10 L100 22 L0 22 Z" fill="#fff8fb"/></svg>
+  <p class="frase-movil">Más que paletas <small>♡</small></p>
+  <svg class="mobile-wave" viewBox="0 0 390 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 54 C78 36 140 32 198 50 C268 70 328 74 390 52 L390 90 L0 90 Z" fill="#fff6f8"/></svg>
 </section>
-<section class="login-acceso"><form class="formulario" id="formularioLogin"><div class="logo"><img src="imagenes/logogranpaleteria.jpeg" alt="Logo de Gran Paletería Michoacana" class="logo-imagen"></div><h2>Iniciar sesión</h2><p class="instruccion">Ingresa tu código de acceso para continuar.</p><label class="etiqueta-campo" for="digito1">Código de acceso</label><div class="codigo"><input id="digito1" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="1" required autofocus><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required></div><p class="ayuda">Código numérico de 6 dígitos</p><button class="boton" type="submit">Iniciar sesión &nbsp;→</button><p class="mensaje-error" id="mensajeError"></p><div class="soporte"><span>o si necesitas ayuda</span></div><p class="problemas">¿Problemas para acceder?</p><p class="pie-login">Acceso exclusivo para personal autorizado</p></form></section>
+<section class="login-acceso"><form class="formulario" id="formularioLogin"><div class="logo"><img src="imagenes/logo.png" alt="Logo de Gran Paletería Michoacana" class="logo-imagen"></div><h2>Iniciar sesión</h2><p class="instruccion">Ingresa tu código de acceso para continuar.</p><label class="etiqueta-campo" for="digito1">Código de acceso</label><div class="codigo"><input id="digito1" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="1" required autofocus><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required><input type="password" inputmode="numeric" maxlength="1" required></div><p class="ayuda">Código numérico de 6 dígitos</p><button class="boton" type="submit">Iniciar sesión &nbsp;→</button><p class="mensaje-error" id="mensajeError"></p><div class="soporte"><span>o si necesitas ayuda</span></div><p class="problemas">¿Problemas para acceder?</p><p class="pie-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Acceso exclusivo para personal autorizado.</p></form></section>
 </main>
 <script src="scripts/login.js"></script>
 </body>

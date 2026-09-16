@@ -10,12 +10,8 @@
     inventario: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4-8 4-8-4z"/><path d="m4 7 8 4 8-4v10l-8 4-8-4z"/><path d="M12 11v10"/></svg>',
     caja: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h18"/><path d="M7 14h4"/></svg>',
     productos: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="m4 8.5 8 4.5 8-4.5"/><path d="M12 13v7"/></svg>',
-    categorias: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v4H4zM14 15h6v4h-6z"/></svg>',
-    catalogo: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
     sucursales: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16"/><path d="M6 10v10h12V10"/><path d="m5 10 1.5-5h11L19 10"/><path d="M9 14v6M15 14v6"/></svg>',
     usuarios: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.7-3 2.8-5 5.5-5s4.8 2 5.5 5"/><circle cx="17" cy="9" r="2.2"/><path d="M15.5 14.5c2.5.2 4.2 1.7 5 4"/></svg>',
-    categoriasGasto: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h5"/></svg>',
-    pagos: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/></svg>',
     reportes: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
     auditoria: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h5"/><path d="m15.5 15.5 1.5 1.5 3-3"/></svg>',
     configuracion: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06L7.06 3.8l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.4 9c.1.4.3.7.6 1 .3.3.7.4 1.1.4h.1v4h-.1c-.4 0-.8.1-1.1.4-.3.3-.5.6-.6 1Z"/></svg>',
@@ -23,7 +19,9 @@
   };
 
   const gruposMenu = [
-    { titulo: "Principal", opciones: [{ archivo: "dashboard.html", texto: "Inicio", icono: "inicio" }] },
+    { titulo: "Principal", opciones: [
+      { archivo: "dashboard.html", texto: "Inicio", icono: "inicio" }
+    ]},
     { titulo: "Operación", opciones: [
       { archivo: "registrar-venta.html", texto: "Registrar venta", icono: "venta" },
       { archivo: "historial-ventas.html", texto: "Historial de ventas", icono: "historial" },
@@ -33,21 +31,40 @@
       { archivo: "corte-caja.html", texto: "Corte de caja", icono: "caja" }
     ]},
     { titulo: "Productos", opciones: [
-      { archivo: "productos.html", texto: "Productos", icono: "productos" },
-      { archivo: "categorias.html", texto: "Categorías", icono: "categorias" },
-      { archivo: "catalogo-sucursal.html", texto: "Catálogo por sucursal", icono: "catalogo" }
+      {
+        archivo: "productos.html",
+        texto: "Productos",
+        icono: "productos",
+        hijos: [
+          { archivo: "categorias.html", texto: "Categorías" }
+        ]
+      }
     ]},
     { titulo: "Administración", opciones: [
-      { archivo: "sucursales.html", texto: "Sucursales", icono: "sucursales" },
-      { archivo: "usuarios.html", texto: "Usuarios", icono: "usuarios" },
-      { archivo: "categorias-gasto.html", texto: "Categorías de gasto", icono: "categoriasGasto" }
+      {
+        archivo: "sucursales.html",
+        texto: "Sucursales",
+        icono: "sucursales",
+        hijos: [
+          { archivo: "catalogo-sucursal.html", texto: "Catálogo por sucursal" }
+        ]
+      },
+      { archivo: "usuarios.html", texto: "Usuarios", icono: "usuarios" }
     ]},
     { titulo: "Supervisión", opciones: [
       { archivo: "reportes.html", texto: "Reportes", icono: "reportes" },
       { archivo: "auditoria.html", texto: "Auditoría", icono: "auditoria" }
     ]},
     { titulo: "Sistema", opciones: [
-      { archivo: "configuracion.html", texto: "Configuración", icono: "configuracion" }
+      {
+        archivo: "configuracion.html",
+        texto: "Configuración",
+        icono: "configuracion",
+        hijos: [
+          { archivo: "categorias-gasto.html", texto: "Categorías de gasto" },
+          { archivo: "metodos-pago.html", texto: "Formas de pago" }
+        ]
+      }
     ]}
   ];
 
@@ -57,169 +74,24 @@
     "registrar-reabastecimiento.html": "reabastecimiento.html",
     "registrar-producto.html": "productos.html",
     "registrar-categoria-gasto.html": "categorias-gasto.html",
-    "metodos-pago.html": "configuracion.html",
-    "registrar-metodo-pago.html": "configuracion.html",
+    "registrar-metodo-pago.html": "metodos-pago.html",
     "registrar-sucursal.html": "sucursales.html",
     "registrar-usuario.html": "usuarios.html"
   };
 
   const paletas = [
-    {
-      id: "michoacana-moderna",
-      nombre: "Michoacana moderna",
-      descripcion: "Rosa intenso, grafito y amarillo cálido",
-      principal: "#ed2b85",
-      secundario: "#f4c542",
-      menu: "#171b24",
-      fondo: "#f4f6f9",
-      tarjeta: "#ffffff",
-      texto: "#18151d",
-      textoSecundario: "#6f6a73",
-      borde: "#dce1e8"
-    },
-    {
-      id: "crema-fresa",
-      nombre: "Crema & fresa",
-      descripcion: "Blanco cálido, rosa frambuesa y crema",
-      principal: "#c91f68",
-      secundario: "#d59b32",
-      menu: "#fff0f4",
-      fondo: "#fff9f6",
-      tarjeta: "#ffffff",
-      texto: "#2f2026",
-      textoSecundario: "#78656c",
-      borde: "#ead9dd"
-    },
-    {
-      id: "azul-ejecutivo",
-      nombre: "Azul ejecutivo",
-      descripcion: "Azul intenso, acero claro y cian",
-      principal: "#1d4ed8",
-      secundario: "#0891b2",
-      menu: "#e9eff7",
-      fondo: "#f3f6fa",
-      tarjeta: "#ffffff",
-      texto: "#172033",
-      textoSecundario: "#5d6b80",
-      borde: "#d3dce8"
-    },
-    {
-      id: "bosque-cobre",
-      nombre: "Bosque & cobre",
-      descripcion: "Verde bosque, cobre y marfil",
-      principal: "#4f772d",
-      secundario: "#c77b30",
-      menu: "#203328",
-      fondo: "#f5f1e8",
-      tarjeta: "#fffdf7",
-      texto: "#273126",
-      textoSecundario: "#697064",
-      borde: "#ded9cb"
-    },
-    {
-      id: "terracota-oliva",
-      nombre: "Terracota & oliva",
-      descripcion: "Arcilla, oliva y crema artesanal",
-      principal: "#b84f32",
-      secundario: "#6b7a40",
-      menu: "#f4e3d6",
-      fondo: "#fbf3ec",
-      tarjeta: "#fffdf9",
-      texto: "#3a2922",
-      textoSecundario: "#806a60",
-      borde: "#e5d3c7"
-    },
-    {
-      id: "navy-coral",
-      nombre: "Navy & coral",
-      descripcion: "Azul noche, coral brillante y ámbar",
-      principal: "#f04467",
-      secundario: "#f3a712",
-      menu: "#101b2c",
-      fondo: "#f2f5f8",
-      tarjeta: "#ffffff",
-      texto: "#182336",
-      textoSecundario: "#637083",
-      borde: "#d9e0e8"
-    },
-    {
-      id: "retro-turquesa",
-      nombre: "Retro turquesa",
-      descripcion: "Turquesa profundo, mostaza y papel crema",
-      principal: "#007b78",
-      secundario: "#d89a2b",
-      menu: "#dcefeb",
-      fondo: "#f7f4eb",
-      tarjeta: "#fffdf7",
-      texto: "#203533",
-      textoSecundario: "#677b77",
-      borde: "#d5ddd8"
-    },
-    {
-      id: "violeta-nocturno",
-      nombre: "Violeta nocturno",
-      descripcion: "Berenjena, violeta eléctrico y rosa suave",
-      principal: "#9a63ff",
-      secundario: "#e68ab8",
-      menu: "#23172f",
-      fondo: "#f8f5fb",
-      tarjeta: "#ffffff",
-      texto: "#251d2b",
-      textoSecundario: "#766b80",
-      borde: "#e2dbea"
-    },
-    {
-      id: "monocromo",
-      nombre: "Monocromo",
-      descripcion: "Blanco, negro y grises sin acentos de color",
-      principal: "#171717",
-      secundario: "#737373",
-      menu: "#ffffff",
-      fondo: "#f3f3f3",
-      tarjeta: "#ffffff",
-      texto: "#171717",
-      textoSecundario: "#666666",
-      borde: "#d4d4d4"
-    },
-    {
-      id: "navy-dorado",
-      nombre: "Navy & dorado",
-      descripcion: "Azul marino, oro viejo y fondo marfil",
-      principal: "#b88628",
-      secundario: "#3d8bb3",
-      menu: "#0c2238",
-      fondo: "#f6f2e8",
-      tarjeta: "#fffdf8",
-      texto: "#1b2732",
-      textoSecundario: "#6b716f",
-      borde: "#ded8c9"
-    },
-    {
-      id: "limonada",
-      nombre: "Limonada",
-      descripcion: "Amarillo crema, naranja y azul petróleo",
-      principal: "#d96704",
-      secundario: "#0e7490",
-      menu: "#fff4c7",
-      fondo: "#fffaf0",
-      tarjeta: "#ffffff",
-      texto: "#332b1b",
-      textoSecundario: "#7d725d",
-      borde: "#eadfbf"
-    },
-    {
-      id: "oceano-turquesa",
-      nombre: "Océano turquesa",
-      descripcion: "Azul petróleo, aqua y gris frío",
-      principal: "#0e7490",
-      secundario: "#14b8a6",
-      menu: "#0d2c38",
-      fondo: "#edf6f8",
-      tarjeta: "#ffffff",
-      texto: "#16313a",
-      textoSecundario: "#62777e",
-      borde: "#d2e2e6"
-    }
+    { id:"michoacana-moderna", nombre:"Michoacana moderna", descripcion:"Rosa intenso, grafito y amarillo cálido", principal:"#ed2b85", secundario:"#f4c542", menu:"#171b24", fondo:"#f4f6f9", tarjeta:"#ffffff", texto:"#18151d", textoSecundario:"#6f6a73", borde:"#dce1e8" },
+    { id:"crema-fresa", nombre:"Crema & fresa", descripcion:"Blanco cálido, rosa frambuesa y crema", principal:"#c91f68", secundario:"#d59b32", menu:"#fff0f4", fondo:"#fff9f6", tarjeta:"#ffffff", texto:"#2f2026", textoSecundario:"#78656c", borde:"#ead9dd" },
+    { id:"azul-ejecutivo", nombre:"Azul ejecutivo", descripcion:"Azul intenso, acero claro y cian", principal:"#1d4ed8", secundario:"#0891b2", menu:"#e9eff7", fondo:"#f3f6fa", tarjeta:"#ffffff", texto:"#172033", textoSecundario:"#5d6b80", borde:"#d3dce8" },
+    { id:"bosque-cobre", nombre:"Bosque & cobre", descripcion:"Verde bosque, cobre y marfil", principal:"#4f772d", secundario:"#c77b30", menu:"#203328", fondo:"#f5f1e8", tarjeta:"#fffdf7", texto:"#273126", textoSecundario:"#697064", borde:"#ded9cb" },
+    { id:"terracota-oliva", nombre:"Terracota & oliva", descripcion:"Arcilla, oliva y crema artesanal", principal:"#b84f32", secundario:"#6b7a40", menu:"#f4e3d6", fondo:"#fbf3ec", tarjeta:"#fffdf9", texto:"#3a2922", textoSecundario:"#806a60", borde:"#e5d3c7" },
+    { id:"navy-coral", nombre:"Navy & coral", descripcion:"Azul noche, coral brillante y ámbar", principal:"#f04467", secundario:"#f3a712", menu:"#101b2c", fondo:"#f2f5f8", tarjeta:"#ffffff", texto:"#182336", textoSecundario:"#637083", borde:"#d9e0e8" },
+    { id:"retro-turquesa", nombre:"Retro turquesa", descripcion:"Turquesa profundo, mostaza y papel crema", principal:"#007b78", secundario:"#d89a2b", menu:"#dcefeb", fondo:"#f7f4eb", tarjeta:"#fffdf7", texto:"#203533", textoSecundario:"#677b77", borde:"#d5ddd8" },
+    { id:"violeta-nocturno", nombre:"Violeta nocturno", descripcion:"Berenjena, violeta eléctrico y rosa suave", principal:"#9a63ff", secundario:"#e68ab8", menu:"#23172f", fondo:"#f8f5fb", tarjeta:"#ffffff", texto:"#251d2b", textoSecundario:"#766b80", borde:"#e2dbea" },
+    { id:"monocromo", nombre:"Monocromo", descripcion:"Blanco, negro y grises sin acentos de color", principal:"#171717", secundario:"#737373", menu:"#ffffff", fondo:"#f3f3f3", tarjeta:"#ffffff", texto:"#171717", textoSecundario:"#666666", borde:"#d4d4d4" },
+    { id:"navy-dorado", nombre:"Navy & dorado", descripcion:"Azul marino, oro viejo y fondo marfil", principal:"#b88628", secundario:"#3d8bb3", menu:"#0c2238", fondo:"#f6f2e8", tarjeta:"#fffdf8", texto:"#1b2732", textoSecundario:"#6b716f", borde:"#ded8c9" },
+    { id:"limonada", nombre:"Limonada", descripcion:"Amarillo crema, naranja y azul petróleo", principal:"#d96704", secundario:"#0e7490", menu:"#fff4c7", fondo:"#fffaf0", tarjeta:"#ffffff", texto:"#332b1b", textoSecundario:"#7d725d", borde:"#eadfbf" },
+    { id:"oceano-turquesa", nombre:"Océano turquesa", descripcion:"Azul petróleo, aqua y gris frío", principal:"#0e7490", secundario:"#14b8a6", menu:"#0d2c38", fondo:"#edf6f8", tarjeta:"#ffffff", texto:"#16313a", textoSecundario:"#62777e", borde:"#d2e2e6" }
   ];
 
   let paletaActiva = null;
@@ -243,11 +115,7 @@
   function hexARgb(hex) {
     const limpio = String(hex || "").replace("#", "");
     if (limpio.length !== 6) return null;
-    return {
-      r: parseInt(limpio.slice(0, 2), 16),
-      g: parseInt(limpio.slice(2, 4), 16),
-      b: parseInt(limpio.slice(4, 6), 16)
-    };
+    return { r:parseInt(limpio.slice(0,2),16), g:parseInt(limpio.slice(2,4),16), b:parseInt(limpio.slice(4,6),16) };
   }
 
   function oscurecer(hex, cantidad) {
@@ -266,7 +134,7 @@
   function luminancia(hex) {
     const rgb = hexARgb(hex);
     if (!rgb) return 0;
-    const canales = [rgb.r, rgb.g, rgb.b].map(valor => {
+    const canales = [rgb.r,rgb.g,rgb.b].map(valor => {
       const s = valor / 255;
       return s <= .03928 ? s / 12.92 : Math.pow((s + .055) / 1.055, 2.4);
     });
@@ -281,15 +149,13 @@
   function aplicarTemaGlobal(tema) {
     if (!tema) return;
     const raiz = document.documentElement;
-
     if (tema.principal) {
       raiz.style.setProperty("--principal", tema.principal);
-      raiz.style.setProperty("--principal-oscuro", oscurecer(tema.principal, 24));
-      raiz.style.setProperty("--principal-claro", rgba(tema.principal, .11));
+      raiz.style.setProperty("--principal-oscuro", oscurecer(tema.principal,24));
+      raiz.style.setProperty("--principal-claro", rgba(tema.principal,.11));
       raiz.style.setProperty("--sidebar-active", tema.principal);
       raiz.style.setProperty("--sidebar-accent-contrast", luminancia(tema.principal) > .48 ? "#17141d" : "#ffffff");
     }
-
     if (tema.secundario) raiz.style.setProperty("--secundario", tema.secundario);
     if (tema.fondo) raiz.style.setProperty("--fondo", tema.fondo);
     if (tema.tarjeta) raiz.style.setProperty("--tarjeta", tema.tarjeta);
@@ -301,7 +167,7 @@
       const menuClaro = luminancia(tema.menu) > .48;
       raiz.style.setProperty("--menu", tema.menu);
       raiz.style.setProperty("--sidebar-bg", tema.menu);
-      raiz.style.setProperty("--sidebar-bg-2", menuClaro ? oscurecer(tema.menu, 12) : oscurecer(tema.menu, 10));
+      raiz.style.setProperty("--sidebar-bg-2", menuClaro ? oscurecer(tema.menu,12) : oscurecer(tema.menu,10));
       raiz.style.setProperty("--sidebar-text", menuClaro ? "#211d24" : "#f4f7fb");
       raiz.style.setProperty("--sidebar-item", menuClaro ? "#454049" : "#c2cad5");
       raiz.style.setProperty("--sidebar-icon", menuClaro ? "#615a65" : "#939eae");
@@ -309,9 +175,8 @@
       raiz.style.setProperty("--sidebar-section", menuClaro ? "rgba(33,29,36,.53)" : "#6f7a8c");
       raiz.style.setProperty("--sidebar-line", menuClaro ? "rgba(30,26,32,.12)" : "rgba(255,255,255,.08)");
       raiz.style.setProperty("--sidebar-hover", menuClaro ? "rgba(30,26,32,.055)" : "rgba(255,255,255,.045)");
-
       if (tema.principal) {
-        raiz.style.setProperty("--sidebar-active-bg", menuClaro ? rgba(tema.principal, .12) : rgba(tema.principal, .28));
+        raiz.style.setProperty("--sidebar-active-bg", menuClaro ? rgba(tema.principal,.12) : rgba(tema.principal,.28));
         raiz.style.setProperty("--sidebar-active-text", menuClaro ? tema.principal : "#ffffff");
       }
     }
@@ -326,24 +191,40 @@
     navegacion.className = "menu-navegacion";
 
     grupo.opciones.forEach(opcion => {
+      const bloque = document.createElement("div");
+      bloque.className = "menu-bloque-opcion";
+
+      const hijoActivo = (opcion.hijos || []).some(hijo => hijo.archivo === archivoActivo);
       const enlace = document.createElement("a");
       enlace.className = "menu-opcion";
       enlace.href = rutaOpcion(opcion.archivo, estaEnPaginas);
       enlace.append(crearIcono(opcion.icono), document.createTextNode(opcion.texto));
-      if (opcion.archivo === archivoActivo) enlace.classList.add("activa");
-      navegacion.appendChild(enlace);
+      if (opcion.archivo === archivoActivo || hijoActivo) enlace.classList.add("activa");
+      bloque.appendChild(enlace);
+
+      if (opcion.hijos?.length) {
+        const submenu = document.createElement("div");
+        submenu.className = "menu-submenu";
+        opcion.hijos.forEach(hijo => {
+          const subenlace = document.createElement("a");
+          subenlace.className = "menu-subopcion";
+          subenlace.href = rutaOpcion(hijo.archivo, estaEnPaginas);
+          subenlace.textContent = hijo.texto;
+          if (hijo.archivo === archivoActivo) subenlace.classList.add("activa");
+          submenu.appendChild(subenlace);
+        });
+        bloque.appendChild(submenu);
+      }
+
+      navegacion.appendChild(bloque);
     });
 
-    fragmento.append(titulo, navegacion);
+    fragmento.append(titulo,navegacion);
     return fragmento;
   }
 
   function construirUsuario(sidebar, usuarioOriginal, estaEnPaginas) {
-    const sesion = (() => {
-      try { return JSON.parse(localStorage.getItem("usuarioSesion")); }
-      catch (_) { return null; }
-    })();
-
+    const sesion = (() => { try { return JSON.parse(localStorage.getItem("usuarioSesion")); } catch (_) { return null; } })();
     const nombre = sesion?.nombre || usuarioOriginal?.querySelector("strong")?.textContent || "Administrador";
     const rol = sesion?.rol || "Administrador";
     const bloque = document.createElement("div");
@@ -359,14 +240,14 @@
     fuerte.textContent = nombre;
     const pequeno = document.createElement("small");
     pequeno.textContent = rol === "ADMINISTRADOR" ? "Administrador" : rol;
-    texto.append(fuerte, pequeno);
+    texto.append(fuerte,pequeno);
     const cerrar = document.createElement("button");
     cerrar.className = "menu-cerrar-sesion";
     cerrar.type = "button";
     cerrar.title = "Cerrar sesión";
-    cerrar.setAttribute("aria-label", "Cerrar sesión");
+    cerrar.setAttribute("aria-label","Cerrar sesión");
     cerrar.appendChild(crearIcono("salir"));
-    cerrar.addEventListener("click", () => {
+    cerrar.addEventListener("click",() => {
       if (!window.confirm("¿Deseas cerrar la sesión actual?")) return;
       localStorage.removeItem("usuarioSesion");
       localStorage.removeItem("carritoMichoacana");
@@ -374,19 +255,14 @@
       localStorage.removeItem("ventaConfirmada");
       window.location.href = estaEnPaginas ? "../index.html" : "index.html";
     });
-    resumen.append(avatar, texto, cerrar);
+    resumen.append(avatar,texto,cerrar);
     bloque.appendChild(resumen);
     sidebar.appendChild(bloque);
   }
 
   function sincronizarInputsTema(tema) {
-    const mapa = {
-      colorPrincipal: tema.principal,
-      colorSecundario: tema.secundario,
-      colorMenu: tema.menu,
-      colorFondo: tema.fondo
-    };
-    Object.entries(mapa).forEach(([id, valor]) => {
+    const mapa = { colorPrincipal:tema.principal, colorSecundario:tema.secundario, colorMenu:tema.menu, colorFondo:tema.fondo };
+    Object.entries(mapa).forEach(([id,valor]) => {
       const input = document.getElementById(id);
       if (input && valor) input.value = valor;
     });
@@ -396,24 +272,22 @@
     const actual = temaGuardado() || paletas[0];
     return {
       ...actual,
-      principal: document.getElementById("colorPrincipal")?.value || actual.principal,
-      secundario: document.getElementById("colorSecundario")?.value || actual.secundario,
-      menu: document.getElementById("colorMenu")?.value || actual.menu,
-      fondo: document.getElementById("colorFondo")?.value || actual.fondo
+      principal:document.getElementById("colorPrincipal")?.value || actual.principal,
+      secundario:document.getElementById("colorSecundario")?.value || actual.secundario,
+      menu:document.getElementById("colorMenu")?.value || actual.menu,
+      fondo:document.getElementById("colorFondo")?.value || actual.fondo
     };
   }
 
   function guardarTema(tema) {
-    localStorage.setItem("temaMichoacana", JSON.stringify(tema));
+    localStorage.setItem("temaMichoacana",JSON.stringify(tema));
     aplicarTemaGlobal(tema);
     sincronizarInputsTema(tema);
-    window.dispatchEvent(new CustomEvent("temaMichoacanaCambiado", { detail: tema }));
+    window.dispatchEvent(new CustomEvent("temaMichoacanaCambiado",{detail:tema}));
   }
 
   function marcarPaleta(id) {
-    document.querySelectorAll(".menu-paleta").forEach(boton => {
-      boton.classList.toggle("seleccionada", boton.dataset.paleta === id);
-    });
+    document.querySelectorAll(".menu-paleta").forEach(boton => boton.classList.toggle("seleccionada",boton.dataset.paleta === id));
   }
 
   function crearBotonPaleta(paleta) {
@@ -421,26 +295,23 @@
     boton.type = "button";
     boton.className = "menu-paleta";
     boton.dataset.paleta = paleta.id;
-
     const info = document.createElement("span");
     info.className = "menu-paleta-info";
     const nombre = document.createElement("strong");
     nombre.textContent = paleta.nombre;
     const descripcion = document.createElement("small");
     descripcion.textContent = paleta.descripcion;
-    info.append(nombre, descripcion);
-
+    info.append(nombre,descripcion);
     const muestras = document.createElement("span");
     muestras.className = "menu-paleta-muestras";
-    [paleta.principal, paleta.secundario, paleta.menu, paleta.fondo, paleta.texto].forEach(color => {
+    [paleta.principal,paleta.secundario,paleta.menu,paleta.fondo,paleta.texto].forEach(color => {
       const muestra = document.createElement("span");
       muestra.className = "menu-paleta-muestra";
       muestra.style.background = color;
       muestras.appendChild(muestra);
     });
-
-    boton.append(info, muestras);
-    boton.addEventListener("click", () => {
+    boton.append(info,muestras);
+    boton.addEventListener("click",() => {
       paletaActiva = paleta;
       guardarTema(paleta);
       marcarPaleta(paleta.id);
@@ -451,10 +322,8 @@
   function instalarPaletas() {
     const panel = document.getElementById("panelColores");
     if (!panel || panel.querySelector(".menu-paletas")) return;
-
     const referencia = panel.querySelector(".opciones-colores");
     if (!referencia) return;
-
     const seccion = document.createElement("section");
     seccion.className = "menu-paletas";
     const titulo = document.createElement("h3");
@@ -466,9 +335,8 @@
     const grid = document.createElement("div");
     grid.className = "menu-paletas-grid";
     paletas.forEach(paleta => grid.appendChild(crearBotonPaleta(paleta)));
-    seccion.append(titulo, descripcion, grid);
-    referencia.parentNode.insertBefore(seccion, referencia);
-
+    seccion.append(titulo,descripcion,grid);
+    referencia.parentNode.insertBefore(seccion,referencia);
     const guardado = temaGuardado();
     if (guardado) {
       const coincidente = paletas.find(p => p.id === guardado.id);
@@ -477,12 +345,11 @@
   }
 
   function instalarSincronizacionManual() {
-    const ids = ["colorPrincipal", "colorSecundario", "colorMenu", "colorFondo"];
-    ids.forEach(id => {
+    ["colorPrincipal","colorSecundario","colorMenu","colorFondo"].forEach(id => {
       const input = document.getElementById(id);
       if (!input || input.dataset.menuSync === "1") return;
       input.dataset.menuSync = "1";
-      input.addEventListener("input", () => {
+      input.addEventListener("input",() => {
         paletaActiva = null;
         marcarPaleta("");
         aplicarTemaGlobal(temaDesdeControles());
@@ -492,24 +359,24 @@
     const guardar = document.getElementById("guardarColores");
     if (guardar && guardar.dataset.menuSync !== "1") {
       guardar.dataset.menuSync = "1";
-      guardar.addEventListener("click", () => {
+      guardar.addEventListener("click",() => {
         setTimeout(() => {
           const guardado = temaGuardado() || {};
           const extras = paletaActiva || {};
-          const combinado = { ...extras, ...guardado, ...temaDesdeControles() };
-          localStorage.setItem("temaMichoacana", JSON.stringify(combinado));
+          const combinado = {...extras,...guardado,...temaDesdeControles()};
+          localStorage.setItem("temaMichoacana",JSON.stringify(combinado));
           aplicarTemaGlobal(combinado);
-        }, 0);
+        },0);
       });
     }
 
     const restablecer = document.getElementById("restablecerColores");
     if (restablecer && restablecer.dataset.menuSync !== "1") {
       restablecer.dataset.menuSync = "1";
-      restablecer.addEventListener("click", () => {
+      restablecer.addEventListener("click",() => {
         paletaActiva = null;
         marcarPaleta("");
-        setTimeout(() => aplicarTemaGlobal(temaDesdeControles()), 0);
+        setTimeout(() => aplicarTemaGlobal(temaDesdeControles()),0);
       });
     }
   }
@@ -517,9 +384,7 @@
   function construirMenu() {
     const sidebar = document.querySelector(".sidebar, .side");
     if (!sidebar) return;
-
     aplicarTemaGlobal(temaGuardado());
-
     const marca = sidebar.querySelector(".marca");
     const usuario = sidebar.querySelector(".usuario-menu, .usuario, .user, .userbox");
     if (!marca) return;
@@ -532,19 +397,14 @@
       if (elemento !== marca && elemento !== usuario) elemento.remove();
     });
 
-    gruposMenu.forEach(grupo => sidebar.appendChild(crearGrupo(grupo, archivoActivo, estaEnPaginas)));
+    gruposMenu.forEach(grupo => sidebar.appendChild(crearGrupo(grupo,archivoActivo,estaEnPaginas)));
     if (usuario) usuario.remove();
-    construirUsuario(sidebar, usuario, estaEnPaginas);
-
+    construirUsuario(sidebar,usuario,estaEnPaginas);
     instalarPaletas();
     instalarSincronizacionManual();
   }
 
-  window.addEventListener("temaMichoacanaCambiado", evento => aplicarTemaGlobal(evento.detail));
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", construirMenu);
-  } else {
-    construirMenu();
-  }
+  window.addEventListener("temaMichoacanaCambiado",evento => aplicarTemaGlobal(evento.detail));
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",construirMenu);
+  else construirMenu();
 })();

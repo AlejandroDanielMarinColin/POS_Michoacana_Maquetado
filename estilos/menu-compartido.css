@@ -130,12 +130,16 @@
   border-radius: 0 !important;
 }
 
-/* El catálogo por sucursal pertenece a Sucursales, no al menú principal. */
+/* Categorías vive dentro de Productos y Catálogo por sucursal dentro de Sucursales. */
+.sidebar .menu-opcion[href$="categorias.html"],
+.side .menu-opcion[href$="categorias.html"],
 .sidebar .menu-opcion[href$="catalogo-sucursal.html"],
 .side .menu-opcion[href$="catalogo-sucursal.html"] {
   display: none !important;
 }
 
+.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"],
+.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"],
 .sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"],
 .side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] {
   color: var(--sidebar-active-text) !important;
@@ -145,6 +149,8 @@
   font-weight: 700 !important;
 }
 
+.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"]::before,
+.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"]::before,
 .sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before,
 .side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before {
   content: "";
@@ -156,6 +162,8 @@
   background: var(--sidebar-active);
 }
 
+.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"] .menu-icono,
+.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"] .menu-icono,
 .sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono,
 .side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono {
   color: var(--sidebar-active-text) !important;
@@ -279,7 +287,6 @@
   display: none !important;
 }
 
-/* Panel de personalización: scroll independiente */
 .panel-colores {
   overflow-y: auto !important;
   overflow-x: hidden !important;
@@ -287,113 +294,24 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(91, 98, 112, .4) transparent;
 }
+.panel-colores::-webkit-scrollbar { width: 9px; }
+.panel-colores::-webkit-scrollbar-track { background: transparent; }
+.panel-colores::-webkit-scrollbar-thumb { background: rgba(91, 98, 112, .32); border: 2px solid transparent; border-radius: 999px; background-clip: padding-box; }
+.panel-colores::-webkit-scrollbar-thumb:hover { background: rgba(91, 98, 112, .52); border: 2px solid transparent; background-clip: padding-box; }
+.panel-colores .encabezado-panel { position: sticky; top: 0; z-index: 5; background: var(--tarjeta, #fff); border-bottom: 1px solid var(--borde, #e5e7eb); }
 
-.panel-colores::-webkit-scrollbar {
-  width: 9px;
-}
-
-.panel-colores::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.panel-colores::-webkit-scrollbar-thumb {
-  background: rgba(91, 98, 112, .32);
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background-clip: padding-box;
-}
-
-.panel-colores::-webkit-scrollbar-thumb:hover {
-  background: rgba(91, 98, 112, .52);
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-
-.panel-colores .encabezado-panel {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: var(--tarjeta, #fff);
-  border-bottom: 1px solid var(--borde, #e5e7eb);
-}
-
-.menu-paletas {
-  margin: 18px 0 20px;
-  padding: 0 2px 18px;
-  border-bottom: 1px solid var(--borde, #e5e7eb);
-}
-
-.menu-paletas-titulo {
-  margin: 0 0 4px;
-  color: var(--texto, #17141d);
-  font-size: .86rem;
-  font-weight: 800;
-}
-
-.menu-paletas-descripcion {
-  margin: 0 0 12px;
-  color: var(--texto-secundario, #6e7583);
-  font-size: .72rem;
-  line-height: 1.45;
-}
-
-.menu-paletas-grid {
-  display: grid;
-  gap: 9px;
-}
-
-.menu-paleta {
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0,1fr) auto;
-  align-items: center;
-  gap: 14px;
-  padding: 12px;
-  border: 1px solid var(--borde, #d7dee8);
-  border-radius: 8px;
-  color: var(--texto, #17141d);
-  background: var(--tarjeta, #fff);
-  text-align: left;
-}
-
-.menu-paleta:hover,
-.menu-paleta.seleccionada {
-  border-color: var(--principal, #ed2b85);
-}
-
-.menu-paleta.seleccionada {
-  box-shadow: inset 3px 0 0 var(--principal, #ed2b85);
-}
-
-.menu-paleta-info {
-  min-width: 0;
-}
-
-.menu-paleta-info strong {
-  display: block;
-  font-size: .8rem;
-}
-
-.menu-paleta-info small {
-  display: block;
-  margin-top: 3px;
-  color: var(--texto-secundario, #6e7583);
-  font-size: .68rem;
-  line-height: 1.35;
-}
-
-.menu-paleta-muestras {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.menu-paleta-muestra {
-  width: 18px;
-  height: 18px;
-  border: 1px solid rgba(0,0,0,.08);
-  border-radius: 4px;
-}
+.menu-paletas { margin: 18px 0 20px; padding: 0 2px 18px; border-bottom: 1px solid var(--borde, #e5e7eb); }
+.menu-paletas-titulo { margin: 0 0 4px; color: var(--texto, #17141d); font-size: .86rem; font-weight: 800; }
+.menu-paletas-descripcion { margin: 0 0 12px; color: var(--texto-secundario, #6e7583); font-size: .72rem; line-height: 1.45; }
+.menu-paletas-grid { display: grid; gap: 9px; }
+.menu-paleta { width: 100%; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--borde, #d7dee8); border-radius: 8px; color: var(--texto, #17141d); background: var(--tarjeta, #fff); text-align: left; }
+.menu-paleta:hover,.menu-paleta.seleccionada { border-color: var(--principal, #ed2b85); }
+.menu-paleta.seleccionada { box-shadow: inset 3px 0 0 var(--principal, #ed2b85); }
+.menu-paleta-info { min-width: 0; }
+.menu-paleta-info strong { display: block; font-size: .8rem; }
+.menu-paleta-info small { display: block; margin-top: 3px; color: var(--texto-secundario, #6e7583); font-size: .68rem; line-height: 1.35; }
+.menu-paleta-muestras { display: flex; align-items: center; gap: 3px; }
+.menu-paleta-muestra { width: 18px; height: 18px; border: 1px solid rgba(0,0,0,.08); border-radius: 4px; }
 
 @media (max-width: 850px) {
   .sidebar,

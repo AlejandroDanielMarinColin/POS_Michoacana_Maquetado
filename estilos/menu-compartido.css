@@ -1,5 +1,11 @@
 :root {
-  --ancho-menu: 245px;
+  --ancho-menu: 258px;
+  --sidebar-bg: #151a23;
+  --sidebar-bg-2: #1c222d;
+  --sidebar-text: #e8edf4;
+  --sidebar-muted: #8993a4;
+  --sidebar-line: rgba(255, 255, 255, 0.08);
+  --sidebar-active: #ed2b85;
 }
 
 .sidebar,
@@ -12,144 +18,210 @@
   z-index: 1000 !important;
   display: flex !important;
   flex-direction: column !important;
-  padding: 22px 14px !important;
-  color: white !important;
-  background: var(--menu) !important;
+  padding: 22px 16px 18px !important;
+  color: var(--sidebar-text) !important;
+  background: linear-gradient(180deg, var(--sidebar-bg), var(--sidebar-bg-2)) !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-  transition: transform 0.3s ease;
+  scrollbar-color: rgba(255,255,255,.16) transparent;
 }
 
 .sidebar::-webkit-scrollbar,
-.side::-webkit-scrollbar {
-  width: 5px;
-}
-
+.side::-webkit-scrollbar { width: 4px; }
 .sidebar::-webkit-scrollbar-thumb,
-.side::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.3);
-}
+.side::-webkit-scrollbar-thumb { background: rgba(255,255,255,.16); }
 
 .sidebar .marca,
 .side .marca {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 2px 8px 20px;
+  padding: 0 8px 20px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--sidebar-line);
 }
 
 .sidebar .marca img,
 .side .marca img {
-  width: 55px;
-  height: 55px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
 }
 
 .sidebar .marca strong,
 .side .marca strong {
   display: block;
-  font-size: 0.87rem;
+  color: #fff;
+  font-size: .93rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
 }
 
 .sidebar .marca small,
 .side .marca small {
   display: block;
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.68rem;
+  margin-top: 3px;
+  color: var(--sidebar-muted);
+  font-size: .69rem;
 }
 
 .menu-seccion {
-  margin: 18px 11px 7px;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 0.65rem;
+  margin: 18px 10px 7px;
+  color: #687386;
+  font-size: .64rem;
   font-weight: 800;
-  letter-spacing: 0.13em;
+  letter-spacing: .12em;
   text-transform: uppercase;
 }
 
 .menu-navegacion {
   display: grid;
-  gap: 5px;
+  gap: 3px;
 }
 
 .menu-opcion {
-  min-height: 43px;
+  min-height: 42px;
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 0.82rem;
+  gap: 12px;
+  padding: 9px 11px;
+  border-radius: 7px;
+  color: #b9c1cd;
+  font-size: .84rem;
   font-weight: 650;
   text-decoration: none;
 }
 
 .menu-opcion:hover {
-  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  background: rgba(255,255,255,.045);
 }
 
 .sidebar .menu-opcion.activa,
 .side .menu-opcion.activa {
-  color: var(--principal, var(--p, #ed2b85)) !important;
-  background: white !important;
-  box-shadow: 0 7px 18px rgba(123, 10, 60, 0.14);
+  color: #fff !important;
+  background: rgba(237,43,133,.14) !important;
+}
+
+.sidebar .menu-opcion.activa::before,
+.side .menu-opcion.activa::before {
+  content: "";
+  width: 3px;
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 0;
+  background: var(--sidebar-active);
+  border-radius: 0 3px 3px 0;
+}
+
+.menu-icono {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #8f99aa;
+}
+
+.menu-icono svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .sidebar .menu-opcion.activa .menu-icono,
 .side .menu-opcion.activa .menu-icono {
-  color: var(--principal, var(--p, #ed2b85)) !important;
+  color: var(--sidebar-active) !important;
 }
 
-.menu-icono {
-  width: 22px;
+.menu-punto { display: none; }
+
+.menu-usuario {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--sidebar-line);
+}
+
+.menu-usuario-resumen {
+  display: grid;
+  grid-template-columns: 36px minmax(0,1fr) 28px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+}
+
+.menu-avatar {
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  flex-shrink: 0;
-  font-style: normal;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--sidebar-active);
+  font-size: .8rem;
+  font-weight: 800;
 }
 
-.menu-punto {
-  width: 6px;
-  height: 6px;
-  margin-left: auto;
-  border-radius: 50%;
-  background: var(--principal, var(--p, #ed2b85));
+.menu-usuario-texto {
+  min-width: 0;
+}
+
+.menu-usuario-texto strong,
+.menu-usuario-texto small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-usuario-texto strong {
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 750;
+}
+
+.menu-usuario-texto small {
+  margin-top: 2px;
+  color: var(--sidebar-muted);
+  font-size: .66rem;
 }
 
 .menu-cerrar-sesion {
-  width: 100%;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-top: 18px;
-  padding: 11px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 11px;
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 0.82rem;
-  font-weight: 750;
-  text-align: left;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: #929cab;
+  background: transparent;
 }
 
 .menu-cerrar-sesion:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.menu-cerrar-sesion:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.45);
-  outline-offset: 2px;
+  color: #fff;
+  background: rgba(255,255,255,.06);
 }
 
 .menu-cerrar-sesion .menu-icono {
-  font-size: 1rem;
+  width: 17px;
+  height: 17px;
+}
+
+.menu-cerrar-sesion .menu-icono svg {
+  width: 17px;
+  height: 17px;
 }
 
 .sidebar > .usuario-menu,
@@ -165,14 +237,9 @@
 
 @media (max-width: 850px) {
   .sidebar,
-  .side {
-    transform: translateX(-105%);
-  }
-
+  .side { transform: translateX(-105%); }
   .sidebar.abierta,
   .sidebar.open,
   .side.abierta,
-  .side.open {
-    transform: translateX(0);
-  }
+  .side.open { transform: translateX(0); }
 }

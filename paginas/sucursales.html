@@ -6,114 +6,36 @@
   <title>Sucursales | La Michoacana</title>
   <link rel="stylesheet" href="../estilos/menu-compartido.css" />
   <style>
-    :root {
-      --principal:#ed2b85;
-      --principal-oscuro:#d51d70;
-      --principal-claro:rgba(237,43,133,.1);
-      --menu:#ed2b85;
-      --fondo:#eef2f6;
-      --superficie:#fff;
-      --superficie-secundaria:#f3f5f8;
-      --texto:#17141d;
-      --texto-secundario:#6e7583;
-      --borde:#d7dee8;
-      --verde:#0aaa67;
-      --rojo:#d83b4c;
+    :root{
+      --principal:#ed2b85;--principal-oscuro:#d51d70;--principal-claro:rgba(237,43,133,.1);
+      --menu:#ed2b85;--fondo:#eef2f6;--superficie:#fff;--superficie-secundaria:#f3f5f8;
+      --texto:#17141d;--texto-secundario:#6e7583;--borde:#d7dee8;--verde:#0aaa67;--rojo:#d83b4c;
       --ancho-menu:245px;
     }
-
     *{box-sizing:border-box}
     body{margin:0;min-height:100vh;font-family:Inter,Arial,Helvetica,sans-serif;color:var(--texto);background:var(--fondo);font-size:16px}
     body.sin-scroll{overflow:hidden}
-    button{font:inherit;cursor:pointer}
-    button:disabled{cursor:not-allowed;opacity:.45}
-    a{color:inherit;text-decoration:none}
-
+    button{font:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}a{color:inherit;text-decoration:none}
     .aplicacion{min-height:100vh;padding-left:var(--ancho-menu)}
-
     .sidebar{width:var(--ancho-menu);height:100vh;position:fixed;inset:0 auto 0 0;z-index:1000;display:flex;flex-direction:column;padding:22px 14px;color:#fff;background:linear-gradient(180deg,var(--menu),var(--principal-oscuro));overflow-y:auto}
-    .marca{display:flex;align-items:center;gap:12px;padding:2px 8px 20px}
-    .marca img{width:55px;height:55px;object-fit:contain}
-    .marca strong,.usuario-menu strong{display:block;font-size:.92rem}
-    .marca small,.usuario-menu small{display:block;margin-top:4px;color:rgba(255,255,255,.75);font-size:.72rem}
-    .titulo-menu{margin:18px 11px 7px;color:rgba(255,255,255,.65);font-size:.68rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
-    .navegacion{display:grid;gap:5px}
-    .opcion-menu{min-height:43px;display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.94);font-size:.86rem;font-weight:650}
-    .opcion-menu:hover{background:rgba(255,255,255,.13)}
-    .opcion-menu.activa{color:var(--principal);background:#fff}
-    .icono-menu{width:22px;display:grid;place-items:center;flex-shrink:0;font-style:normal}
-    .punto-activo{width:6px;height:6px;margin-left:auto;border-radius:50%;background:var(--principal)}
+    .marca{display:flex;align-items:center;gap:12px;padding:2px 8px 20px}.marca img{width:55px;height:55px;object-fit:contain}.marca strong,.usuario-menu strong{display:block;font-size:.92rem}.marca small,.usuario-menu small{display:block;margin-top:4px;color:rgba(255,255,255,.75);font-size:.72rem}
     .usuario-menu{display:flex;align-items:center;gap:10px;margin-top:auto;padding:20px 8px 10px;border-top:1px solid rgba(255,255,255,.15)}
-
     .avatar{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;color:#fff;background:var(--principal);font-weight:850}
-
     .barra-superior{min-height:76px;display:flex;align-items:center;gap:18px;padding:12px 4vw;border-bottom:1px solid var(--borde);background:var(--superficie)}
     .boton-menu{width:42px;height:42px;display:none;place-items:center;border:1px solid var(--borde);border-radius:8px;background:#fff;font-size:1.2rem}
-    .dato-superior{display:flex;align-items:center;gap:10px}
-    .dato-superior.sucursal{margin-right:auto}
-    .dato-superior small{display:block;margin-bottom:3px;color:var(--texto-secundario);font-size:.74rem}
-    .dato-superior strong{display:block;font-size:.9rem}
+    .dato-superior{display:flex;align-items:center;gap:10px}.dato-superior.sucursal{margin-right:auto}.dato-superior small{display:block;margin-bottom:3px;color:var(--texto-secundario);font-size:.74rem}.dato-superior strong{display:block;font-size:.9rem}
     .icono-sucursal{width:40px;height:40px;display:grid;place-items:center;border-radius:8px;color:var(--principal);background:var(--principal-claro)}
-    .icono-info{width:36px;height:36px;display:grid;place-items:center;border:0;padding:0;color:#596174;background:transparent;font-size:1.35rem;line-height:1}
-    .icono-info:hover{color:var(--principal)}
-
     .contenido{width:100%;max-width:1500px;margin:0 auto;padding:34px 4vw 52px}
-    .barra-resumen{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
-    .metricas{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .barra-resumen{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.metricas{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .metrica{height:54px;min-width:142px;display:flex;align-items:center;gap:10px;padding:0 16px;border:1px solid var(--borde);border-radius:8px;background:var(--superficie)}
-    .metrica .indicador{width:9px;height:9px;border-radius:50%;background:#87909f;flex-shrink:0}
-    .metrica.activa .indicador{background:var(--verde)}
-    .metrica.inactiva .indicador{background:var(--rojo)}
-    .metrica strong{font-size:1.12rem;line-height:1}
-    .metrica span{color:var(--texto-secundario);font-size:.83rem;white-space:nowrap}
-
-    .nueva-sucursal{height:54px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 20px;border-radius:8px;color:#fff;background:var(--principal);font-size:.9rem;font-weight:800;white-space:nowrap}
-    .nueva-sucursal:hover{background:var(--principal-oscuro)}
-    .nueva-sucursal .mas{font-size:1.3rem;font-weight:400;line-height:1}
-
-    .contenedor-tabla{position:relative;border:1px solid var(--borde);border-radius:8px;background:var(--superficie)}
-    .tabla-scroll{overflow-x:auto;border-radius:8px}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:17px 20px;border-bottom:1px solid var(--borde);text-align:left;font-size:.86rem;white-space:nowrap}
-    th{color:#4e5664;background:var(--superficie-secundaria);font-size:.74rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
-    tbody tr:hover{background:#fafbfc}
-    tbody tr:last-child td{border-bottom:0}
-    tr.inactiva{color:#9299a4;background:#fafafa}
-    .sucursal-nombre{min-width:190px;font-weight:800}
-    .estado{display:inline-flex;align-items:center;gap:9px;color:var(--texto);font-size:.83rem;font-weight:650}
-    .estado::before{content:"";width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--verde)}
-    .estado.inactiva::before{background:var(--rojo)}
-
-    .acciones-celda{position:relative;width:74px;text-align:center}
-    .boton-acciones{width:34px;height:34px;border:0;border-radius:6px;color:#384152;background:transparent;font-size:1.3rem;line-height:1}
-    .boton-acciones:hover,.boton-acciones.activo{background:#eef1f5}
-    .menu-fila{width:138px;position:absolute;top:calc(50% + 20px);right:18px;z-index:30;display:none;padding:6px;border:1px solid var(--borde);border-radius:8px;background:#fff}
-    .menu-fila.visible{display:grid}
-    .menu-fila button{min-height:35px;padding:0 10px;border:0;border-radius:5px;text-align:left;color:var(--texto);background:transparent;font-size:.78rem;font-weight:700}
-    .menu-fila button:hover{background:#f3f5f7}
-    .menu-fila .peligro{color:var(--rojo)}
-
-    .vacio{padding:64px 20px;text-align:center;color:var(--texto-secundario);font-size:.88rem}
-    .mensaje{position:fixed;top:92px;right:22px;z-index:1200;padding:13px 17px;border-radius:8px;color:#fff;background:#25212a;font-size:.82rem;opacity:0;pointer-events:none}
-    .mensaje.visible{opacity:1}
-    .fondo-menu{position:fixed;inset:0;z-index:950;visibility:hidden;opacity:0;background:rgba(10,14,24,.42)}
-    .fondo-menu.visible{visibility:visible;opacity:1}
-    [hidden]{display:none!important}
-
-    @media(max-width:1100px){table{min-width:920px}}
-    @media(max-width:850px){.aplicacion{padding-left:0}.sidebar{transform:translateX(-105%)}.sidebar.abierta{transform:translateX(0)}.boton-menu{display:grid}}
-    @media(max-width:700px){
-      .barra-superior{padding:11px 16px}
-      .dato-superior.usuario>div:last-child{display:none}
-      .contenido{padding:24px 16px 40px}
-      .barra-resumen{align-items:stretch;gap:10px}
-      .metricas{gap:8px;flex:1}
-      .metrica{height:48px;min-width:0;flex:1 1 105px;padding:0 11px;gap:7px}
-      .metrica strong{font-size:1rem}.metrica span{font-size:.72rem}
-      .nueva-sucursal{width:48px;height:48px;padding:0;flex-shrink:0;font-size:0}
-      .nueva-sucursal .mas{font-size:1.35rem}
-      th,td{padding:15px 16px}
-    }
+    .metrica .indicador{width:9px;height:9px;border-radius:50%;background:#87909f;flex-shrink:0}.metrica.activa .indicador{background:var(--verde)}.metrica.inactiva .indicador{background:var(--rojo)}.metrica strong{font-size:1.12rem;line-height:1}.metrica span{color:var(--texto-secundario);font-size:.83rem;white-space:nowrap}
+    .nueva-sucursal{height:54px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 20px;border-radius:8px;color:#fff;background:var(--principal);font-size:.9rem;font-weight:800;white-space:nowrap}.nueva-sucursal:hover{background:var(--principal-oscuro)}.nueva-sucursal .mas{font-size:1.3rem;font-weight:400;line-height:1}
+    .contenedor-tabla{position:relative;border:1px solid var(--borde);border-radius:8px;background:var(--superficie)}.tabla-scroll{overflow-x:auto;border-radius:8px}table{width:100%;border-collapse:collapse}th,td{padding:17px 20px;border-bottom:1px solid var(--borde);text-align:left;font-size:.86rem;white-space:nowrap}th{color:#4e5664;background:var(--superficie-secundaria);font-size:.74rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase}tbody tr:hover{background:#fafbfc}tbody tr:last-child td{border-bottom:0}tr.inactiva{color:#9299a4;background:#fafafa}.sucursal-nombre{min-width:190px;font-weight:800}
+    .estado{display:inline-flex;align-items:center;gap:9px;color:var(--texto);font-size:.83rem;font-weight:650}.estado::before{content:"";width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--verde)}.estado.inactiva::before{background:var(--rojo)}
+    .acciones-celda{position:relative;width:74px;text-align:center}.boton-acciones{width:34px;height:34px;border:0;border-radius:6px;color:#384152;background:transparent;font-size:1.3rem;line-height:1}.boton-acciones:hover,.boton-acciones.activo{background:#eef1f5}
+    .menu-fila{width:170px;position:absolute;top:calc(50% + 20px);right:18px;z-index:30;display:none;padding:6px;border:1px solid var(--borde);border-radius:8px;background:#fff}.menu-fila.visible{display:grid}.menu-fila button{min-height:36px;padding:0 10px;border:0;border-radius:5px;text-align:left;color:var(--texto);background:transparent;font-size:.78rem;font-weight:700}.menu-fila button:hover{background:#f3f5f7}.menu-fila .catalogo{color:var(--principal)}.menu-fila .peligro{color:var(--rojo)}
+    .vacio{padding:64px 20px;text-align:center;color:var(--texto-secundario);font-size:.88rem}.mensaje{position:fixed;top:92px;right:22px;z-index:1200;padding:13px 17px;border-radius:8px;color:#fff;background:#25212a;font-size:.82rem;opacity:0;pointer-events:none}.mensaje.visible{opacity:1}.fondo-menu{position:fixed;inset:0;z-index:950;visibility:hidden;opacity:0;background:rgba(10,14,24,.42)}.fondo-menu.visible{visibility:visible;opacity:1}[hidden]{display:none!important}
+    @media(max-width:1100px){table{min-width:920px}}@media(max-width:850px){.aplicacion{padding-left:0}.sidebar{transform:translateX(-105%)}.sidebar.abierta{transform:translateX(0)}.boton-menu{display:grid}}@media(max-width:700px){.barra-superior{padding:11px 16px}.dato-superior.usuario>div:last-child{display:none}.contenido{padding:24px 16px 40px}.barra-resumen{align-items:stretch;gap:10px}.metricas{gap:8px;flex:1}.metrica{height:48px;min-width:0;flex:1 1 105px;padding:0 11px;gap:7px}.metrica strong{font-size:1rem}.metrica span{font-size:.72rem}.nueva-sucursal{width:48px;height:48px;padding:0;flex-shrink:0;font-size:0}.nueva-sucursal .mas{font-size:1.35rem}th,td{padding:15px 16px}}
   </style>
 </head>
 <body>
@@ -123,35 +45,6 @@
         <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo" />
         <div><strong>La Michoacana</strong><small>Sistema administrativo</small></div>
       </div>
-
-      <p class="titulo-menu">Principal</p>
-      <nav class="navegacion"><a href="../dashboard.html" class="opcion-menu"><i class="icono-menu">⌂</i>Inicio</a></nav>
-
-      <p class="titulo-menu">Operación</p>
-      <nav class="navegacion">
-        <a href="registrar-venta.html" class="opcion-menu"><i class="icono-menu">🛒</i>Registrar venta</a>
-        <a href="historial-ventas.html" class="opcion-menu"><i class="icono-menu">↺</i>Historial de ventas</a>
-        <a href="gastos.html" class="opcion-menu"><i class="icono-menu">▣</i>Gastos</a>
-        <a href="reabastecimiento.html" class="opcion-menu"><i class="icono-menu">♧</i>Reabastecimiento</a>
-        <a href="inventario.html" class="opcion-menu"><i class="icono-menu">◇</i>Inventario</a>
-        <a href="corte-caja.html" class="opcion-menu"><i class="icono-menu">▤</i>Corte de caja</a>
-      </nav>
-
-      <p class="titulo-menu">Productos</p>
-      <nav class="navegacion">
-        <a href="productos.html" class="opcion-menu"><i class="icono-menu">◇</i>Productos</a>
-        <a href="categorias.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías</a>
-        <a href="catalogo-sucursal.html" class="opcion-menu"><i class="icono-menu">⌂</i>Catálogo por sucursal</a>
-      </nav>
-
-      <p class="titulo-menu">Administración</p>
-      <nav class="navegacion">
-        <a href="sucursales.html" class="opcion-menu activa"><i class="icono-menu">⌂</i>Sucursales<span class="punto-activo"></span></a>
-        <a href="usuarios.html" class="opcion-menu"><i class="icono-menu">♙</i>Usuarios</a>
-        <a href="categorias-gasto.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías de gasto</a>
-        <a href="metodos-pago.html" class="opcion-menu"><i class="icono-menu">▭</i>Métodos de pago</a>
-      </nav>
-
       <div class="usuario-menu">
         <div class="avatar" id="inicialMenu">A</div>
         <div><strong id="nombreMenu">Administrador</strong><small id="sucursalMenu">Matriz · Zitácuaro</small></div>
@@ -165,11 +58,8 @@
         <button class="boton-menu" id="abrirMenu" type="button">☰</button>
         <div class="dato-superior sucursal">
           <span class="icono-sucursal">⌖</span>
-          <div><small>Sucursal</small><strong id="sucursalActual">Matriz · Zitácuaro</strong></div>
+          <div><small>Sucursal actual</small><strong id="sucursalActual">Matriz · Zitácuaro</strong></div>
         </div>
-
-        <button class="icono-info" type="button" title="Información de sucursales" aria-label="Información de sucursales">ⓘ</button>
-
         <div class="dato-superior usuario">
           <div class="avatar" id="inicialSuperior">A</div>
           <div><small>Usuario</small><strong id="nombreSuperior">Administrador</strong></div>
@@ -179,41 +69,17 @@
       <section class="contenido">
         <div class="barra-resumen">
           <div class="metricas">
-            <div class="metrica">
-              <span class="indicador"></span>
-              <strong id="totalSucursales">0</strong>
-              <span>Sucursales</span>
-            </div>
-            <div class="metrica activa">
-              <span class="indicador"></span>
-              <strong id="sucursalesActivas">0</strong>
-              <span>Activas</span>
-            </div>
-            <div class="metrica inactiva">
-              <span class="indicador"></span>
-              <strong id="sucursalesInactivas">0</strong>
-              <span>Inactivas</span>
-            </div>
+            <div class="metrica"><span class="indicador"></span><strong id="totalSucursales">0</strong><span>Sucursales</span></div>
+            <div class="metrica activa"><span class="indicador"></span><strong id="sucursalesActivas">0</strong><span>Activas</span></div>
+            <div class="metrica inactiva"><span class="indicador"></span><strong id="sucursalesInactivas">0</strong><span>Inactivas</span></div>
           </div>
-
-          <a class="nueva-sucursal" href="registrar-sucursal.html">
-            <span class="mas">＋</span><span>Nueva sucursal</span>
-          </a>
+          <a class="nueva-sucursal" href="registrar-sucursal.html"><span class="mas">＋</span><span>Nueva sucursal</span></a>
         </div>
 
         <section class="contenedor-tabla">
           <div class="tabla-scroll" id="tablaSucursales">
             <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Dirección</th>
-                  <th>Teléfono</th>
-                  <th>Horario</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Horario</th><th>Estado</th><th>Acciones</th></tr></thead>
               <tbody id="filasSucursales"></tbody>
             </table>
           </div>
@@ -226,11 +92,8 @@
   <div class="mensaje" id="mensaje"></div>
 
   <script>
-    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioSesion")) || {
-      id:1,nombre:"Administrador",rol:"ADMINISTRADOR",sucursal:{id:1,nombre:"Matriz · Zitácuaro"}
-    };
-
-    const sucursalesIniciales = [
+    const usuarioSesion=JSON.parse(localStorage.getItem("usuarioSesion"))||{id:1,nombre:"Administrador",rol:"ADMINISTRADOR",sucursal:{id:1,nombre:"Matriz · Zitácuaro"}};
+    const sucursalesIniciales=[
       {id:1,name:"Matriz · Zitácuaro",code:"MAT-ZIT",address:"Zitácuaro, Michoacán",phone:"715 153 0001",schedule:"Lun–Dom · 10:00 a 21:00",isActive:true},
       {id:2,name:"Sucursal Centro",code:"CEN-002",address:"Centro, Zitácuaro",phone:"715 153 0002",schedule:"Lun–Dom · 10:00 a 21:00",isActive:true},
       {id:3,name:"Sucursal Uruapan",code:"URU-003",address:"Uruapan, Michoacán",phone:"452 500 0003",schedule:"Lun–Dom · 10:00 a 21:00",isActive:true},
@@ -239,14 +102,10 @@
       {id:6,name:"Sucursal Lázaro Cárdenas",code:"LZC-006",address:"Lázaro Cárdenas, Michoacán",phone:"753 500 0006",schedule:"Lun–Dom · 10:00 a 21:00",isActive:true},
       {id:7,name:"Sucursal Zamora",code:"ZAM-007",address:"Zamora, Michoacán",phone:"351 500 0007",schedule:"Lun–Dom · 10:00 a 21:00",isActive:true}
     ];
-
-    const $ = id => document.getElementById(id);
+    const $=id=>document.getElementById(id);
 
     function cargarSucursales(){
-      try{
-        const guardadas=JSON.parse(localStorage.getItem("sucursalesMichoacana"));
-        if(Array.isArray(guardadas)) return guardadas;
-      }catch(error){}
+      try{const guardadas=JSON.parse(localStorage.getItem("sucursalesMichoacana"));if(Array.isArray(guardadas))return guardadas}catch(error){}
       localStorage.setItem("sucursalesMichoacana",JSON.stringify(sucursalesIniciales));
       return sucursalesIniciales.map(s=>({...s}));
     }
@@ -256,102 +115,44 @@
     function renderizar(){
       $("filasSucursales").innerHTML=sucursales.map(sucursal=>{
         const activa=sucursal.isActive!==false;
-        return `
-          <tr class="${activa?"":"inactiva"}">
-            <td><div class="sucursal-nombre">${sucursal.name}</div></td>
-            <td>${sucursal.address}</td>
-            <td>${sucursal.phone||"Sin teléfono"}</td>
-            <td>${sucursal.schedule}</td>
-            <td><span class="estado ${activa?"":"inactiva"}">${activa?"Activa":"Inactiva"}</span></td>
-            <td class="acciones-celda">
-              <button class="boton-acciones" type="button" aria-label="Acciones de ${sucursal.name}" onclick="alternarMenu(event,${sucursal.id})">⋮</button>
-              <div class="menu-fila" id="menu-${sucursal.id}">
-                <button type="button" onclick="editarSucursal(${sucursal.id})" ${activa?"":"disabled"}>Editar</button>
-                <button type="button" class="peligro" onclick="desactivarSucursal(${sucursal.id})" ${activa?"":"disabled"}>Desactivar</button>
-              </div>
-            </td>
-          </tr>`;
+        return `<tr class="${activa?"":"inactiva"}">
+          <td><div class="sucursal-nombre">${sucursal.name}</div></td>
+          <td>${sucursal.address}</td>
+          <td>${sucursal.phone||"Sin teléfono"}</td>
+          <td>${sucursal.schedule}</td>
+          <td><span class="estado ${activa?"":"inactiva"}">${activa?"Activa":"Inactiva"}</span></td>
+          <td class="acciones-celda">
+            <button class="boton-acciones" type="button" aria-label="Acciones de ${sucursal.name}" onclick="alternarMenu(event,${sucursal.id})">⋮</button>
+            <div class="menu-fila" id="menu-${sucursal.id}">
+              <button type="button" class="catalogo" onclick="abrirCatalogo(${sucursal.id})" ${activa?"":"disabled"}>Gestionar catálogo</button>
+              <button type="button" onclick="editarSucursal(${sucursal.id})" ${activa?"":"disabled"}>Editar sucursal</button>
+              <button type="button" class="peligro" onclick="desactivarSucursal(${sucursal.id})" ${activa?"":"disabled"}>Desactivar</button>
+            </div>
+          </td>
+        </tr>`;
       }).join("");
-
       const activas=sucursales.filter(s=>s.isActive!==false).length;
-      $("totalSucursales").textContent=sucursales.length;
-      $("sucursalesActivas").textContent=activas;
-      $("sucursalesInactivas").textContent=sucursales.length-activas;
-      $("tablaSucursales").hidden=sucursales.length===0;
-      $("mensajeVacio").hidden=sucursales.length!==0;
+      $("totalSucursales").textContent=sucursales.length;$("sucursalesActivas").textContent=activas;$("sucursalesInactivas").textContent=sucursales.length-activas;
+      $("tablaSucursales").hidden=sucursales.length===0;$("mensajeVacio").hidden=sucursales.length!==0;
     }
 
-    function alternarMenu(evento,id){
-      evento.stopPropagation();
-      const menu=$("menu-"+id);
-      const boton=evento.currentTarget;
-      const visible=menu.classList.contains("visible");
-      cerrarMenusAcciones();
-      if(!visible){menu.classList.add("visible");boton.classList.add("activo")}
-    }
-
-    function cerrarMenusAcciones(){
-      document.querySelectorAll(".menu-fila.visible").forEach(m=>m.classList.remove("visible"));
-      document.querySelectorAll(".boton-acciones.activo").forEach(b=>b.classList.remove("activo"));
-    }
+    function alternarMenu(evento,id){evento.stopPropagation();const menu=$("menu-"+id),boton=evento.currentTarget,visible=menu.classList.contains("visible");cerrarMenusAcciones();if(!visible){menu.classList.add("visible");boton.classList.add("activo")}}
+    function cerrarMenusAcciones(){document.querySelectorAll(".menu-fila.visible").forEach(m=>m.classList.remove("visible"));document.querySelectorAll(".boton-acciones.activo").forEach(b=>b.classList.remove("activo"))}
     document.addEventListener("click",cerrarMenusAcciones);
 
+    function abrirCatalogo(id){location.href=`catalogo-sucursal.html?sucursal=${id}`}
     function editarSucursal(id){location.href=`registrar-sucursal.html?id=${id}`}
-
-    function desactivarSucursal(id){
-      const sucursal=sucursales.find(item=>item.id===id);
-      if(!sucursal||sucursal.isActive===false) return;
-      if(!confirm(`¿Desactivar “${sucursal.name}”? Ya no estará disponible para nuevas operaciones.`)) return;
-      sucursal.isActive=false;
-      sucursal.deactivatedAt=new Date().toISOString();
-      localStorage.setItem("sucursalesMichoacana",JSON.stringify(sucursales));
-      renderizar();
-      mostrarMensaje("Sucursal desactivada correctamente.");
-    }
-
-    function mostrarMensaje(texto){
-      $("mensaje").textContent=texto;
-      $("mensaje").classList.add("visible");
-      clearTimeout(mostrarMensaje.temporizador);
-      mostrarMensaje.temporizador=setTimeout(()=>$("mensaje").classList.remove("visible"),1900);
-    }
-
-    function configurarSesion(){
-      const inicial=usuarioSesion.nombre.charAt(0).toUpperCase();
-      $("nombreMenu").textContent=usuarioSesion.nombre;
-      $("nombreSuperior").textContent=usuarioSesion.nombre;
-      $("inicialMenu").textContent=inicial;
-      $("inicialSuperior").textContent=inicial;
-      $("sucursalMenu").textContent=usuarioSesion.sucursal.nombre;
-      $("sucursalActual").textContent=usuarioSesion.sucursal.nombre;
-    }
-
-    function oscurecerColor(hex){
-      const v=hex.replace("#","");
-      const r=parseInt(v.slice(0,2),16),g=parseInt(v.slice(2,4),16),b=parseInt(v.slice(4,6),16);
-      return `rgb(${Math.max(0,r-25)},${Math.max(0,g-25)},${Math.max(0,b-25)})`;
-    }
-
-    function cargarTema(){
-      try{
-        const tema=JSON.parse(localStorage.getItem("temaMichoacana"));
-        if(!tema) return;
-        const raiz=document.documentElement;
-        raiz.style.setProperty("--principal",tema.principal);
-        raiz.style.setProperty("--principal-oscuro",oscurecerColor(tema.principal));
-        raiz.style.setProperty("--menu",tema.menu);
-        $("sidebar").style.background=`linear-gradient(180deg,${tema.menu},${oscurecerColor(tema.menu)})`;
-      }catch(error){localStorage.removeItem("temaMichoacana")}
-    }
+    function desactivarSucursal(id){const sucursal=sucursales.find(item=>item.id===id);if(!sucursal||sucursal.isActive===false)return;if(!confirm(`¿Desactivar “${sucursal.name}”? Ya no estará disponible para nuevas operaciones.`))return;sucursal.isActive=false;sucursal.deactivatedAt=new Date().toISOString();localStorage.setItem("sucursalesMichoacana",JSON.stringify(sucursales));renderizar();mostrarMensaje("Sucursal desactivada correctamente.")}
+    function mostrarMensaje(texto){$("mensaje").textContent=texto;$("mensaje").classList.add("visible");clearTimeout(mostrarMensaje.temporizador);mostrarMensaje.temporizador=setTimeout(()=>$("mensaje").classList.remove("visible"),1900)}
+    function configurarSesion(){const inicial=usuarioSesion.nombre.charAt(0).toUpperCase();$("nombreMenu").textContent=usuarioSesion.nombre;$("nombreSuperior").textContent=usuarioSesion.nombre;$("inicialMenu").textContent=inicial;$("inicialSuperior").textContent=inicial;$("sucursalMenu").textContent=usuarioSesion.sucursal.nombre;$("sucursalActual").textContent=usuarioSesion.sucursal.nombre}
+    function oscurecerColor(hex){const v=hex.replace("#","");const r=parseInt(v.slice(0,2),16),g=parseInt(v.slice(2,4),16),b=parseInt(v.slice(4,6),16);return `rgb(${Math.max(0,r-25)},${Math.max(0,g-25)},${Math.max(0,b-25)})`}
+    function cargarTema(){try{const tema=JSON.parse(localStorage.getItem("temaMichoacana"));if(!tema)return;const raiz=document.documentElement;raiz.style.setProperty("--principal",tema.principal);raiz.style.setProperty("--principal-oscuro",oscurecerColor(tema.principal));raiz.style.setProperty("--menu",tema.menu);raiz.style.setProperty("--fondo",tema.fondo)}catch(error){localStorage.removeItem("temaMichoacana")}}
 
     const sidebar=$("sidebar"),fondoMenu=$("fondoMenu");
     $("abrirMenu").onclick=()=>{sidebar.classList.add("abierta");fondoMenu.classList.add("visible");document.body.classList.add("sin-scroll")};
     fondoMenu.onclick=()=>{sidebar.classList.remove("abierta");fondoMenu.classList.remove("visible");document.body.classList.remove("sin-scroll")};
-
     window.addEventListener("pageshow",()=>{sucursales=cargarSucursales();renderizar()});
-    configurarSesion();
-    cargarTema();
-    renderizar();
+    configurarSesion();cargarTema();renderizar();
   </script>
   <script src="../scripts/menu-compartido.js"></script>
 </body>

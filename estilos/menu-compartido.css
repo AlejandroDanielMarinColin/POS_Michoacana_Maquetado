@@ -106,7 +106,7 @@
 .sidebar .menu-opcion.activa,
 .side .menu-opcion.activa {
   color: #fff !important;
-  background: linear-gradient(90deg, rgba(210, 73, 135, .42), rgba(158, 58, 105, .28)) !important;
+  background: var(--sidebar-active-bg) !important;
   border-radius: 0 !important;
   padding-left: 17px !important;
   font-weight: 700 !important;
@@ -240,6 +240,70 @@
 .side > .user,
 .side > .userbox {
   display: none !important;
+}
+
+/* Paletas dentro del panel de personalización */
+.menu-paletas {
+  margin: 18px 0 20px;
+  padding: 0 2px 18px;
+  border-bottom: 1px solid var(--borde, #e5e7eb);
+}
+
+.menu-paletas-titulo {
+  margin: 0 0 4px;
+  color: var(--texto, #17141d);
+  font-size: .86rem;
+  font-weight: 800;
+}
+
+.menu-paletas-descripcion {
+  margin: 0 0 12px;
+  color: var(--texto-secundario, #6e7583);
+  font-size: .72rem;
+}
+
+.menu-paleta {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 13px;
+  border: 1px solid var(--borde, #d7dee8);
+  border-radius: 8px;
+  color: var(--texto, #17141d);
+  background: var(--tarjeta, #fff);
+  text-align: left;
+}
+
+.menu-paleta:hover,
+.menu-paleta.seleccionada {
+  border-color: var(--principal, #ed2b85);
+}
+
+.menu-paleta-info strong {
+  display: block;
+  font-size: .8rem;
+}
+
+.menu-paleta-info small {
+  display: block;
+  margin-top: 3px;
+  color: var(--texto-secundario, #6e7583);
+  font-size: .68rem;
+}
+
+.menu-paleta-muestras {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-paleta-muestra {
+  width: 19px;
+  height: 19px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 5px;
 }
 
 @media (max-width: 850px) {

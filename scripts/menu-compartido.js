@@ -57,18 +57,71 @@
   };
 
   const paletas = [
-    { id:"michoacana-moderna", nombre:"Michoacana moderna", descripcion:"Rosa intenso, grafito y amarillo cálido", principal:"#ed2b85", secundario:"#f4c542", menu:"#171b24", fondo:"#f4f6f9", tarjeta:"#ffffff", texto:"#18151d", textoSecundario:"#6f6a73", borde:"#dce1e8" },
-    { id:"crema-fresa", nombre:"Crema & fresa", descripcion:"Blanco cálido, rosa frambuesa y crema", principal:"#c91f68", secundario:"#d59b32", menu:"#fff0f4", fondo:"#fff9f6", tarjeta:"#ffffff", texto:"#2f2026", textoSecundario:"#78656c", borde:"#ead9dd" },
-    { id:"azul-ejecutivo", nombre:"Azul ejecutivo", descripcion:"Azul intenso, acero claro y cian", principal:"#1d4ed8", secundario:"#0891b2", menu:"#e9eff7", fondo:"#f3f6fa", tarjeta:"#ffffff", texto:"#172033", textoSecundario:"#5d6b80", borde:"#d3dce8" },
-    { id:"bosque-cobre", nombre:"Bosque & cobre", descripcion:"Verde bosque, cobre y marfil", principal:"#4f772d", secundario:"#c77b30", menu:"#203328", fondo:"#f5f1e8", tarjeta:"#fffdf7", texto:"#273126", textoSecundario:"#697064", borde:"#ded9cb" },
-    { id:"terracota-oliva", nombre:"Terracota & oliva", descripcion:"Arcilla, oliva y crema artesanal", principal:"#b84f32", secundario:"#6b7a40", menu:"#f4e3d6", fondo:"#fbf3ec", tarjeta:"#fffdf9", texto:"#3a2922", textoSecundario:"#806a60", borde:"#e5d3c7" },
-    { id:"navy-coral", nombre:"Navy & coral", descripcion:"Azul noche, coral brillante y ámbar", principal:"#f04467", secundario:"#f3a712", menu:"#101b2c", fondo:"#f2f5f8", tarjeta:"#ffffff", texto:"#182336", textoSecundario:"#637083", borde:"#d9e0e8" },
-    { id:"retro-turquesa", nombre:"Retro turquesa", descripcion:"Turquesa profundo, mostaza y papel crema", principal:"#007b78", secundario:"#d89a2b", menu:"#dcefeb", fondo:"#f7f4eb", tarjeta:"#fffdf7", texto:"#203533", textoSecundario:"#677b77", borde:"#d5ddd8" },
-    { id:"violeta-nocturno", nombre:"Violeta nocturno", descripcion:"Berenjena, violeta eléctrico y rosa suave", principal:"#9a63ff", secundario:"#e68ab8", menu:"#23172f", fondo:"#f8f5fb", tarjeta:"#ffffff", texto:"#251d2b", textoSecundario:"#766b80", borde:"#e2dbea" },
-    { id:"monocromo", nombre:"Monocromo", descripcion:"Blanco, negro y grises sin acentos de color", principal:"#171717", secundario:"#737373", menu:"#ffffff", fondo:"#f3f3f3", tarjeta:"#ffffff", texto:"#171717", textoSecundario:"#666666", borde:"#d4d4d4" },
-    { id:"navy-dorado", nombre:"Navy & dorado", descripcion:"Azul marino, oro viejo y fondo marfil", principal:"#b88628", secundario:"#3d8bb3", menu:"#0c2238", fondo:"#f6f2e8", tarjeta:"#fffdf8", texto:"#1b2732", textoSecundario:"#6b716f", borde:"#ded8c9" },
-    { id:"limonada", nombre:"Limonada", descripcion:"Amarillo crema, naranja y azul petróleo", principal:"#d96704", secundario:"#0e7490", menu:"#fff4c7", fondo:"#fffaf0", tarjeta:"#ffffff", texto:"#332b1b", textoSecundario:"#7d725d", borde:"#eadfbf" },
-    { id:"oceano-turquesa", nombre:"Océano turquesa", descripcion:"Azul petróleo, aqua y gris frío", principal:"#0e7490", secundario:"#14b8a6", menu:"#0d2c38", fondo:"#edf6f8", tarjeta:"#ffffff", texto:"#16313a", textoSecundario:"#62777e", borde:"#d2e2e6" }
+    {
+      id: "rosa-ejecutivo",
+      nombre: "Rosa ejecutivo",
+      descripcion: "Rosa intenso, vino oscuro y fondos suaves",
+      principal: "#e43f8f",
+      secundario: "#f4b942",
+      menu: "#2b1622",
+      fondo: "#f8f3f6",
+      tarjeta: "#ffffff",
+      texto: "#241920",
+      textoSecundario: "#77656f",
+      borde: "#e5d9df"
+    },
+    {
+      id: "amarillo-solar",
+      nombre: "Amarillo solar",
+      descripcion: "Mostaza vibrante, carbón y crema cálida",
+      principal: "#d99b00",
+      secundario: "#ef6c35",
+      menu: "#24231f",
+      fondo: "#fff8e8",
+      tarjeta: "#fffdf8",
+      texto: "#2d281d",
+      textoSecundario: "#786f5c",
+      borde: "#eadfbe"
+    },
+    {
+      id: "azul-nocturno",
+      nombre: "Azul nocturno",
+      descripcion: "Azul eléctrico sobre navy profundo y grises fríos",
+      principal: "#3478f6",
+      secundario: "#17a6a8",
+      menu: "#111b31",
+      fondo: "#f1f5fa",
+      tarjeta: "#ffffff",
+      texto: "#18243a",
+      textoSecundario: "#64728a",
+      borde: "#d5deea"
+    },
+    {
+      id: "verde-bosque",
+      nombre: "Verde bosque",
+      descripcion: "Esmeralda, bosque oscuro y acento cobre",
+      principal: "#3f8557",
+      secundario: "#c67b32",
+      menu: "#17271e",
+      fondo: "#f2f5f0",
+      tarjeta: "#fcfefb",
+      texto: "#1d2b21",
+      textoSecundario: "#687469",
+      borde: "#d6dfd4"
+    },
+    {
+      id: "violeta-grafito",
+      nombre: "Violeta grafito",
+      descripcion: "Violeta brillante, grafito ciruela y lavanda fría",
+      principal: "#8257e6",
+      secundario: "#d95094",
+      menu: "#21182c",
+      fondo: "#f5f2f8",
+      tarjeta: "#ffffff",
+      texto: "#281f31",
+      textoSecundario: "#746a7e",
+      borde: "#dfd8e7"
+    }
   ];
 
   let paletaActiva = null;
@@ -119,26 +172,55 @@
   }
 
   function temaGuardado() {
-    try { return JSON.parse(localStorage.getItem("temaMichoacana")); }
-    catch (_) { return null; }
+    try {
+      const guardado = JSON.parse(localStorage.getItem("temaMichoacana"));
+      if (!guardado) return null;
+      if (guardado.id && !paletas.some(paleta => paleta.id === guardado.id)) {
+        localStorage.setItem("temaMichoacana", JSON.stringify(paletas[0]));
+        return paletas[0];
+      }
+      return guardado;
+    } catch (_) {
+      return null;
+    }
   }
 
   function aplicarTemaGlobal(tema) {
     if (!tema) return;
     const raiz = document.documentElement;
+    const principalOscuro = tema.principal ? oscurecer(tema.principal,24) : null;
+    const principalClaro = tema.principal ? rgba(tema.principal,.11) : null;
+
     if (tema.principal) {
       raiz.style.setProperty("--principal", tema.principal);
-      raiz.style.setProperty("--principal-oscuro", oscurecer(tema.principal,24));
-      raiz.style.setProperty("--principal-claro", rgba(tema.principal,.11));
+      raiz.style.setProperty("--p", tema.principal);
+      raiz.style.setProperty("--principal-oscuro", principalOscuro);
+      raiz.style.setProperty("--po", principalOscuro);
+      raiz.style.setProperty("--principal-claro", principalClaro);
+      raiz.style.setProperty("--pc", principalClaro);
       raiz.style.setProperty("--sidebar-active", tema.principal);
       raiz.style.setProperty("--sidebar-accent-contrast", luminancia(tema.principal) > .48 ? "#17141d" : "#ffffff");
     }
+
     if (tema.secundario) raiz.style.setProperty("--secundario", tema.secundario);
-    if (tema.fondo) raiz.style.setProperty("--fondo", tema.fondo);
+    if (tema.fondo) {
+      raiz.style.setProperty("--fondo", tema.fondo);
+      raiz.style.setProperty("--f", tema.fondo);
+    }
     if (tema.tarjeta) raiz.style.setProperty("--tarjeta", tema.tarjeta);
-    if (tema.texto) raiz.style.setProperty("--texto", tema.texto);
-    if (tema.textoSecundario) raiz.style.setProperty("--texto-secundario", tema.textoSecundario);
-    if (tema.borde) raiz.style.setProperty("--borde", tema.borde);
+    if (tema.texto) {
+      raiz.style.setProperty("--texto", tema.texto);
+      raiz.style.setProperty("--t", tema.texto);
+    }
+    if (tema.textoSecundario) {
+      raiz.style.setProperty("--texto-secundario", tema.textoSecundario);
+      raiz.style.setProperty("--ts", tema.textoSecundario);
+      raiz.style.setProperty("--gris", tema.textoSecundario);
+    }
+    if (tema.borde) {
+      raiz.style.setProperty("--borde", tema.borde);
+      raiz.style.setProperty("--b", tema.borde);
+    }
 
     if (tema.menu) {
       const menuClaro = luminancia(tema.menu) > .48;
@@ -286,7 +368,7 @@
     titulo.textContent = "Paletas completas";
     const descripcion = document.createElement("p");
     descripcion.className = "menu-paletas-descripcion";
-    descripcion.textContent = "Cada opción cambia menú, acento, fondo, tarjetas, texto y bordes.";
+    descripcion.textContent = "Cinco estilos completos y claramente diferentes para toda la interfaz.";
     const grid = document.createElement("div");
     grid.className = "menu-paletas-grid";
     paletas.forEach(paleta => grid.appendChild(crearBotonPaleta(paleta)));

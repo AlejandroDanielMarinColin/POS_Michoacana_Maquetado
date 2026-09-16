@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Métodos de pago | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --rojo: #dc3545;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: linear-gradient(
+          180deg,
+          var(--menu),
+          var(--principal-oscuro)
+        );
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .icono-sucursal {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1450px;
+        margin: 0 auto;
+        padding: 30px 4vw 50px;
+      }
+
+      .encabezado {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .nueva-categoria {
+        min-height: 49px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 11px;
+        color: white;
+        background: linear-gradient(
+          90deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+        font-weight: 850;
+        box-shadow: 0 8px 22px rgba(237, 43, 133, 0.2);
+      }
+
+      .resumen {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .tarjeta-resumen {
+        padding: 18px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tarjeta-resumen small {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--texto-secundario);
+        font-size: 0.73rem;
+      }
+
+      .tarjeta-resumen strong {
+        display: block;
+        font-size: 1.35rem;
+      }
+
+      .tarjeta-resumen span {
+        display: block;
+        margin-top: 5px;
+        color: var(--detalle, var(--verde));
+        font-size: 0.68rem;
+      }
+
+      .filtros {
+        display: grid;
+        grid-template-columns: 1fr minmax(190px, 0.3fr);
+        gap: 11px;
+        margin-bottom: 18px;
+        padding: 15px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .buscador {
+        min-height: 45px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+      }
+
+      .buscador span {
+        color: var(--texto-secundario);
+      }
+
+      .buscador input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        color: var(--texto);
+        background: transparent;
+      }
+
+      .control {
+        width: 100%;
+        min-height: 45px;
+        padding: 0 12px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .buscador:focus-within,
+      .control:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      /* TABLA */
+
+      .contenedor-tabla {
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tabla-scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        font-size: 0.78rem;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tbody tr:hover {
+        background: #fffafd;
+      }
+
+      tr.inactiva {
+        opacity: 0.65;
+      }
+
+      .nombre-categoria {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 220px;
+      }
+
+      .icono-categoria {
+        width: 39px;
+        height: 39px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        color: var(--principal);
+        background: var(--principal-claro);
+        font-weight: 850;
+      }
+
+      .estado {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 999px;
+        color: var(--verde);
+        background: #e8f8f0;
+        font-size: 0.67rem;
+        font-weight: 800;
+      }
+
+      .estado::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .estado.inactiva {
+        color: var(--rojo);
+        background: #ffe8eb;
+      }
+
+      .acciones {
+        display: flex;
+        gap: 7px;
+      }
+
+      .acciones button {
+        min-height: 35px;
+        padding: 0 11px;
+        border: 1px solid var(--borde);
+        border-radius: 9px;
+        background: white;
+        font-size: 0.7rem;
+        font-weight: 800;
+      }
+
+      .editar {
+        color: var(--principal);
+      }
+
+      .desactivar {
+        color: var(--rojo);
+      }
+
+      .mensaje-vacio {
+        padding: 55px 20px;
+        text-align: center;
+        color: var(--texto-secundario);
+        font-size: 0.8rem;
+      }
+
+      /* MODAL */
+
+      .modal-fondo {
+        position: fixed;
+        inset: 0;
+        z-index: 1200;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(20, 16, 24, 0.5);
+        transition: 0.22s;
+      }
+
+      .modal-fondo.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal {
+        width: min(100%, 460px);
+        overflow: hidden;
+        border-radius: 17px;
+        background: white;
+        box-shadow: 0 22px 60px rgba(20, 15, 20, 0.22);
+      }
+
+      .modal-encabezado {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 21px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .modal-encabezado h2 {
+        margin: 0 0 5px;
+        font-size: 1.15rem;
+      }
+
+      .modal-encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+        font-size: 0.74rem;
+      }
+
+      .cerrar-modal {
+        width: 35px;
+        height: 35px;
+        flex-shrink: 0;
+        border: 1px solid var(--borde);
+        border-radius: 9px;
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .formulario {
+        padding: 21px;
+      }
+
+      .campo {
+        display: grid;
+        gap: 7px;
+      }
+
+      .campo label {
+        color: var(--texto-secundario);
+        font-size: 0.71rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .campo input {
+        width: 100%;
+        min-height: 47px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .campo input:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .error {
+        min-height: 17px;
+        margin: 6px 0 0;
+        color: var(--rojo);
+        font-size: 0.7rem;
+      }
+
+      .acciones-modal {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        margin-top: 17px;
+      }
+
+      .boton-secundario,
+      .boton-guardar {
+        min-height: 45px;
+        padding: 0 17px;
+        border-radius: 10px;
+        font-weight: 800;
+      }
+
+      .boton-secundario {
+        border: 1px solid var(--borde);
+        color: var(--texto);
+        background: white;
+      }
+
+      .boton-guardar {
+        border: 0;
+        color: white;
+        background: linear-gradient(
+          90deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+      }
+
+      .mensaje {
+        position: fixed;
+        top: 92px;
+        right: 22px;
+        z-index: 1400;
+        max-width: calc(100vw - 44px);
+        padding: 13px 17px;
+        border-radius: 11px;
+        color: white;
+        background: #25212a;
+        font-size: 0.78rem;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: 0.25s;
+      }
+
+      .mensaje.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.42);
+        transition: 0.25s;
+      }
+
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px;
+        }
+
+        .encabezado {
+          align-items: flex-start;
+        }
+
+        .nueva-categoria {
+          width: 48px;
+          padding: 0;
+          justify-content: center;
+          font-size: 0;
+        }
+
+        .nueva-categoria span {
+          font-size: 1.25rem;
+        }
+
+        .resumen,
+        .filtros {
+          grid-template-columns: 1fr;
+        }
+
+        table {
+          min-width: 680px;
+        }
+
+        .acciones-modal {
+          flex-direction: column-reverse;
+        }
+
+        .acciones-modal button {
+          width: 100%;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img
+            src="../imagenes/logogranpaleteria.jpeg"
+            alt="Logo de La Michoacana"
+          />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Inicio
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu">
+            <i class="icono-menu">🛒</i>
+            Registrar venta
+          </a>
+
+          <a href="historial-ventas.html" class="opcion-menu">
+            <i class="icono-menu">↺</i>
+            Historial de ventas
+          </a>
+
+          <a href="gastos.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Gastos
+          </a>
+
+          <a href="reabastecimiento.html" class="opcion-menu">
+            <i class="icono-menu">♧</i>
+            Reabastecimiento
+          </a>
+
+          <a href="inventario.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Inventario
+          </a>
+
+          <a href="corte-caja.html" class="opcion-menu">
+            <i class="icono-menu">▤</i>
+            Corte de caja
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Productos
+          </a>
+
+          <a href="categorias.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías
+          </a>
+
+          <a href="catalogo-sucursal.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Catálogo por sucursal
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Administración</p>
+
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Sucursales
+          </a>
+
+          <a href="usuarios.html" class="opcion-menu">
+            <i class="icono-menu">♙</i>
+            Usuarios
+          </a>
+
+          <a href="categorias-gasto.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías de gasto
+          </a>
+
+          <a href="metodos-pago.html" class="opcion-menu activa">
+            <i class="icono-menu">▭</i>
+            Métodos de pago
+            <span class="punto-activo"></span>
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">C</div>
+
+          <div>
+            <strong id="nombreMenu">Carlos Mendoza</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button
+            class="boton-menu"
+            id="abrirMenu"
+            type="button"
+            aria-label="Abrir menú"
+          >
+            ☰
+          </button>
+
+          <div class="dato-superior">
+            <span class="icono-sucursal">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Matriz · Zitácuaro</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="inicialSuperior">C</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreSuperior">Carlos Mendoza</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1>Métodos de pago</h1>
+              <p>Administra las formas de cobro disponibles en las ventas.</p>
+            </div>
+
+            <a class="nueva-categoria" id="nuevaCategoria" href="registrar-metodo-pago.html">
+              <span>＋</span>
+              Nuevo método
+            </a>
+          </div>
+
+          <section class="resumen">
+            <article class="tarjeta-resumen">
+              <small>Métodos registrados</small>
+              <strong id="totalCategorias">0</strong>
+              <span>Total registrado</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Métodos activos</small>
+              <strong id="categoriasActivas">0</strong>
+              <span>Disponibles para cobrar</span>
+            </article>
+
+            <article
+              class="tarjeta-resumen"
+              style="--detalle: var(--rojo)"
+            >
+              <small>Métodos desactivados</small>
+              <strong id="categoriasInactivas">0</strong>
+              <span>No disponibles para nuevas ventas</span>
+            </article>
+          </section>
+
+          <section class="filtros">
+            <label class="buscador">
+              <span>⌕</span>
+
+              <input
+                id="buscarCategoria"
+                type="search"
+                placeholder="Buscar método de pago..."
+                autocomplete="off"
+              />
+            </label>
+
+            <select class="control" id="filtroEstado">
+              <option value="todas">Todos los estados</option>
+              <option value="activa">Activas</option>
+              <option value="inactiva">Desactivadas</option>
+            </select>
+          </section>
+
+          <section class="contenedor-tabla">
+            <div class="tabla-scroll" id="tablaCategorias">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Método de pago</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+
+                <tbody id="filasCategorias"></tbody>
+              </table>
+            </div>
+
+            <div class="mensaje-vacio" id="mensajeVacio" hidden>
+              No encontramos métodos de pago con estos filtros.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-fondo" id="modalCategoria">
+      <section class="modal" role="dialog" aria-modal="true">
+        <div class="modal-encabezado">
+          <div>
+            <h2 id="tituloModal">Nueva categoría</h2>
+            <p id="subtituloModal">Agrega una categoría para organizar productos.</p>
+          </div>
+
+          <button
+            class="cerrar-modal"
+            id="cerrarModal"
+            type="button"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+
+        <form class="formulario" id="formCategoria">
+          <div class="campo">
+            <label for="nombreCategoria">Nombre</label>
+
+            <input
+              id="nombreCategoria"
+              type="text"
+              maxlength="60"
+              placeholder="Ej. Paletas"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <p class="error" id="errorCategoria"></p>
+
+          <div class="acciones-modal">
+            <button class="boton-secundario" id="cancelarModal" type="button">
+              Cancelar
+            </button>
+
+            <button class="boton-guardar" id="guardarCategoria" type="submit">
+              Guardar categoría
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="mensaje" id="mensaje" aria-live="polite"></div>
+
+    <script>
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion"),
+      ) || {
+        id: 1,
+        nombre: "Carlos Mendoza",
+        rol: "EMPLEADO",
+        sucursal: {
+          id: 1,
+          nombre: "Matriz · Zitácuaro",
+        },
+      };
+
+      const categoriasIniciales = [
+        { id: 1, name: "Efectivo", isCash: true, isActive: true },
+        { id: 2, name: "Tarjeta", isCash: false, isActive: true },
+        { id: 3, name: "Transferencia", isCash: false, isActive: true },
+      ];
+
+      const obtenerElemento = (id) => document.getElementById(id);
+
+      const modalCategoria = obtenerElemento("modalCategoria");
+      const nombreCategoria = obtenerElemento("nombreCategoria");
+      const buscarCategoria = obtenerElemento("buscarCategoria");
+      const filtroEstado = obtenerElemento("filtroEstado");
+
+      let categorias = cargarCategorias();
+      let categoriaEditandoId = null;
+
+      function cargarCategorias() {
+        try {
+          const guardadas = JSON.parse(
+            localStorage.getItem("metodosPagoMichoacana"),
+          );
+
+          if (Array.isArray(guardadas)) {
+            return guardadas;
+          }
+        } catch (error) {
+          localStorage.removeItem("metodosPagoMichoacana");
+        }
+
+        localStorage.setItem(
+          "metodosPagoMichoacana",
+          JSON.stringify(categoriasIniciales),
+        );
+
+        return categoriasIniciales.map(categoria => ({ ...categoria }));
+      }
+
+      function guardarCategorias() {
+        localStorage.setItem(
+          "metodosPagoMichoacana",
+          JSON.stringify(categorias),
+        );
+      }
+
+      function normalizarTexto(texto) {
+        return texto
+          .trim()
+          .toLocaleLowerCase("es-MX")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function categoriasFiltradas() {
+        const busqueda = normalizarTexto(buscarCategoria.value);
+        const estado = filtroEstado.value;
+
+        return categorias.filter(categoria => {
+          const coincideBusqueda =
+            !busqueda || normalizarTexto(categoria.name).includes(busqueda);
+
+          const coincideEstado =
+            estado === "todas" ||
+            (categoria.isActive !== false ? "activa" : "inactiva") === estado;
+
+          return coincideBusqueda && coincideEstado;
+        });
+      }
+
+      function renderizarCategorias() {
+        const lista = categoriasFiltradas();
+        const activas = categorias.filter(categoria => categoria.isActive !== false);
+
+        obtenerElemento("filasCategorias").innerHTML = lista
+          .map(categoria => {
+            const activa = categoria.isActive !== false;
+
+            return `
+              <tr class="${activa ? "" : "inactiva"}">
+                <td>
+                  <div class="nombre-categoria">
+                    <span class="icono-categoria">
+                      ${categoria.name.charAt(0).toUpperCase()}
+                    </span>
+
+                    <strong>${categoria.name}</strong>
+                  </div>
+                </td>
+
+                <td>
+                  ${categoria.isCash ? "Maneja efectivo" : "Pago electrónico"}
+                </td>
+
+                <td>
+                  <span class="estado ${activa ? "" : "inactiva"}">
+                    ${activa ? "Activa" : "Desactivada"}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="acciones">
+                    <button
+                      class="editar"
+                      type="button"
+                      onclick="editarCategoria(${categoria.id})"
+                      ${activa ? "" : "disabled"}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      class="desactivar"
+                      type="button"
+                      onclick="desactivarCategoria(${categoria.id})"
+                      ${activa ? "" : "disabled"}
+                    >
+                      Desactivar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        obtenerElemento("totalCategorias").textContent = categorias.length;
+        obtenerElemento("categoriasActivas").textContent = activas.length;
+        obtenerElemento("categoriasInactivas").textContent =
+          categorias.length - activas.length;
+
+        obtenerElemento("tablaCategorias").hidden = lista.length === 0;
+        obtenerElemento("mensajeVacio").hidden = lista.length !== 0;
+      }
+
+      function abrirModal(categoria = null) {
+        categoriaEditandoId = categoria ? categoria.id : null;
+
+        obtenerElemento("tituloModal").textContent = categoria
+          ? "Editar categoría"
+          : "Nueva categoría";
+        obtenerElemento("subtituloModal").textContent = categoria
+          ? "Actualiza el nombre de la categoría seleccionada."
+          : "Agrega una categoría para organizar productos.";
+        obtenerElemento("guardarCategoria").textContent = categoria
+          ? "Guardar cambios"
+          : "Guardar categoría";
+
+        nombreCategoria.value = categoria ? categoria.name : "";
+        obtenerElemento("errorCategoria").textContent = "";
+
+        modalCategoria.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+
+        setTimeout(() => nombreCategoria.focus(), 100);
+      }
+
+      function cerrarModal() {
+        modalCategoria.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+        categoriaEditandoId = null;
+        obtenerElemento("formCategoria").reset();
+        obtenerElemento("errorCategoria").textContent = "";
+      }
+
+      function editarCategoria(id) {
+        const categoria = categorias.find(item => item.id === id);
+
+        if (!categoria || categoria.isActive === false) {
+          return;
+        }
+
+        location.href = `registrar-metodo-pago.html?id=${categoria.id}`;
+      }
+
+      function desactivarCategoria(id) {
+        const categoria = categorias.find(item => item.id === id);
+
+        if (!categoria || categoria.isActive === false) {
+          return;
+        }
+
+        if (
+          !confirm(
+            `¿Desactivar el método “${categoria.name}”? No aparecerá en nuevas ventas.`,
+          )
+        ) {
+          return;
+        }
+
+        categoria.isActive = false;
+        categoria.deactivatedAt = new Date().toISOString();
+
+        guardarCategorias();
+        renderizarCategorias();
+        mostrarMensaje("Método de pago desactivado correctamente.");
+      }
+
+      function mostrarMensaje(texto) {
+        const mensaje = obtenerElemento("mensaje");
+
+        mensaje.textContent = texto;
+        mensaje.classList.add("visible");
+
+        clearTimeout(mostrarMensaje.temporizador);
+
+        mostrarMensaje.temporizador = setTimeout(() => {
+          mensaje.classList.remove("visible");
+        }, 1900);
+      }
+
+      obtenerElemento("formCategoria").addEventListener("submit", evento => {
+        evento.preventDefault();
+
+        const nombre = nombreCategoria.value.trim();
+        const nombreNormalizado = normalizarTexto(nombre);
+        const fueEdicion = categoriaEditandoId !== null;
+
+        const duplicada = categorias.some(
+          categoria =>
+            categoria.id !== categoriaEditandoId &&
+            normalizarTexto(categoria.name) === nombreNormalizado,
+        );
+
+        if (!nombre) {
+          obtenerElemento("errorCategoria").textContent =
+            "Escribe el nombre de la categoría.";
+          return;
+        }
+
+        if (duplicada) {
+          obtenerElemento("errorCategoria").textContent =
+            "Ya existe una categoría con este nombre.";
+          return;
+        }
+
+        if (categoriaEditandoId) {
+          const categoria = categorias.find(
+            item => item.id === categoriaEditandoId,
+          );
+
+          categoria.name = nombre;
+          categoria.updatedAt = new Date().toISOString();
+        } else {
+          categorias.unshift({
+            id: Date.now(),
+            name: nombre,
+            isActive: true,
+            createdAt: new Date().toISOString(),
+          });
+        }
+
+        guardarCategorias();
+        cerrarModal();
+        renderizarCategorias();
+        mostrarMensaje(
+          fueEdicion
+            ? "Categoría actualizada correctamente."
+            : "Categoría registrada correctamente.",
+        );
+      });
+
+      obtenerElemento("nuevaCategoria").addEventListener("click", () => {
+        abrirModal();
+      });
+
+      obtenerElemento("cerrarModal").addEventListener("click", cerrarModal);
+      obtenerElemento("cancelarModal").addEventListener("click", cerrarModal);
+
+      modalCategoria.addEventListener("click", evento => {
+        if (evento.target === modalCategoria) {
+          cerrarModal();
+        }
+      });
+
+      buscarCategoria.addEventListener("input", renderizarCategorias);
+      filtroEstado.addEventListener("change", renderizarCategorias);
+
+      function configurarSesion() {
+        const inicial = usuarioSesion.nombre.charAt(0).toUpperCase();
+
+        obtenerElemento("nombreMenu").textContent = usuarioSesion.nombre;
+        obtenerElemento("nombreSuperior").textContent = usuarioSesion.nombre;
+        obtenerElemento("inicialMenu").textContent = inicial;
+        obtenerElemento("inicialSuperior").textContent = inicial;
+        obtenerElemento("sucursalMenu").textContent = usuarioSesion.sucursal.nombre;
+        obtenerElemento("sucursalActual").textContent = usuarioSesion.sucursal.nombre;
+      }
+
+      function oscurecerColor(hexadecimal) {
+        const valor = hexadecimal.replace("#", "");
+        const rojo = parseInt(valor.slice(0, 2), 16);
+        const verde = parseInt(valor.slice(2, 4), 16);
+        const azul = parseInt(valor.slice(4, 6), 16);
+
+        return `rgb(${Math.max(0, rojo - 25)}, ${Math.max(
+          0,
+          verde - 25,
+        )}, ${Math.max(0, azul - 25)})`;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+
+          if (!tema) {
+            return;
+          }
+
+          const raiz = document.documentElement;
+
+          raiz.style.setProperty("--principal", tema.principal);
+          raiz.style.setProperty(
+            "--principal-oscuro",
+            oscurecerColor(tema.principal),
+          );
+          raiz.style.setProperty("--menu", tema.menu);
+          raiz.style.setProperty("--fondo", tema.fondo);
+
+          obtenerElemento("sidebar").style.background = `linear-gradient(
+            180deg,
+            ${tema.menu},
+            ${oscurecerColor(tema.menu)}
+          )`;
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      const sidebar = obtenerElemento("sidebar");
+      const fondoMenu = obtenerElemento("fondoMenu");
+
+      obtenerElemento("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      fondoMenu.addEventListener("click", () => {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      });
+
+      document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape") {
+          if (modalCategoria.classList.contains("visible")) {
+            cerrarModal();
+          } else {
+            sidebar.classList.remove("abierta");
+            fondoMenu.classList.remove("visible");
+            document.body.classList.remove("sin-scroll");
+          }
+        }
+      });
+
+      configurarSesion();
+      cargarTema();
+      renderizarCategorias();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

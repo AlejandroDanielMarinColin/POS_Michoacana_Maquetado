@@ -1,0 +1,178 @@
+:root {
+  --ancho-menu: 245px;
+}
+
+.sidebar,
+.side {
+  width: var(--ancho-menu) !important;
+  height: 100vh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 22px 14px !important;
+  color: white !important;
+  background: var(--menu) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  transition: transform 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar,
+.side::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.side::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar .marca,
+.side .marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 8px 20px;
+}
+
+.sidebar .marca img,
+.side .marca img {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.sidebar .marca strong,
+.side .marca strong {
+  display: block;
+  font-size: 0.87rem;
+}
+
+.sidebar .marca small,
+.side .marca small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.68rem;
+}
+
+.menu-seccion {
+  margin: 18px 11px 7px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.menu-navegacion {
+  display: grid;
+  gap: 5px;
+}
+
+.menu-opcion {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.82rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.menu-opcion:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.sidebar .menu-opcion.activa,
+.side .menu-opcion.activa {
+  color: var(--principal, var(--p, #ed2b85)) !important;
+  background: white !important;
+  box-shadow: 0 7px 18px rgba(123, 10, 60, 0.14);
+}
+
+.sidebar .menu-opcion.activa .menu-icono,
+.side .menu-opcion.activa .menu-icono {
+  color: var(--principal, var(--p, #ed2b85)) !important;
+}
+
+.menu-icono {
+  width: 22px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-style: normal;
+}
+
+.menu-punto {
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--principal, var(--p, #ed2b85));
+}
+
+.menu-cerrar-sesion {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 18px;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 11px;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.82rem;
+  font-weight: 750;
+  text-align: left;
+}
+
+.menu-cerrar-sesion:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.menu-cerrar-sesion:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.menu-cerrar-sesion .menu-icono {
+  font-size: 1rem;
+}
+
+.sidebar > .usuario-menu,
+.sidebar > .usuario,
+.sidebar > .user,
+.sidebar > .userbox,
+.side > .usuario-menu,
+.side > .usuario,
+.side > .user,
+.side > .userbox {
+  display: none !important;
+}
+
+@media (max-width: 850px) {
+  .sidebar,
+  .side {
+    transform: translateX(-105%);
+  }
+
+  .sidebar.abierta,
+  .sidebar.open,
+  .side.abierta,
+  .side.open {
+    transform: translateX(0);
+  }
+}

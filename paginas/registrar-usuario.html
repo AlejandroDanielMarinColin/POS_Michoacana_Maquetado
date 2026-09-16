@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Registrar usuario | La Michoacana</title>
+  <style>
+    :root{
+--principal:#ed2b85;
+--principal-oscuro:#d51d70;
+--principal-claro:rgba(237,43,133,.11);
+--menu:#ed2b85;
+--fondo:#f6f8fb;
+--texto:#17141d;
+--gris:#716a74;
+--borde:#e7e2e6;
+--rojo:#dc3545;
+--verde:#159a61;
+--ancho-menu:245px;
+--sombra:0 7px 25px rgba(38,23,32,.07)
+}*{
+box-sizing:border-box
+}body{
+margin:0;
+min-height:100vh;
+font-family:Inter,Arial,sans-serif;
+color:var(--texto);
+background:var(--fondo)
+}body.sin-scroll{
+overflow:hidden
+}button,input,select{
+font:inherit
+}button,select{
+cursor:pointer
+}a{
+color:inherit;
+text-decoration:none
+}.aplicacion{
+min-height:100vh;
+padding-left:var(--ancho-menu)
+}
+    .sidebar{
+width:var(--ancho-menu);
+height:100vh;
+position:fixed;
+inset:0 auto 0 0;
+z-index:1000;
+display:flex;
+flex-direction:column;
+padding:22px 14px;
+color:#fff;
+background:var(--menu);
+overflow-y:auto;
+transition:transform .3s
+}.marca{
+display:flex;
+align-items:center;
+gap:12px;
+padding:2px 8px 20px
+}.marca img{
+width:55px;
+height:55px;
+object-fit:contain
+}.marca strong,.usuario-menu strong{
+display:block;
+font-size:.87rem
+}.marca small,.usuario-menu small{
+display:block;
+margin-top:4px;
+color:#ffffffbf;
+font-size:.68rem
+}.titulo-menu{
+margin:18px 11px 7px;
+color:#ffffffa6;
+font-size:.65rem;
+font-weight:800;
+letter-spacing:.13em;
+text-transform:uppercase
+}.navegacion{
+display:grid;
+gap:5px
+}.opcion-menu{
+min-height:43px;
+display:flex;
+align-items:center;
+gap:11px;
+padding:10px 12px;
+border-radius:10px;
+color:#fffffff0;
+font-size:.82rem;
+font-weight:650
+}.opcion-menu:hover{
+background:#ffffff21
+}.opcion-menu.activa{
+color:var(--principal);
+background:#fff
+}.punto-activo{
+width:6px;
+height:6px;
+margin-left:auto;
+border-radius:50%;
+background:var(--principal)
+}.usuario-menu{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:auto;
+padding:20px 8px 10px;
+border-top:1px solid #ffffff26
+}.avatar{
+width:40px;
+height:40px;
+display:grid;
+place-items:center;
+flex-shrink:0;
+border-radius:50%;
+color:var(--principal);
+background:#fff;
+font-weight:850
+}
+    .barra-superior{
+min-height:76px;
+display:flex;
+align-items:center;
+gap:18px;
+padding:12px 4vw;
+border-bottom:1px solid var(--borde);
+background:#fff
+}.boton-menu{
+display:none;
+width:42px;
+height:42px;
+border:1px solid var(--borde);
+border-radius:10px;
+background:#fff
+}.sucursal-superior,.usuario-superior{
+display:flex;
+align-items:center;
+gap:10px
+}.sucursal-superior{
+margin-right:auto
+}.icono-superior{
+width:40px;
+height:40px;
+display:grid;
+place-items:center;
+border-radius:11px;
+color:var(--principal);
+background:var(--principal-claro)
+}.barra-superior small{
+display:block;
+margin-bottom:3px;
+color:var(--gris);
+font-size:.7rem
+}.barra-superior strong{
+font-size:.82rem
+}
+    .contenido{
+width:100%;
+max-width:1050px;
+margin:auto;
+padding:34px 4vw 70px
+}.encabezado{
+display:flex;
+align-items:flex-end;
+justify-content:space-between;
+gap:18px;
+margin-bottom:24px
+}.encabezado h1{
+margin:0 0 7px;
+font-size:clamp(1.8rem,3vw,2.35rem);
+letter-spacing:-.04em
+}.encabezado p{
+margin:0;
+color:var(--gris)
+}.volver{
+min-height:44px;
+display:flex;
+align-items:center;
+gap:8px;
+padding:0 15px;
+border:1px solid var(--borde);
+border-radius:11px;
+background:#fff
+}.formulario{
+padding:25px;
+border:1px solid var(--borde);
+border-radius:18px;
+background:#fff;
+box-shadow:var(--sombra)
+}.formulario h2{
+margin:0 0 5px;
+font-size:1.05rem
+}.descripcion{
+margin:0 0 23px;
+color:var(--gris);
+font-size:.84rem
+}.campos{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px
+}.campo{
+display:grid;
+gap:7px
+}.campo.ancho{
+grid-column:1/-1
+}.campo label{
+font-size:.75rem;
+font-weight:800
+}.requerido{
+color:var(--principal)
+}.campo input,.campo select{
+width:100%;
+min-height:49px;
+padding:0 14px;
+border:1px solid var(--borde);
+border-radius:11px;
+background:#fff;
+outline:0
+}.campo input:focus,.campo select:focus{
+border-color:var(--principal);
+box-shadow:0 0 0 4px var(--principal-claro)
+}.campo input:disabled,.campo select:disabled{
+cursor:not-allowed;
+background:#f3f4f6;
+color:#8a858d
+}.ayuda{
+color:var(--gris);
+font-size:.7rem
+}.aviso{
+display:flex;
+gap:11px;
+margin-top:19px;
+padding:14px;
+border-radius:12px;
+color:#6d5a16;
+background:#fff8d9;
+font-size:.78rem;
+line-height:1.45
+}.error{
+min-height:20px;
+margin-top:15px;
+color:var(--rojo);
+font-size:.78rem;
+font-weight:700
+}.acciones{
+display:flex;
+justify-content:flex-end;
+gap:11px;
+margin-top:20px;
+padding-top:20px;
+border-top:1px solid var(--borde)
+}.acciones a,.acciones button{
+min-height:48px;
+display:flex;
+align-items:center;
+padding:0 19px;
+border-radius:11px;
+font-weight:800
+}.cancelar{
+border:1px solid var(--borde);
+background:#fff
+}.guardar{
+border:0;
+color:#fff;
+background:var(--principal)
+}.fondo-menu{
+position:fixed;
+inset:0;
+z-index:950;
+visibility:hidden;
+opacity:0;
+background:#0a0e186b
+}.fondo-menu.visible{
+visibility:visible;
+opacity:1
+}
+    @media(max-width:850px){
+.aplicacion{
+padding-left:0
+}.sidebar{
+transform:translateX(-105%)
+}.sidebar.abierta{
+transform:none
+}.boton-menu{
+display:block
+}
+}@media(max-width:620px){
+.barra-superior{
+padding:11px 16px
+}.usuario-superior>div:last-child{
+display:none
+}.contenido{
+padding:25px 16px 55px
+}.encabezado{
+align-items:flex-start
+}.volver{
+width:44px;
+padding:0;
+justify-content:center;
+font-size:0
+}.volver span{
+font-size:1rem
+}.formulario{
+padding:19px
+}.campos{
+grid-template-columns:1fr
+}.campo.ancho{
+grid-column:auto
+}.acciones{
+display:grid;
+grid-template-columns:1fr 1fr
+}.acciones a,.acciones button{
+justify-content:center
+}
+}
+  </style>
+  <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+<body>
+<div class="aplicacion">
+<aside class="sidebar" id="sidebar">
+<div class="marca">
+<img src="../imagenes/logogranpaleteria.jpeg" alt="Logo">
+<div>
+<strong>La Michoacana</strong>
+<small>Sistema administrativo</small>
+</div>
+</div>
+<p class="titulo-menu">Principal</p>
+<nav class="navegacion">
+<a href="../dashboard.html" class="opcion-menu">⌂ Inicio</a>
+</nav>
+<p class="titulo-menu">Operación</p>
+<nav class="navegacion">
+<a href="registrar-venta.html" class="opcion-menu">🛒 Registrar venta</a>
+<a href="historial-ventas.html" class="opcion-menu">↺ Historial de ventas</a>
+<a href="gastos.html" class="opcion-menu">▣ Gastos</a>
+<a href="reabastecimiento.html" class="opcion-menu">♧ Reabastecimiento</a>
+<a href="inventario.html" class="opcion-menu">◇ Inventario</a>
+<a href="corte-caja.html" class="opcion-menu">▤ Corte de caja</a>
+</nav>
+<p class="titulo-menu">Productos</p>
+<nav class="navegacion">
+<a href="productos.html" class="opcion-menu">◇ Productos</a>
+<a href="categorias.html" class="opcion-menu">⌑ Categorías</a>
+<a href="catalogo-sucursal.html" class="opcion-menu">⌂ Catálogo por sucursal</a>
+</nav>
+<p class="titulo-menu">Administración</p>
+<nav class="navegacion">
+<a href="sucursales.html" class="opcion-menu">⌂ Sucursales</a>
+<a href="usuarios.html" class="opcion-menu activa">♙ Usuarios<span class="punto-activo">
+</span>
+</a>
+</nav>
+<div class="usuario-menu">
+<div class="avatar" id="avatarMenu">A</div>
+<div>
+<strong id="nombreMenu">Administrador</strong>
+<small id="sucursalMenu">Matriz · Zitácuaro</small>
+</div>
+</div>
+</aside>
+<div class="fondo-menu" id="fondoMenu">
+</div>
+  <main>
+<header class="barra-superior">
+<button class="boton-menu" id="abrirMenu">☰</button>
+<div class="sucursal-superior">
+<span class="icono-superior">⌖</span>
+<div>
+<small>Sucursal</small>
+<strong id="sucursalActual">Matriz · Zitácuaro</strong>
+</div>
+</div>
+<div class="usuario-superior">
+<div class="avatar" id="avatarSuperior">A</div>
+<div>
+<small>Usuario</small>
+<strong id="nombreSuperior">Administrador</strong>
+</div>
+</div>
+</header>
+    <section class="contenido">
+<div class="encabezado">
+<div>
+<h1 id="tituloPagina">Nuevo usuario</h1>
+<p id="subtituloPagina">Registra los datos y permisos de acceso.</p>
+</div>
+<a class="volver" href="usuarios.html">
+<span>←</span> Volver a usuarios</a>
+</div>
+      <form class="formulario" id="formulario" novalidate>
+<h2>Información del usuario</h2>
+<p class="descripcion">Los campos con asterisco son obligatorios.</p>
+<div class="campos">
+        <div class="campo ancho">
+<label for="nombre">Nombre completo <span class="requerido">*</span>
+</label>
+<input id="nombre" maxlength="100" autocomplete="name" required placeholder="Ej. Carlos Mendoza">
+</div>
+        <div class="campo ancho">
+<label for="correo">Correo electrónico <span class="requerido">*</span>
+</label>
+<input id="correo" type="email" maxlength="120" autocomplete="email" required placeholder="nombre@correo.com">
+<small class="ayuda">El correo no puede repetirse.</small>
+</div>
+        <div class="campo" id="campoNip">
+<label for="nip">NIP de acceso <span class="requerido">*</span>
+</label>
+<input id="nip" type="password" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" autocomplete="new-password" placeholder="••••••">
+<small class="ayuda">Debe contener exactamente 6 números.</small>
+</div>
+        <div class="campo">
+<label for="rol">Rol <span class="requerido">*</span>
+</label>
+<select id="rol" required>
+<option value="">Selecciona un rol</option>
+<option value="ADMIN">Administrador</option>
+<option value="GERENTE">Gerente</option>
+<option value="EMPLEADO">Empleado</option>
+</select>
+</div>
+        <div class="campo ancho">
+<label for="sucursal">Sucursal asignada <span class="requerido" id="asteriscoSucursal">*</span>
+</label>
+<select id="sucursal">
+<option value="">Selecciona una sucursal</option>
+</select>
+<small class="ayuda" id="ayudaSucursal">Obligatoria para gerentes y empleados.</small>
+</div>
+      </div>
+<div class="aviso" id="avisoNip" hidden>
+<span>🔒</span>
+<div>
+<strong>El NIP no se edita desde esta pantalla.</strong>
+<br>El restablecimiento tendrá su propio flujo de seguridad.</div>
+</div>
+<div class="error" id="error" aria-live="polite">
+</div>
+<div class="acciones">
+<a class="cancelar" href="usuarios.html">Cancelar</a>
+<button class="guardar" type="submit" id="guardar">Guardar usuario</button>
+</div>
+</form>
+    </section>
+  </main>
+</div>
+<script>
+  const $=id=>document.getElementById(id), params=new URLSearchParams(location.search), idEdicion=Number(params.get("id"));
+
+  const leer=(clave,base=[])=>{
+try{
+const d=JSON.parse(localStorage.getItem(clave));
+return Array.isArray(d)?d:base
+}catch{
+return base
+}
+};
+
+  let usuarios=leer("usuariosMichoacana"), sucursales=leer("sucursalesMichoacana",[{
+id:1,name:"Matriz · Zitácuaro",isActive:true
+},{
+id:2,name:"Sucursal Centro",isActive:true
+}]);
+
+  let actual=usuarios.find(u=>u.id===idEdicion);
+
+  function cargarSucursales(){
+const disponibles=sucursales.filter(s=>s.isActive!==false||String(s.id)===String(actual?.branchId));
+$("sucursal").innerHTML='<option value="">Selecciona una sucursal</option>'+disponibles.map(s=>`<option value="${
+s.id
+}">${
+s.name
+}</option>`).join("");
+
+}
+  function ajustarRol(){
+const admin=$("rol").value==="ADMIN";
+$("sucursal").disabled=admin;
+$("sucursal").required=!admin;
+$("asteriscoSucursal").hidden=admin;
+$("ayudaSucursal").textContent=admin?"El administrador tiene acceso global.":"Obligatoria para gerentes y empleados.";
+if(admin)$("sucursal").value="";
+
+}
+  function prepararEdicion(){
+if(!idEdicion)return;
+if(!actual){
+alert("No se encontró el usuario solicitado.");
+location.href="usuarios.html";
+return;
+
+}$("tituloPagina").textContent="Editar usuario";
+$("subtituloPagina").textContent="Actualiza sus datos, rol o sucursal asignada.";
+$("guardar").textContent="Guardar cambios";
+$("campoNip").hidden=true;
+$("nip").disabled=true;
+$("avisoNip").hidden=false;
+$("nombre").value=actual.name;
+$("correo").value=actual.email;
+$("rol").value=actual.role;
+$("sucursal").value=actual.branchId??"";
+ajustarRol();
+
+}
+  $("nip").addEventListener("input",e=>e.target.value=e.target.value.replace(/\D/g,"").slice(0,6));
+$("rol").addEventListener("change",ajustarRol);
+
+  $("formulario").addEventListener("submit",e=>{
+e.preventDefault();
+$("error").textContent="";
+const name=$("nombre").value.trim(),email=$("correo").value.trim().toLowerCase(),passcode=$("nip").value,role=$("rol").value,branchId=$("sucursal").value?Number($("sucursal").value):null;
+if(!name||!email||!role){
+$("error").textContent="Completa todos los campos obligatorios.";
+return
+}if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+$("error").textContent="Escribe un correo electrónico válido.";
+return
+}if(!idEdicion&&!/^\d{6}$/.test(passcode)){
+$("error").textContent="El NIP debe tener exactamente 6 números.";
+return
+}if(role!=="ADMIN"&&!branchId){
+$("error").textContent="Selecciona una sucursal para este usuario.";
+return
+}if(usuarios.some(u=>u.id!==idEdicion&&u.email.toLowerCase()===email)){
+ $("error").textContent="Ya existe un usuario con ese correo.";
+return
+}if(!idEdicion&&usuarios.some(u=>u.passcode===passcode)){
+ $("error").textContent="Ese NIP ya está asignado. Utiliza uno diferente.";
+return
+}const datos={
+name,email,role,branchId:role==="ADMIN"?null:branchId
+};
+if(idEdicion)Object.assign(actual,datos);
+else usuarios.unshift({
+id:Date.now(),...datos,passcode,isActive:true,createdAt:new Date().toISOString()
+});
+localStorage.setItem("usuariosMichoacana",JSON.stringify(usuarios));
+localStorage.setItem("mensajeUsuarios",idEdicion?"Usuario actualizado correctamente.":"Usuario creado correctamente.");
+location.href="usuarios.html";
+
+});
+
+  const sesion=JSON.parse(localStorage.getItem("usuarioSesion")||"null")||{
+nombre:"Administrador",sucursal:{
+nombre:"Matriz · Zitácuaro"
+}
+};
+const nombre=sesion.nombre||sesion.name;
+$("nombreMenu").textContent=$("nombreSuperior").textContent=nombre;
+$("avatarMenu").textContent=$("avatarSuperior").textContent=nombre.charAt(0).toUpperCase();
+$("sucursalMenu").textContent=$("sucursalActual").textContent=sesion.sucursal?.nombre||"Acceso global";
+try{
+const t=JSON.parse(localStorage.getItem("temaMichoacana"));
+if(t)Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(`--${
+k
+}`,v));
+
+}catch{
+
+}
+  $("abrirMenu").onclick=()=>{
+$("sidebar").classList.add("abierta");
+$("fondoMenu").classList.add("visible");
+document.body.classList.add("sin-scroll")
+};
+$("fondoMenu").onclick=()=>{
+$("sidebar").classList.remove("abierta");
+$("fondoMenu").classList.remove("visible");
+document.body.classList.remove("sin-scroll")
+};
+
+  cargarSucursales();
+prepararEdicion();
+ajustarRol();
+
+</script>
+    <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

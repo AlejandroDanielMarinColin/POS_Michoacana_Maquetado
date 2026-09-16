@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Auditoría | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --tarjeta: #ffffff;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --rojo: #dc3545;
+        --azul: #3478f6;
+        --naranja: #d97706;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ LATERAL */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: var(--menu);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        text-align: center;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .icono-superior {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .dato-superior .avatar {
+        background: var(--principal-claro);
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 30px 4vw 60px;
+      }
+
+      .encabezado {
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .aviso-lectura {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 8px 11px;
+        border-radius: 999px;
+        color: var(--principal-oscuro);
+        background: var(--principal-claro);
+        font-size: 0.73rem;
+        font-weight: 750;
+      }
+
+      /* FILTROS */
+
+      .filtros {
+        display: grid;
+        grid-template-columns: minmax(220px, 1.5fr) repeat(5, minmax(145px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+        padding: 17px;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .campo {
+        display: grid;
+        gap: 7px;
+      }
+
+      .campo label {
+        color: var(--texto-secundario);
+        font-size: 0.69rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .campo input,
+      .campo select {
+        width: 100%;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .campo input:focus,
+      .campo select:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .error-filtros {
+        grid-column: 1 / -1;
+        min-height: 0;
+        margin: 0;
+        color: var(--rojo);
+        font-size: 0.76rem;
+      }
+
+      .error-filtros:empty {
+        display: none;
+      }
+
+      /* RESUMEN Y TABLA */
+
+      .resumen {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .tarjeta-resumen {
+        min-height: 112px;
+        display: grid;
+        align-content: center;
+        gap: 7px;
+        padding: 18px 20px;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tarjeta-resumen small,
+      .tarjeta-resumen span {
+        color: var(--texto-secundario);
+      }
+
+      .tarjeta-resumen strong {
+        font-size: 1.45rem;
+      }
+
+      .tarjeta-resumen span {
+        font-size: 0.72rem;
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 17px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .panel-encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .panel-encabezado h2 {
+        margin: 0 0 4px;
+        font-size: 1rem;
+      }
+
+      .panel-encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+        font-size: 0.76rem;
+      }
+
+      .contador-registros {
+        flex-shrink: 0;
+        color: var(--texto-secundario);
+        font-size: 0.76rem;
+      }
+
+      .tabla-scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 1050px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 17px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.69rem;
+        text-transform: uppercase;
+      }
+
+      td {
+        font-size: 0.8rem;
+      }
+
+      tbody tr:hover {
+        background: #fffbfd;
+      }
+
+      .usuario-tabla strong,
+      .usuario-tabla small {
+        display: block;
+      }
+
+      .usuario-tabla small {
+        margin-top: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.69rem;
+      }
+
+      .etiqueta {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 0 9px;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 800;
+      }
+
+      .etiqueta.crear,
+      .etiqueta.abrir {
+        color: var(--verde);
+        background: rgba(21, 154, 97, 0.11);
+      }
+
+      .etiqueta.editar,
+      .etiqueta.cerrar {
+        color: var(--azul);
+        background: rgba(52, 120, 246, 0.11);
+      }
+
+      .etiqueta.desactivar {
+        color: var(--rojo);
+        background: rgba(220, 53, 69, 0.1);
+      }
+
+      .etiqueta.registrar {
+        color: var(--naranja);
+        background: rgba(217, 119, 6, 0.11);
+      }
+
+      .boton-detalle {
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--principal);
+        border-radius: 9px;
+        color: var(--principal);
+        background: white;
+        font-size: 0.73rem;
+        font-weight: 800;
+      }
+
+      .boton-detalle:hover {
+        color: white;
+        background: var(--principal);
+      }
+
+      .sin-resultados {
+        padding: 55px 20px;
+        text-align: center;
+        color: var(--texto-secundario);
+      }
+
+      /* MODAL DE CONSULTA */
+
+      .fondo-modal,
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(18, 15, 20, 0.48);
+        transition: 0.25s;
+      }
+
+      .fondo-menu {
+        z-index: 950;
+      }
+
+      .fondo-modal {
+        z-index: 1500;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+
+      .fondo-modal.visible,
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal {
+        width: min(600px, 100%);
+        max-height: calc(100vh - 36px);
+        overflow-y: auto;
+        border-radius: 18px;
+        background: white;
+        box-shadow: 0 20px 60px rgba(20, 16, 20, 0.24);
+        transform: translateY(12px);
+        transition: transform 0.25s;
+      }
+
+      .fondo-modal.visible .modal {
+        transform: translateY(0);
+      }
+
+      .modal-cabecera {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 19px 21px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .modal-cabecera h2 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .cerrar-modal {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: white;
+        font-size: 1.15rem;
+      }
+
+      .modal-contenido {
+        padding: 21px;
+      }
+
+      .detalle-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .detalle {
+        padding: 13px;
+        border: 1px solid var(--borde);
+        border-radius: 11px;
+        background: #fcfbfc;
+      }
+
+      .detalle.ancho {
+        grid-column: 1 / -1;
+      }
+
+      .detalle small,
+      .detalle strong {
+        display: block;
+      }
+
+      .detalle small {
+        margin-bottom: 5px;
+        color: var(--texto-secundario);
+        font-size: 0.67rem;
+        font-weight: 750;
+        text-transform: uppercase;
+      }
+
+      .detalle strong {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      .nota-modal {
+        margin: 16px 0 0;
+        color: var(--texto-secundario);
+        font-size: 0.72rem;
+        line-height: 1.5;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1250px) {
+        .filtros {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 1000px) {
+        .resumen {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:first-of-type .icono-superior,
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px 45px;
+        }
+
+        .filtros,
+        .resumen {
+          grid-template-columns: 1fr;
+        }
+
+        .panel-encabezado {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .detalle-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .detalle.ancho {
+          grid-column: auto;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo de La Michoacana" />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu"><i class="icono-menu">⌂</i>Inicio</a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu"><i class="icono-menu">🛒</i>Registrar venta</a>
+          <a href="historial-ventas.html" class="opcion-menu"><i class="icono-menu">↺</i>Historial de ventas</a>
+          <a href="gastos.html" class="opcion-menu"><i class="icono-menu">▣</i>Gastos</a>
+          <a href="reabastecimiento.html" class="opcion-menu"><i class="icono-menu">♧</i>Reabastecimiento</a>
+          <a href="inventario.html" class="opcion-menu"><i class="icono-menu">◇</i>Inventario</a>
+          <a href="corte-caja.html" class="opcion-menu"><i class="icono-menu">▤</i>Corte de caja</a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu"><i class="icono-menu">◇</i>Productos</a>
+          <a href="categorias.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías</a>
+          <a href="catalogo-sucursal.html" class="opcion-menu"><i class="icono-menu">⌂</i>Catálogo por sucursal</a>
+        </nav>
+
+        <p class="titulo-menu">Administración</p>
+
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu"><i class="icono-menu">⌂</i>Sucursales</a>
+          <a href="usuarios.html" class="opcion-menu"><i class="icono-menu">♙</i>Usuarios</a>
+          <a href="categorias-gasto.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías de gasto</a>
+          <a href="metodos-pago.html" class="opcion-menu"><i class="icono-menu">▭</i>Métodos de pago</a>
+        </nav>
+
+        <p class="titulo-menu">Supervisión</p>
+
+        <nav class="navegacion">
+          <a href="reportes.html" class="opcion-menu"><i class="icono-menu">⌁</i>Reportes</a>
+
+          <a href="auditoria.html" class="opcion-menu activa">
+            <i class="icono-menu">▣</i>
+            Auditoría
+            <span class="punto-activo"></span>
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">A</div>
+
+          <div>
+            <strong id="nombreMenu">Administrador</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button class="boton-menu" id="abrirMenu" type="button" aria-label="Abrir menú">☰</button>
+
+          <div class="dato-superior">
+            <span class="icono-superior">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Matriz · Zitácuaro</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="inicialSuperior">A</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreSuperior">Administrador</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <h1>Auditoría</h1>
+            <p>Consulta la actividad registrada automáticamente dentro del sistema.</p>
+          </div>
+
+          <section class="filtros">
+            <div class="campo">
+              <label for="busqueda">Buscar</label>
+              <input id="busqueda" type="search" placeholder="Usuario o descripción..." autocomplete="off" />
+            </div>
+
+            <div class="campo">
+              <label for="branchId">Sucursal</label>
+              <select id="branchId">
+                <option value="">Todas</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="modulo">Módulo</label>
+              <select id="modulo">
+                <option value="">Todos</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="accion">Acción</label>
+              <select id="accion">
+                <option value="">Todas</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="from">Desde</label>
+              <input id="from" type="date" />
+            </div>
+
+            <div class="campo">
+              <label for="to">Hasta</label>
+              <input id="to" type="date" />
+            </div>
+
+            <p class="error-filtros" id="errorFiltros"></p>
+          </section>
+
+          <section class="resumen">
+            <article class="tarjeta-resumen">
+              <small>Movimientos encontrados</small>
+              <strong id="totalMovimientos">0</strong>
+              <span>Según los filtros seleccionados</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Usuarios involucrados</small>
+              <strong id="totalUsuarios">0</strong>
+              <span>Responsables distintos</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Módulos consultados</small>
+              <strong id="totalModulos">0</strong>
+              <span>Áreas con actividad</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Último movimiento</small>
+              <strong id="ultimoMovimiento">—</strong>
+              <span id="ultimaFecha">Sin registros</span>
+            </article>
+          </section>
+
+          <section class="panel">
+            <div class="panel-encabezado">
+              <div>
+                <h2>Registro de actividad</h2>
+                <p>Los movimientos no pueden modificarse ni eliminarse.</p>
+              </div>
+
+              <span class="contador-registros" id="contadorRegistros">0 registros</span>
+            </div>
+
+            <div class="tabla-scroll" id="contenedorTabla">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha y hora</th>
+                    <th>Usuario</th>
+                    <th>Sucursal</th>
+                    <th>Módulo</th>
+                    <th>Acción</th>
+                    <th>Descripción</th>
+                    <th>Consulta</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tablaAuditoria"></tbody>
+              </table>
+            </div>
+
+            <div class="sin-resultados" id="sinResultados" hidden>
+              No hay movimientos que coincidan con los filtros seleccionados.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="fondo-modal" id="fondoModal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+      <article class="modal">
+        <div class="modal-cabecera">
+          <h2 id="tituloModal">Detalle del movimiento</h2>
+          <button class="cerrar-modal" id="cerrarModal" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="modal-contenido">
+          <div class="detalle-grid" id="detalleMovimiento"></div>
+
+          <p class="nota-modal">
+            Este registro fue generado automáticamente y está disponible únicamente para consulta.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <script>
+      const $ = id => document.getElementById(id);
+
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion")
+      ) || {
+        id: 1,
+        nombre: "Administrador",
+        rol: "ADMIN",
+        sucursal: {
+          id: 1,
+          nombre: "Matriz · Zitácuaro"
+        }
+      };
+
+      const sucursalesIniciales = [
+        { id: 1, name: "Matriz · Zitácuaro" },
+        { id: 2, name: "Sucursal Centro" },
+        { id: 3, name: "Sucursal Uruapan" },
+        { id: 4, name: "Sucursal Morelia" },
+        { id: 5, name: "Sucursal Pátzcuaro" },
+        { id: 6, name: "Sucursal Lázaro Cárdenas" },
+        { id: 7, name: "Sucursal Zamora" }
+      ];
+
+      const movimientosIniciales = [
+        {
+          id: 1,
+          fecha: "2026-09-15T09:42:00",
+          usuarioId: 1,
+          usuario: "Carlos Mendoza",
+          rol: "EMPLEADO",
+          branchId: 1,
+          sucursal: "Matriz · Zitácuaro",
+          modulo: "Ventas",
+          accion: "Registrar",
+          descripcion: "Registró la venta V-795030 por $54.00.",
+          referencia: "V-795030"
+        },
+        {
+          id: 2,
+          fecha: "2026-09-15T09:18:00",
+          usuarioId: 2,
+          usuario: "Ana López",
+          rol: "GERENTE",
+          branchId: 1,
+          sucursal: "Matriz · Zitácuaro",
+          modulo: "Corte de caja",
+          accion: "Abrir",
+          descripcion: "Abrió la caja con un fondo inicial de $1,000.00.",
+          referencia: "CAJA-150926"
+        },
+        {
+          id: 3,
+          fecha: "2026-09-14T18:31:00",
+          usuarioId: 1,
+          usuario: "Administrador",
+          rol: "ADMIN",
+          branchId: 3,
+          sucursal: "Sucursal Uruapan",
+          modulo: "Catálogo",
+          accion: "Editar",
+          descripcion: "Actualizó el precio de Paleta de fresa de $18.00 a $20.00.",
+          referencia: "PROD-001"
+        },
+        {
+          id: 4,
+          fecha: "2026-09-14T16:12:00",
+          usuarioId: 3,
+          usuario: "María García",
+          rol: "EMPLEADO",
+          branchId: 2,
+          sucursal: "Sucursal Centro",
+          modulo: "Gastos",
+          accion: "Crear",
+          descripcion: "Registró un gasto de limpieza por $320.00.",
+          referencia: "G-000018"
+        },
+        {
+          id: 5,
+          fecha: "2026-09-14T13:05:00",
+          usuarioId: 2,
+          usuario: "Ana López",
+          rol: "GERENTE",
+          branchId: 1,
+          sucursal: "Matriz · Zitácuaro",
+          modulo: "Reabastecimiento",
+          accion: "Registrar",
+          descripcion: "Registró el ingreso de 45 unidades al inventario.",
+          referencia: "R-000012"
+        },
+        {
+          id: 6,
+          fecha: "2026-09-13T20:04:00",
+          usuarioId: 2,
+          usuario: "Ana López",
+          rol: "GERENTE",
+          branchId: 1,
+          sucursal: "Matriz · Zitácuaro",
+          modulo: "Corte de caja",
+          accion: "Cerrar",
+          descripcion: "Cerró la caja con un monto contado de $12,480.00.",
+          referencia: "CAJA-130926"
+        },
+        {
+          id: 7,
+          fecha: "2026-09-13T11:26:00",
+          usuarioId: 1,
+          usuario: "Administrador",
+          rol: "ADMIN",
+          branchId: 4,
+          sucursal: "Sucursal Morelia",
+          modulo: "Productos",
+          accion: "Desactivar",
+          descripcion: "Desactivó el producto Paleta de tamarindo.",
+          referencia: "PROD-024"
+        },
+        {
+          id: 8,
+          fecha: "2026-09-12T10:10:00",
+          usuarioId: 1,
+          usuario: "Administrador",
+          rol: "ADMIN",
+          branchId: 1,
+          sucursal: "Matriz · Zitácuaro",
+          modulo: "Usuarios",
+          accion: "Crear",
+          descripcion: "Creó el acceso para el usuario Luis Hernández.",
+          referencia: "USR-009"
+        }
+      ];
+
+      function leerArreglo(clave, valorInicial = []) {
+        try {
+          const datos = JSON.parse(localStorage.getItem(clave));
+          return Array.isArray(datos) ? datos : valorInicial;
+        } catch (error) {
+          return valorInicial;
+        }
+      }
+
+      const sucursales = leerArreglo(
+        "sucursalesMichoacana",
+        sucursalesIniciales
+      );
+
+      let movimientos = leerArreglo(
+        "auditoriaMichoacana",
+        movimientosIniciales
+      );
+
+      function textoSeguro(valor) {
+        return String(valor ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function fechaMovimiento(movimiento) {
+        return movimiento.fecha || movimiento.createdAt || movimiento.date || "";
+      }
+
+      function formatearFecha(fecha) {
+        if (!fecha) return "Sin fecha";
+
+        const valor = new Date(fecha);
+
+        if (Number.isNaN(valor.getTime())) return fecha;
+
+        return new Intl.DateTimeFormat("es-MX", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }).format(valor);
+      }
+
+      function claseAccion(accion) {
+        return String(accion || "")
+          .trim()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function cargarFiltros() {
+        sucursales
+          .filter(sucursal => sucursal.isActive !== false)
+          .forEach(sucursal => {
+            const opcion = document.createElement("option");
+            opcion.value = sucursal.id;
+            opcion.textContent = sucursal.name || sucursal.nombre;
+            $("branchId").appendChild(opcion);
+          });
+
+        const modulos = [...new Set(movimientos.map(item => item.modulo).filter(Boolean))].sort();
+        const acciones = [...new Set(movimientos.map(item => item.accion).filter(Boolean))].sort();
+
+        modulos.forEach(modulo => {
+          const opcion = document.createElement("option");
+          opcion.value = modulo;
+          opcion.textContent = modulo;
+          $("modulo").appendChild(opcion);
+        });
+
+        acciones.forEach(accion => {
+          const opcion = document.createElement("option");
+          opcion.value = accion;
+          opcion.textContent = accion;
+          $("accion").appendChild(opcion);
+        });
+      }
+
+      function validarFechas() {
+        const desde = $("from").value;
+        const hasta = $("to").value;
+
+        if (desde && hasta && desde > hasta) {
+          $("errorFiltros").textContent = "La fecha inicial no puede ser posterior a la fecha final.";
+          return false;
+        }
+
+        $("errorFiltros").textContent = "";
+        return true;
+      }
+
+      function filtrarMovimientos() {
+        if (!validarFechas()) return [];
+
+        const busqueda = $("busqueda").value.trim().toLowerCase();
+        const branchId = Number($("branchId").value) || null;
+        const modulo = $("modulo").value;
+        const accion = $("accion").value;
+        const desde = $("from").value;
+        const hasta = $("to").value;
+
+        return movimientos
+          .filter(movimiento => {
+            const fecha = fechaMovimiento(movimiento).slice(0, 10);
+            const texto = [
+              movimiento.usuario,
+              movimiento.descripcion,
+              movimiento.referencia
+            ].join(" ").toLowerCase();
+
+            return (
+              (!busqueda || texto.includes(busqueda)) &&
+              (!branchId || Number(movimiento.branchId) === branchId) &&
+              (!modulo || movimiento.modulo === modulo) &&
+              (!accion || movimiento.accion === accion) &&
+              (!desde || fecha >= desde) &&
+              (!hasta || fecha <= hasta)
+            );
+          })
+          .sort((a, b) => new Date(fechaMovimiento(b)) - new Date(fechaMovimiento(a)));
+      }
+
+      function renderizar() {
+        const filtrados = filtrarMovimientos();
+        const tabla = $("tablaAuditoria");
+
+        $("totalMovimientos").textContent = filtrados.length;
+        $("totalUsuarios").textContent = new Set(filtrados.map(item => item.usuarioId || item.usuario)).size;
+        $("totalModulos").textContent = new Set(filtrados.map(item => item.modulo)).size;
+        $("contadorRegistros").textContent = `${filtrados.length} ${filtrados.length === 1 ? "registro" : "registros"}`;
+
+        const ultimo = filtrados[0];
+        $("ultimoMovimiento").textContent = ultimo ? ultimo.accion : "—";
+        $("ultimaFecha").textContent = ultimo ? formatearFecha(fechaMovimiento(ultimo)) : "Sin registros";
+
+        $("contenedorTabla").hidden = filtrados.length === 0;
+        $("sinResultados").hidden = filtrados.length !== 0;
+
+        tabla.innerHTML = filtrados
+          .map(movimiento => `
+            <tr>
+              <td>${textoSeguro(formatearFecha(fechaMovimiento(movimiento)))}</td>
+              <td class="usuario-tabla">
+                <strong>${textoSeguro(movimiento.usuario)}</strong>
+                <small>${textoSeguro(movimiento.rol || "Sin rol")}</small>
+              </td>
+              <td>${textoSeguro(movimiento.sucursal)}</td>
+              <td>${textoSeguro(movimiento.modulo)}</td>
+              <td>
+                <span class="etiqueta ${claseAccion(movimiento.accion)}">
+                  ${textoSeguro(movimiento.accion)}
+                </span>
+              </td>
+              <td>${textoSeguro(movimiento.descripcion)}</td>
+              <td>
+                <button class="boton-detalle" type="button" data-id="${textoSeguro(movimiento.id)}">
+                  Ver detalle
+                </button>
+              </td>
+            </tr>
+          `)
+          .join("");
+      }
+
+      function abrirDetalle(id) {
+        const movimiento = movimientos.find(item => String(item.id) === String(id));
+
+        if (!movimiento) return;
+
+        $("detalleMovimiento").innerHTML = `
+          <div class="detalle">
+            <small>Fecha y hora</small>
+            <strong>${textoSeguro(formatearFecha(fechaMovimiento(movimiento)))}</strong>
+          </div>
+
+          <div class="detalle">
+            <small>Referencia</small>
+            <strong>${textoSeguro(movimiento.referencia || "Sin referencia")}</strong>
+          </div>
+
+          <div class="detalle">
+            <small>Usuario</small>
+            <strong>${textoSeguro(movimiento.usuario)}</strong>
+          </div>
+
+          <div class="detalle">
+            <small>Rol</small>
+            <strong>${textoSeguro(movimiento.rol || "Sin rol")}</strong>
+          </div>
+
+          <div class="detalle">
+            <small>Sucursal</small>
+            <strong>${textoSeguro(movimiento.sucursal)}</strong>
+          </div>
+
+          <div class="detalle">
+            <small>Módulo y acción</small>
+            <strong>${textoSeguro(movimiento.modulo)} · ${textoSeguro(movimiento.accion)}</strong>
+          </div>
+
+          <div class="detalle ancho">
+            <small>Descripción del movimiento</small>
+            <strong>${textoSeguro(movimiento.descripcion)}</strong>
+          </div>
+        `;
+
+        $("fondoModal").classList.add("visible");
+        document.body.classList.add("sin-scroll");
+        $("cerrarModal").focus();
+      }
+
+      function cerrarModal() {
+        $("fondoModal").classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      function configurarSesion() {
+        const nombre = usuarioSesion.nombre || usuarioSesion.name || "Administrador";
+        const sucursal = usuarioSesion.sucursal?.nombre || usuarioSesion.branchName || "Matriz · Zitácuaro";
+        const inicial = nombre.charAt(0).toUpperCase();
+
+        $("nombreMenu").textContent = nombre;
+        $("nombreSuperior").textContent = nombre;
+        $("inicialMenu").textContent = inicial;
+        $("inicialSuperior").textContent = inicial;
+        $("sucursalMenu").textContent = sucursal;
+        $("sucursalActual").textContent = sucursal;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+
+          if (!tema) return;
+
+          const raiz = document.documentElement;
+
+          ["principal", "principalOscuro", "secundario", "menu", "fondo"].forEach(propiedad => {
+            if (!tema[propiedad]) return;
+
+            const variable = propiedad === "principalOscuro"
+              ? "--principal-oscuro"
+              : `--${propiedad}`;
+
+            raiz.style.setProperty(variable, tema[propiedad]);
+          });
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      ["busqueda", "branchId", "modulo", "accion", "from", "to"].forEach(id => {
+        $(id).addEventListener(id === "busqueda" ? "input" : "change", renderizar);
+      });
+
+      $("tablaAuditoria").addEventListener("click", evento => {
+        const boton = evento.target.closest("[data-id]");
+        if (boton) abrirDetalle(boton.dataset.id);
+      });
+
+      $("cerrarModal").addEventListener("click", cerrarModal);
+
+      $("fondoModal").addEventListener("click", evento => {
+        if (evento.target === $("fondoModal")) cerrarModal();
+      });
+
+      const sidebar = $("sidebar");
+      const fondoMenu = $("fondoMenu");
+
+      $("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      function cerrarMenu() {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      fondoMenu.addEventListener("click", cerrarMenu);
+
+      document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape") {
+          cerrarMenu();
+          cerrarModal();
+        }
+      });
+
+      cargarTema();
+      configurarSesion();
+      cargarFiltros();
+      renderizar();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

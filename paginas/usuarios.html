@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>
+      Usuarios | La Michoacana
+    </title>
+    <style>
+      :root {
+        --principal:#ed2b85;
+        --principal-oscuro:#d51d70;
+        --principal-claro:rgba(237,43,133,.11);
+        --menu:#ed2b85;
+        --fondo:#f6f8fb;
+        --tarjeta:#fff;
+        --texto:#17141d;
+        --gris:#716a74;
+        --borde:#e7e2e6;
+        --verde:#159a61;
+        --rojo:#dc3545;
+        --ancho-menu:245px;
+        --sombra:0 7px 25px rgba(38,23,32,.07)
+      }
+      
+      * {
+        box-sizing:border-box
+      }
+      
+      body {
+        margin:0;
+        min-height:100vh;
+        font-family:Inter,Arial,sans-serif;
+        color:var(--texto);
+        background:var(--fondo)
+      }
+      
+      body.sin-scroll {
+        overflow:hidden
+      }
+      
+      button,input,select {
+        font:inherit
+      }
+      
+      button,select {
+        cursor:pointer
+      }
+      
+      a {
+        color:inherit;
+        text-decoration:none
+      }
+      
+      .aplicacion {
+        min-height:100vh;
+        padding-left:var(--ancho-menu)
+      }
+      
+      .sidebar {
+        width:var(--ancho-menu);
+        height:100vh;
+        position:fixed;
+        inset:0 auto 0 0;
+        z-index:1000;
+        display:flex;
+        flex-direction:column;
+        padding:22px 14px;
+        color:#fff;
+        background:var(--menu);
+        overflow-y:auto;
+        scrollbar-width:thin;
+        scrollbar-color:#ffffff4d transparent;
+        transition:transform .3s
+      }
+      
+      .marca {
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:2px 8px 20px
+      }
+      
+      .marca img {
+        width:55px;
+        height:55px;
+        object-fit:contain
+      }
+      
+      .marca strong,.usuario-menu strong {
+        display:block;
+        font-size:.87rem
+      }
+      
+      .marca small,.usuario-menu small {
+        display:block;
+        margin-top:4px;
+        color:#ffffffbf;
+        font-size:.68rem
+      }
+      
+      .titulo-menu {
+        margin:18px 11px 7px;
+        color:#ffffffa6;
+        font-size:.65rem;
+        font-weight:800;
+        letter-spacing:.13em;
+        text-transform:uppercase
+      }
+      
+      .navegacion {
+        display:grid;
+        gap:5px
+      }
+      
+      .opcion-menu {
+        min-height:43px;
+        display:flex;
+        align-items:center;
+        gap:11px;
+        padding:10px 12px;
+        border-radius:10px;
+        color:#fffffff0;
+        font-size:.82rem;
+        font-weight:650
+      }
+      
+      .opcion-menu:hover {
+        background:#ffffff21
+      }
+      
+      .opcion-menu.activa {
+        color:var(--principal);
+        background:#fff
+      }
+      
+      .icono-menu {
+        width:22px;
+        text-align:center
+      }
+      
+      .punto-activo {
+        width:6px;
+        height:6px;
+        margin-left:auto;
+        border-radius:50%;
+        background:var(--principal)
+      }
+      
+      .usuario-menu {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-top:auto;
+        padding:20px 8px 10px;
+        border-top:1px solid #ffffff26
+      }
+      
+      .avatar {
+        width:40px;
+        height:40px;
+        display:grid;
+        place-items:center;
+        flex-shrink:0;
+        border-radius:50%;
+        color:var(--principal);
+        background:#fff;
+        font-weight:850
+      }
+      
+      .barra-superior {
+        min-height:76px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:18px;
+        padding:12px 4vw;
+        border-bottom:1px solid var(--borde);
+        background:#fff
+      }
+      
+      .boton-menu {
+        display:none;
+        width:42px;
+        height:42px;
+        border:1px solid var(--borde);
+        border-radius:10px;
+        background:#fff
+      }
+      
+      .sucursal-superior,.usuario-superior {
+        display:flex;
+        align-items:center;
+        gap:10px
+      }
+      
+      .sucursal-superior {
+        margin-right:auto
+      }
+      
+      .icono-superior {
+        width:40px;
+        height:40px;
+        display:grid;
+        place-items:center;
+        border-radius:11px;
+        color:var(--principal);
+        background:var(--principal-claro)
+      }
+      
+      .barra-superior small {
+        display:block;
+        margin-bottom:3px;
+        color:var(--gris);
+        font-size:.7rem
+      }
+      
+      .barra-superior strong {
+        font-size:.82rem
+      }
+      
+      .contenido {
+        width:100%;
+        max-width:1600px;
+        margin:auto;
+        padding:34px 4vw 70px
+      }
+      
+      .encabezado {
+        display:flex;
+        align-items:flex-end;
+        justify-content:space-between;
+        gap:18px;
+        margin-bottom:24px
+      }
+      
+      .encabezado h1 {
+        margin:0 0 7px;
+        font-size:clamp(1.8rem,3vw,2.35rem);
+        letter-spacing:-.04em
+      }
+      
+      .encabezado p {
+        margin:0;
+        color:var(--gris)
+      }
+      
+      .nuevo {
+        min-height:48px;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:0 18px;
+        border-radius:12px;
+        color:#fff;
+        background:var(--principal);
+        font-weight:800
+      }
+      
+      .resumen {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:16px;
+        margin-bottom:20px
+      }
+      
+      .tarjeta {
+        padding:20px;
+        border:1px solid var(--borde);
+        border-radius:16px;
+        background:#fff;
+        box-shadow:var(--sombra)
+      }
+      
+      .tarjeta span {
+        color:var(--gris);
+        font-size:.78rem
+      }
+      
+      .tarjeta strong {
+        display:block;
+        margin:8px 0 4px;
+        font-size:1.55rem
+      }
+      
+      .tarjeta small {
+        color:var(--verde)
+      }
+      
+      .filtros {
+        display:grid;
+        grid-template-columns:minmax(260px,1fr) repeat(3,minmax(150px,210px));
+        gap:11px;
+        margin-bottom:20px;
+        padding:16px;
+        border:1px solid var(--borde);
+        border-radius:16px;
+        background:#fff;
+        box-shadow:var(--sombra)
+      }
+      
+      .filtros input,.filtros select {
+        min-height:48px;
+        width:100%;
+        padding:0 14px;
+        border:1px solid var(--borde);
+        border-radius:11px;
+        background:#fff;
+        outline:0
+      }
+      
+      .filtros input:focus,.filtros select:focus {
+        border-color:var(--principal);
+        box-shadow:0 0 0 4px var(--principal-claro)
+      }
+      
+      .tabla-contenedor {
+        overflow:hidden;
+        border:1px solid var(--borde);
+        border-radius:17px;
+        background:#fff;
+        box-shadow:var(--sombra)
+      }
+      
+      table {
+        width:100%;
+        border-collapse:collapse
+      }
+      
+      th,td {
+        padding:16px 18px;
+        border-bottom:1px solid var(--borde);
+        text-align:left
+      }
+      
+      th {
+        color:var(--gris);
+        background:#fcfafc;
+        font-size:.7rem;
+        text-transform:uppercase
+      }
+      
+      td {
+        font-size:.82rem
+      }
+      
+      .nombre {
+        display:flex;
+        align-items:center;
+        gap:11px
+      }
+      
+      .inicial {
+        width:38px;
+        height:38px;
+        display:grid;
+        place-items:center;
+        border-radius:50%;
+        color:var(--principal);
+        background:var(--principal-claro);
+        font-weight:850
+      }
+      
+      .rol,.estado {
+        display:inline-flex;
+        padding:6px 10px;
+        border-radius:999px;
+        font-size:.7rem;
+        font-weight:800
+      }
+      
+      .rol {
+        color:#5b3e69;
+        background:#f2e9ff
+      }
+      
+      .estado.activo {
+        color:#087743;
+        background:#e6f8ef
+      }
+      
+      .estado.inactivo {
+        color:#a12b37;
+        background:#ffe9ec
+      }
+      
+      .acciones {
+        display:flex;
+        gap:8px
+      }
+      
+      .acciones button {
+        min-height:38px;
+        padding:0 12px;
+        border-radius:9px;
+        background:#fff;
+        font-size:.75rem;
+        font-weight:750
+      }
+      
+      .editar {
+        border:1px solid var(--borde);
+        color:var(--principal)
+      }
+      
+      .desactivar {
+        border:1px solid #ffd0d6;
+        color:var(--rojo)
+      }
+      
+      button:disabled {
+        cursor:not-allowed;
+        opacity:.45
+      }
+      
+      .vacio {
+        padding:45px;
+        text-align:center;
+        color:var(--gris)
+      }
+      
+      .pie-tabla {
+        display:flex;
+        justify-content:space-between;
+        padding:15px 18px;
+        color:var(--gris);
+        font-size:.76rem
+      }
+      
+      .mensaje {
+        position:fixed;
+        right:22px;
+        top:92px;
+        z-index:1200;
+        padding:13px 17px;
+        border-radius:11px;
+        color:#fff;
+        background:#25212a;
+        opacity:0;
+        transform:translateY(-10px);
+        transition:.25s;
+        pointer-events:none
+      }
+      
+      .mensaje.visible {
+        opacity:1;
+        transform:none
+      }
+      
+      .fondo-menu {
+        position:fixed;
+        inset:0;
+        z-index:950;
+        visibility:hidden;
+        opacity:0;
+        background:#0a0e186b;
+        transition:.25s
+      }
+      
+      .fondo-menu.visible {
+        visibility:visible;
+        opacity:1
+      }
+      
+      @media(max-width:1050px) {
+        .filtros {
+          grid-template-columns:1fr 1fr
+        }
+      
+        .tabla-contenedor {
+          overflow-x:auto
+        }
+      
+        table {
+          min-width:920px
+        }
+      
+      }
+      
+      @media(max-width:850px) {
+        .aplicacion {
+          padding-left:0
+        }
+      
+        .sidebar {
+          transform:translateX(-105%)
+        }
+      
+        .sidebar.abierta {
+          transform:none
+        }
+      
+        .boton-menu {
+          display:block
+        }
+      
+        .resumen {
+          grid-template-columns:1fr 1fr
+        }
+      
+      }
+      
+      @media(max-width:620px) {
+        .barra-superior {
+          padding:11px 16px
+        }
+      
+        .usuario-superior>div:last-child {
+          display:none
+        }
+      
+        .contenido {
+          padding:25px 16px 55px
+        }
+      
+        .encabezado {
+          align-items:flex-start
+        }
+      
+        .nuevo {
+          width:48px;
+          padding:0;
+          justify-content:center;
+          font-size:0
+        }
+      
+        .nuevo span {
+          font-size:1.2rem
+        }
+      
+        .resumen {
+          grid-template-columns:1fr
+        }
+      
+        .filtros {
+          grid-template-columns:1fr
+        }
+      
+        .mensaje {
+          left:16px;
+          right:16px
+        }
+      
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo">
+          <div>
+            <strong>
+              La Michoacana
+            </strong>
+            <small>
+              Sistema administrativo
+            </small>
+          </div>
+        </div>
+        <p class="titulo-menu">
+          Principal
+        </p>
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <span class="icono-menu">
+              ⌂
+            </span>
+            Inicio
+          </a>
+        </nav>
+        <p class="titulo-menu">
+          Operación
+        </p>
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu">
+            🛒 Registrar venta
+          </a>
+          <a href="historial-ventas.html" class="opcion-menu">
+            ↺ Historial de ventas
+          </a>
+          <a href="gastos.html" class="opcion-menu">
+            ▣ Gastos
+          </a>
+          <a href="reabastecimiento.html" class="opcion-menu">
+            ♧ Reabastecimiento
+          </a>
+          <a href="inventario.html" class="opcion-menu">
+            ◇ Inventario
+          </a>
+          <a href="corte-caja.html" class="opcion-menu">
+            ▤ Corte de caja
+          </a>
+        </nav>
+        <p class="titulo-menu">
+          Productos
+        </p>
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu">
+            ◇ Productos
+          </a>
+          <a href="categorias.html" class="opcion-menu">
+            ⌑ Categorías
+          </a>
+          <a href="catalogo-sucursal.html" class="opcion-menu">
+            ⌂ Catálogo por sucursal
+          </a>
+        </nav>
+        <p class="titulo-menu">
+          Administración
+        </p>
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu">
+            ⌂ Sucursales
+          </a>
+          <a href="usuarios.html" class="opcion-menu activa">
+            ♙ Usuarios
+            <span class="punto-activo">
+            </span>
+          </a>
+          <a href="categorias-gasto.html" class="opcion-menu">
+            ⌑ Categorías de gasto
+          </a>
+          <a href="metodos-pago.html" class="opcion-menu">
+            ▭ Métodos de pago
+          </a>
+        </nav>
+        <div class="usuario-menu">
+          <div class="avatar" id="avatarMenu">
+            A
+          </div>
+          <div>
+            <strong id="nombreMenu">
+              Administrador
+            </strong>
+            <small id="sucursalMenu">
+              Matriz · Zitácuaro
+            </small>
+          </div>
+        </div>
+      </aside>
+      <div class="fondo-menu" id="fondoMenu">
+      </div>
+      <main>
+        <header class="barra-superior">
+          <button class="boton-menu" id="abrirMenu">
+            ☰
+          </button>
+          <div class="sucursal-superior">
+            <span class="icono-superior">
+              ⌖
+            </span>
+            <div>
+              <small>
+                Sucursal
+              </small>
+              <strong id="sucursalActual">
+                Matriz · Zitácuaro
+              </strong>
+            </div>
+          </div>
+          <div class="usuario-superior">
+            <div class="avatar" id="avatarSuperior">
+              A
+            </div>
+            <div>
+              <small>
+                Usuario
+              </small>
+              <strong id="nombreSuperior">
+                Administrador
+              </strong>
+            </div>
+          </div>
+        </header>
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1>
+                Usuarios
+              </h1>
+              <p>
+                Administra el acceso, rol y sucursal de cada integrante.
+              </p>
+            </div>
+            <a class="nuevo" href="registrar-usuario.html">
+              <span>
+                ＋
+              </span>
+              Nueva persona
+            </a>
+          </div>
+          <section class="resumen">
+            <article class="tarjeta">
+              <span>
+                Usuarios registrados
+              </span>
+              <strong id="totalUsuarios">
+                0
+              </strong>
+              <small>
+                Total del sistema
+              </small>
+            </article>
+            <article class="tarjeta">
+              <span>
+                Usuarios activos
+              </span>
+              <strong id="usuariosActivos">
+                0
+              </strong>
+              <small>
+                Con acceso permitido
+              </small>
+            </article>
+            <article class="tarjeta">
+              <span>
+                Administradores
+              </span>
+              <strong id="totalAdmins">
+                0
+              </strong>
+              <small>
+                Acceso global
+              </small>
+            </article>
+          </section>
+          <section class="filtros">
+            <input id="busqueda" type="search" placeholder="Buscar por nombre o correo...">
+            <select id="filtroRol">
+              <option value="">
+                Todos los roles
+              </option>
+              <option>
+                ADMIN
+              </option>
+              <option>
+                GERENTE
+              </option>
+              <option>
+                EMPLEADO
+              </option>
+            </select>
+            <select id="filtroSucursal">
+              <option value="">
+                Todas las sucursales
+              </option>
+            </select>
+            <select id="filtroEstado">
+              <option value="">
+                Todos los estados
+              </option>
+              <option value="activo">
+                Activos
+              </option>
+              <option value="inactivo">
+                Inactivos
+              </option>
+            </select>
+          </section>
+          <section class="tabla-contenedor">
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Correo
+                  </th>
+                  <th>
+                    Rol
+                  </th>
+                  <th>
+                    Sucursal
+                  </th>
+                  <th>
+                    Estado
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="cuerpoTabla">
+              </tbody>
+            </table>
+            <div class="vacio" id="vacio" hidden>
+              No encontramos usuarios con esos filtros.
+            </div>
+            <div class="pie-tabla">
+              <span id="resultado">
+              </span>
+              <span>
+                El NIP permanece protegido
+              </span>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div class="mensaje" id="mensaje">
+    </div>
+
+  <script>
+  const $ = id => document.getElementById(id);
+  const sucursalesBase = [ {
+    id:1,name:"Matriz · Zitácuaro",isActive:true
+  }, {
+    id:2,name:"Sucursal Centro",isActive:true
+  }, {
+    id:3,name:"Sucursal Uruapan",isActive:true
+  }, {
+    id:4,name:"Sucursal Morelia",isActive:true
+  }, {
+    id:5,name:"Sucursal Pátzcuaro",isActive:true
+  }, {
+    id:6,name:"Sucursal Lázaro Cárdenas",isActive:true
+  }, {
+    id:7,name:"Sucursal Zamora",isActive:true
+  }];
+  const usuariosBase = [ {
+    id:1,name:"Administrador",email:"admin@michoacana.mx",passcode:"123456",role:"ADMIN",branchId:null,isActive:true
+  }, {
+    id:2,name:"Carlos Mendoza",email:"carlos@michoacana.mx",passcode:"654321",role:"EMPLEADO",branchId:1,isActive:true
+  }, {
+    id:3,name:"Ana López",email:"ana@michoacana.mx",passcode:"112233",role:"GERENTE",branchId:2,isActive:true
+  }];
+  const leer = (clave, base) =>  {
+    try  {
+      const dato=JSON.parse(localStorage.getItem(clave));
+      return Array.isArray(dato)&&dato.length?dato:base;
+    } catch  {
+      return base;
+    }
+  };
+  let sucursales=leer("sucursalesMichoacana",sucursalesBase), usuarios=leer("usuariosMichoacana",usuariosBase);
+  localStorage.setItem("usuariosMichoacana",JSON.stringify(usuarios));
+  const nombreSucursal = id => sucursales.find(s=>String(s.id)===String(id))?.name || "Sin sucursal";
+  function cargarSucursales() {
+    $("filtroSucursal").innerHTML='<option value="">Todas las sucursales</option>'+sucursales.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+  }
+  function render() {
+    const q=$("busqueda").value.trim().toLowerCase(),rol=$("filtroRol").value,sucursal=$("filtroSucursal").value,estado=$("filtroEstado").value;
+    const lista=usuarios.filter(u=>(u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q))&&(!rol||u.role===rol)&&(!sucursal||String(u.branchId)===sucursal)&&(!estado||(u.isActive!==false?"activo":"inactivo")===estado));
+    $("totalUsuarios").textContent=usuarios.length;
+    $("usuariosActivos").textContent=usuarios.filter(u=>u.isActive!==false).length;
+    $("totalAdmins").textContent=usuarios.filter(u=>u.role==="ADMIN"&&u.isActive!==false).length;
+    $("cuerpoTabla").innerHTML=lista.map(u=>`<tr><td><div class="nombre"><span class="inicial">${u.name.charAt(0).toUpperCase()}</span><strong>${u.name}</strong></div></td><td>${u.email}</td><td><span class="rol">${u.role}</span></td><td>${u.role==="ADMIN"?"Acceso global":nombreSucursal(u.branchId)}</td><td><span class="estado ${u.isActive!==false?"activo":"inactivo"}">${u.isActive!==false?"Activo":"Inactivo"}</span></td><td><div class="acciones"><button class="editar" onclick="editar(${u.id})" ${u.isActive===false?"disabled":""}>Editar</button><button class="desactivar" onclick="desactivar(${u.id})" ${u.isActive===false?"disabled":""}>Desactivar</button></div></td></tr>`).join("");
+    $("vacio").hidden=lista.length>0;
+    $("resultado").textContent=`Mostrando ${lista.length} de ${usuarios.length}`;
+  }
+  function editar(id) {
+    location.href=`registrar-usuario.html?id=${id}`;
+  }
+  function desactivar(id) {
+    const u=usuarios.find(x=>x.id===id);
+    if(!u||u.isActive===false)return;
+    if(!confirm(`¿Desactivar a “${u.name}”? Ya no podrá ingresar con su NIP.`))return;
+    u.isActive=false;
+    localStorage.setItem("usuariosMichoacana",JSON.stringify(usuarios));
+    render();
+    mostrar("Usuario desactivado correctamente.");
+  }
+  function mostrar(texto) {
+    $("mensaje").textContent=texto;
+    $("mensaje").classList.add("visible");
+    clearTimeout(mostrar.t);
+    mostrar.t=setTimeout(()=>$("mensaje").classList.remove("visible"),2200);
+  }
+  ["busqueda","filtroRol","filtroSucursal","filtroEstado"].forEach(id=>$(id).addEventListener(id==="busqueda"?"input":"change",render));
+  const sesion=JSON.parse(localStorage.getItem("usuarioSesion")||"null")|| {
+    nombre:"Administrador",sucursal: {
+      nombre:"Matriz · Zitácuaro"
+    }
+  };
+  $("nombreMenu").textContent=$("nombreSuperior").textContent=sesion.nombre||sesion.name;
+  $("avatarMenu").textContent=$("avatarSuperior").textContent=(sesion.nombre||sesion.name).charAt(0).toUpperCase();
+  $("sucursalMenu").textContent=$("sucursalActual").textContent=sesion.sucursal?.nombre||"Acceso global";
+  try {
+    const t=JSON.parse(localStorage.getItem("temaMichoacana"));
+    if(t)Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(`--${k}`,v));
+  }catch {
+  }
+  $("abrirMenu").onclick=()=> {
+    $("sidebar").classList.add("abierta");
+    $("fondoMenu").classList.add("visible");
+    document.body.classList.add("sin-scroll")
+  };
+  $("fondoMenu").onclick=()=> {
+    $("sidebar").classList.remove("abierta");
+    $("fondoMenu").classList.remove("visible");
+    document.body.classList.remove("sin-scroll")
+  };
+  cargarSucursales();
+  render();
+  const mensajeGuardado = localStorage.getItem("mensajeUsuarios");
+  if (mensajeGuardado)  {
+    localStorage.removeItem("mensajeUsuarios");
+    mostrar(mensajeGuardado);
+  }
+  </script>
+    <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

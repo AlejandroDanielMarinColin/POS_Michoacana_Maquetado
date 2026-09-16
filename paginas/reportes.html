@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Reportes | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --tarjeta: #ffffff;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --rojo: #dc3545;
+        --azul: #3b82f6;
+        --amarillo: #e5a400;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ LATERAL */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: var(--menu);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        text-align: center;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: white;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .icono-superior {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      .barra-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .barra-superior strong {
+        font-size: 0.82rem;
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 34px 4vw 70px;
+      }
+
+      .encabezado {
+        margin-bottom: 24px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 7px;
+        font-size: clamp(1.8rem, 3vw, 2.35rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      /* FILTROS */
+
+      .filtros {
+        display: grid;
+        grid-template-columns: minmax(230px, 1fr) repeat(2, minmax(170px, 0.55fr));
+        gap: 13px;
+        margin-bottom: 20px;
+        padding: 18px;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .campo {
+        display: grid;
+        gap: 7px;
+      }
+
+      .campo label {
+        color: var(--texto-secundario);
+        font-size: 0.69rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .campo input,
+      .campo select {
+        width: 100%;
+        min-height: 47px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .campo input:focus,
+      .campo select:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .error-filtros {
+        grid-column: 1 / -1;
+        min-height: 18px;
+        margin: -2px 0 0;
+        color: var(--rojo);
+        font-size: 0.74rem;
+        font-weight: 750;
+      }
+
+      /* RESUMEN */
+
+      .resumen {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(170px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .tarjeta-resumen {
+        padding: 19px;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tarjeta-resumen small {
+        color: var(--texto-secundario);
+      }
+
+      .tarjeta-resumen strong {
+        display: block;
+        margin: 10px 0 5px;
+        font-size: 1.5rem;
+      }
+
+      .tarjeta-resumen span {
+        color: var(--verde);
+        font-size: 0.72rem;
+      }
+
+      .tarjeta-resumen.negativo span,
+      .tarjeta-resumen.negativo strong {
+        color: var(--rojo);
+      }
+
+      /* PANELES */
+
+      .paneles {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .panel {
+        min-width: 0;
+        padding: 21px;
+        border: 1px solid var(--borde);
+        border-radius: 17px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .panel.ancho {
+        grid-column: 1 / -1;
+      }
+
+      .panel-encabezado {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .panel h2 {
+        margin: 0 0 5px;
+        font-size: 1rem;
+      }
+
+      .panel-encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+        font-size: 0.76rem;
+      }
+
+      .limite {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .limite label {
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+        font-weight: 750;
+      }
+
+      .limite input {
+        width: 70px;
+        min-height: 38px;
+        padding: 0 9px;
+        border: 1px solid var(--borde);
+        border-radius: 9px;
+        outline: none;
+      }
+
+      .lista-barras {
+        display: grid;
+        gap: 14px;
+      }
+
+      .barra-dato {
+        display: grid;
+        grid-template-columns: minmax(105px, 0.55fr) minmax(130px, 1fr) auto;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .barra-dato span,
+      .barra-dato strong {
+        font-size: 0.75rem;
+      }
+
+      .barra-dato strong {
+        min-width: 72px;
+        text-align: right;
+      }
+
+      .pista {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #f0edf0;
+      }
+
+      .relleno {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--principal), #f07db1);
+      }
+
+      .tabla-scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 680px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 13px 12px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        font-size: 0.76rem;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.67rem;
+        text-transform: uppercase;
+      }
+
+      .sin-resultados {
+        padding: 28px 10px;
+        color: var(--texto-secundario);
+        text-align: center;
+        font-size: 0.8rem;
+      }
+
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.42);
+        transition: 0.25s;
+      }
+
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1150px) {
+        .resumen {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+
+        .filtros,
+        .paneles {
+          grid-template-columns: 1fr;
+        }
+
+        .panel.ancho {
+          grid-column: auto;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px 50px;
+        }
+
+        .resumen {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          padding: 17px;
+        }
+
+        .panel-encabezado {
+          flex-direction: column;
+        }
+
+        .barra-dato {
+          grid-template-columns: 105px minmax(90px, 1fr) auto;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo de La Michoacana" />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Inicio
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu"><i class="icono-menu">🛒</i>Registrar venta</a>
+          <a href="historial-ventas.html" class="opcion-menu"><i class="icono-menu">↺</i>Historial de ventas</a>
+          <a href="gastos.html" class="opcion-menu"><i class="icono-menu">▣</i>Gastos</a>
+          <a href="reabastecimiento.html" class="opcion-menu"><i class="icono-menu">♧</i>Reabastecimiento</a>
+          <a href="inventario.html" class="opcion-menu"><i class="icono-menu">◇</i>Inventario</a>
+          <a href="corte-caja.html" class="opcion-menu"><i class="icono-menu">▤</i>Corte de caja</a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu"><i class="icono-menu">◇</i>Productos</a>
+          <a href="categorias.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías</a>
+          <a href="catalogo-sucursal.html" class="opcion-menu"><i class="icono-menu">⌂</i>Catálogo por sucursal</a>
+        </nav>
+
+        <p class="titulo-menu">Administración</p>
+
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu"><i class="icono-menu">⌂</i>Sucursales</a>
+          <a href="usuarios.html" class="opcion-menu"><i class="icono-menu">♙</i>Usuarios</a>
+          <a href="categorias-gasto.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías de gasto</a>
+          <a href="metodos-pago.html" class="opcion-menu"><i class="icono-menu">▭</i>Métodos de pago</a>
+        </nav>
+
+        <p class="titulo-menu">Supervisión</p>
+
+        <nav class="navegacion">
+          <a href="reportes.html" class="opcion-menu activa">
+            <i class="icono-menu">⌁</i>
+            Reportes
+            <span class="punto-activo"></span>
+          </a>
+
+          <a href="auditoria.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Auditoría
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">A</div>
+
+          <div>
+            <strong id="nombreMenu">Administrador</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button class="boton-menu" id="abrirMenu" type="button" aria-label="Abrir menú">☰</button>
+
+          <div class="dato-superior">
+            <span class="icono-superior">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Todas las sucursales</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="inicialSuperior">A</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreSuperior">Administrador</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <h1>Reportes</h1>
+            <p>Consulta el desempeño de ventas, gastos y productos.</p>
+          </div>
+
+          <section class="filtros">
+            <div class="campo">
+              <label for="branchId">Sucursal</label>
+              <select id="branchId">
+                <option value="">Todas las sucursales</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="from">Desde</label>
+              <input id="from" type="date" />
+            </div>
+
+            <div class="campo">
+              <label for="to">Hasta</label>
+              <input id="to" type="date" />
+            </div>
+
+            <p class="error-filtros" id="errorFiltros"></p>
+          </section>
+
+          <section class="resumen">
+            <article class="tarjeta-resumen">
+              <small>Ventas</small>
+              <strong id="ventasTotales">$0.00</strong>
+              <span id="cantidadVentas">0 operaciones</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Gastos</small>
+              <strong id="gastosTotales">$0.00</strong>
+              <span id="cantidadGastos">0 registros</span>
+            </article>
+
+            <article class="tarjeta-resumen" id="tarjetaBalance">
+              <small>Balance estimado</small>
+              <strong id="balance">$0.00</strong>
+              <span>Ventas menos gastos</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+              <small>Productos vendidos</small>
+              <strong id="productosVendidos">0</strong>
+              <span>Unidades registradas</span>
+            </article>
+          </section>
+
+          <section class="paneles">
+            <article class="panel">
+              <div class="panel-encabezado">
+                <div>
+                  <h2>Ventas por método de pago</h2>
+                  <p>Importe acumulado por forma de cobro.</p>
+                </div>
+              </div>
+
+              <div class="lista-barras" id="metodosPago"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-encabezado">
+                <div>
+                  <h2>Ventas por categoría</h2>
+                  <p>Importe vendido por tipo de producto.</p>
+                </div>
+              </div>
+
+              <div class="lista-barras" id="categoriasVenta"></div>
+            </article>
+
+            <article class="panel ancho">
+              <div class="panel-encabezado">
+                <div>
+                  <h2>Productos más vendidos</h2>
+                  <p>Ordenados por cantidad de unidades vendidas.</p>
+                </div>
+
+                <div class="limite">
+                  <label for="limit">Mostrar</label>
+                  <input id="limit" type="number" min="1" max="100" value="5" />
+                </div>
+              </div>
+
+              <div class="tabla-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Categoría</th>
+                      <th>Unidades</th>
+                      <th>Importe vendido</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="productosTop"></tbody>
+                </table>
+              </div>
+
+              <div class="sin-resultados" id="sinProductos" hidden>
+                No hay productos vendidos con los filtros seleccionados.
+              </div>
+            </article>
+
+            <article class="panel ancho">
+              <div class="panel-encabezado">
+                <div>
+                  <h2>Resultados por sucursal</h2>
+                  <p>Comparación de ventas, gastos y balance.</p>
+                </div>
+              </div>
+
+              <div class="tabla-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sucursal</th>
+                      <th>Ventas</th>
+                      <th>Gastos</th>
+                      <th>Balance</th>
+                      <th>Operaciones</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="resultadosSucursales"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const $ = id => document.getElementById(id);
+
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion"),
+      ) || {
+        id: 1,
+        nombre: "Administrador",
+        rol: "ADMIN",
+        sucursal: {
+          id: 1,
+          nombre: "Matriz · Zitácuaro",
+        },
+      };
+
+      const sucursalesIniciales = [
+        { id: 1, name: "Matriz · Zitácuaro", isActive: true },
+        { id: 2, name: "Sucursal Centro", isActive: true },
+        { id: 3, name: "Sucursal Uruapan", isActive: true },
+        { id: 4, name: "Sucursal Morelia", isActive: true },
+        { id: 5, name: "Sucursal Pátzcuaro", isActive: true },
+        { id: 6, name: "Sucursal Lázaro Cárdenas", isActive: true },
+        { id: 7, name: "Sucursal Zamora", isActive: true },
+      ];
+
+      function leerArreglo(clave, valorInicial = []) {
+        try {
+          const datos = JSON.parse(localStorage.getItem(clave));
+          return Array.isArray(datos) ? datos : valorInicial;
+        } catch (error) {
+          return valorInicial;
+        }
+      }
+
+      const sucursales = leerArreglo(
+        "sucursalesMichoacana",
+        sucursalesIniciales,
+      );
+
+      const ventas = leerArreglo("historialVentas");
+      const gastos = leerArreglo("gastosMichoacana");
+
+      function formatoMoneda(cantidad) {
+        return new Intl.NumberFormat("es-MX", {
+          style: "currency",
+          currency: "MXN",
+        }).format(Number(cantidad) || 0);
+      }
+
+      function fechaRegistro(registro) {
+        return registro.fecha || registro.date || registro.createdAt || "";
+      }
+
+      function sucursalRegistro(registro) {
+        return Number(
+          registro.branchId ||
+          registro.sucursalId ||
+          registro.branch?.id ||
+          0,
+        );
+      }
+
+      function estaEnRango(registro) {
+        const branchId = Number($("branchId").value) || null;
+        const from = $("from").value;
+        const to = $("to").value;
+        const fecha = fechaRegistro(registro).slice(0, 10);
+
+        const coincideSucursal =
+          !branchId || sucursalRegistro(registro) === branchId;
+
+        const coincideDesde = !from || (fecha && fecha >= from);
+        const coincideHasta = !to || (fecha && fecha <= to);
+
+        return coincideSucursal && coincideDesde && coincideHasta;
+      }
+
+      function ventasFiltradas() {
+        return ventas.filter(venta => {
+          const activa =
+            venta.estado !== "cancelada" &&
+            venta.estado !== "desactivada" &&
+            venta.active !== false;
+
+          return activa && estaEnRango(venta);
+        });
+      }
+
+      function gastosFiltrados() {
+        return gastos.filter(gasto =>
+          gasto.active !== false && estaEnRango(gasto),
+        );
+      }
+
+      function agrupar(lista, obtenerNombre, obtenerValor) {
+        return lista.reduce((resultado, elemento) => {
+          const nombre = obtenerNombre(elemento) || "Sin especificar";
+          resultado[nombre] = (resultado[nombre] || 0) + obtenerValor(elemento);
+          return resultado;
+        }, {});
+      }
+
+      function renderizarBarras(contenedorId, datos, moneda = true) {
+        const contenedor = $(contenedorId);
+        const elementos = Object.entries(datos).sort((a, b) => b[1] - a[1]);
+        const maximo = Math.max(...elementos.map(item => item[1]), 1);
+
+        if (!elementos.length) {
+          contenedor.innerHTML = `
+            <div class="sin-resultados">
+              No hay información con los filtros seleccionados.
+            </div>
+          `;
+          return;
+        }
+
+        contenedor.innerHTML = elementos
+          .map(([nombre, valor]) => `
+            <div class="barra-dato">
+              <span>${nombre}</span>
+
+              <div class="pista">
+                <div
+                  class="relleno"
+                  style="width:${Math.max(4, (valor / maximo) * 100)}%"
+                ></div>
+              </div>
+
+              <strong>${moneda ? formatoMoneda(valor) : valor}</strong>
+            </div>
+          `)
+          .join("");
+      }
+
+      function productosAgrupados(listaVentas) {
+        const resultado = new Map();
+
+        listaVentas.forEach(venta => {
+          const productos = Array.isArray(venta.productos)
+            ? venta.productos
+            : [];
+
+          productos.forEach(producto => {
+            const clave = producto.id || producto.nombre;
+            const actual = resultado.get(clave) || {
+              nombre: producto.nombre || "Producto",
+              categoria:
+                producto.categoria ||
+                producto.categoryName ||
+                "Sin categoría",
+              cantidad: 0,
+              importe: 0,
+            };
+
+            const cantidad = Number(producto.cantidad) || 0;
+            const precio = Number(producto.precio) || 0;
+
+            actual.cantidad += cantidad;
+            actual.importe += cantidad * precio;
+            resultado.set(clave, actual);
+          });
+        });
+
+        return [...resultado.values()].sort(
+          (a, b) => b.cantidad - a.cantidad,
+        );
+      }
+
+      function nombreSucursal(id) {
+        return sucursales.find(
+          sucursal => Number(sucursal.id) === Number(id),
+        )?.name || `Sucursal ${id}`;
+      }
+
+      function renderizarSucursales(listaVentas, listaGastos) {
+        const ids = new Set([
+          ...listaVentas.map(sucursalRegistro),
+          ...listaGastos.map(sucursalRegistro),
+        ]);
+
+        const branchSeleccionada = Number($("branchId").value) || null;
+
+        if (branchSeleccionada) {
+          ids.add(branchSeleccionada);
+        }
+
+        const resultados = [...ids]
+          .filter(Boolean)
+          .map(id => {
+            const ventasSucursal = listaVentas.filter(
+              venta => sucursalRegistro(venta) === id,
+            );
+
+            const gastosSucursal = listaGastos.filter(
+              gasto => sucursalRegistro(gasto) === id,
+            );
+
+            const totalVentas = ventasSucursal.reduce(
+              (total, venta) => total + Number(venta.total || 0),
+              0,
+            );
+
+            const totalGastos = gastosSucursal.reduce(
+              (total, gasto) => total + Number(gasto.amount || gasto.importe || 0),
+              0,
+            );
+
+            return {
+              nombre: nombreSucursal(id),
+              ventas: totalVentas,
+              gastos: totalGastos,
+              balance: totalVentas - totalGastos,
+              operaciones: ventasSucursal.length,
+            };
+          })
+          .sort((a, b) => b.ventas - a.ventas);
+
+        $("resultadosSucursales").innerHTML = resultados.length
+          ? resultados.map(resultado => `
+              <tr>
+                <td><strong>${resultado.nombre}</strong></td>
+                <td>${formatoMoneda(resultado.ventas)}</td>
+                <td>${formatoMoneda(resultado.gastos)}</td>
+                <td>${formatoMoneda(resultado.balance)}</td>
+                <td>${resultado.operaciones}</td>
+              </tr>
+            `).join("")
+          : `
+              <tr>
+                <td colspan="5" class="sin-resultados">
+                  No hay resultados por sucursal.
+                </td>
+              </tr>
+            `;
+      }
+
+      function validarFechas() {
+        const from = $("from").value;
+        const to = $("to").value;
+
+        if (from && to && from > to) {
+          $("errorFiltros").textContent =
+            "La fecha inicial no puede ser posterior a la fecha final.";
+          return false;
+        }
+
+        $("errorFiltros").textContent = "";
+        return true;
+      }
+
+      function renderizar() {
+        if (!validarFechas()) {
+          return;
+        }
+
+        const listaVentas = ventasFiltradas();
+        const listaGastos = gastosFiltrados();
+
+        const totalVentas = listaVentas.reduce(
+          (total, venta) => total + Number(venta.total || 0),
+          0,
+        );
+
+        const totalGastos = listaGastos.reduce(
+          (total, gasto) => total + Number(gasto.amount || gasto.importe || 0),
+          0,
+        );
+
+        const productos = productosAgrupados(listaVentas);
+        const unidades = productos.reduce(
+          (total, producto) => total + producto.cantidad,
+          0,
+        );
+
+        const balance = totalVentas - totalGastos;
+
+        $("ventasTotales").textContent = formatoMoneda(totalVentas);
+        $("gastosTotales").textContent = formatoMoneda(totalGastos);
+        $("balance").textContent = formatoMoneda(balance);
+        $("productosVendidos").textContent = unidades;
+        $("cantidadVentas").textContent = `${listaVentas.length} operaciones`;
+        $("cantidadGastos").textContent = `${listaGastos.length} registros`;
+        $("tarjetaBalance").classList.toggle("negativo", balance < 0);
+
+        const metodos = agrupar(
+          listaVentas,
+          venta =>
+            venta.paymentMethodName ||
+            venta.metodoPago ||
+            "Sin especificar",
+          venta => Number(venta.total) || 0,
+        );
+
+        const categorias = {};
+
+        listaVentas.forEach(venta => {
+          (venta.productos || []).forEach(producto => {
+            const nombre =
+              producto.categoria ||
+              producto.categoryName ||
+              "Sin categoría";
+
+            categorias[nombre] =
+              (categorias[nombre] || 0) +
+              (Number(producto.precio) || 0) *
+              (Number(producto.cantidad) || 0);
+          });
+        });
+
+        renderizarBarras("metodosPago", metodos);
+        renderizarBarras("categoriasVenta", categorias);
+
+        const limite = Math.min(
+          100,
+          Math.max(1, Number($("limit").value) || 5),
+        );
+
+        const productosLimitados = productos.slice(0, limite);
+
+        $("productosTop").innerHTML = productosLimitados
+          .map(producto => `
+            <tr>
+              <td><strong>${producto.nombre}</strong></td>
+              <td>${producto.categoria}</td>
+              <td>${producto.cantidad}</td>
+              <td>${formatoMoneda(producto.importe)}</td>
+            </tr>
+          `)
+          .join("");
+
+        $("sinProductos").hidden = productosLimitados.length !== 0;
+
+        renderizarSucursales(listaVentas, listaGastos);
+
+        const opcionSucursal = $("branchId").selectedOptions[0];
+        $("sucursalActual").textContent =
+          opcionSucursal?.value
+            ? opcionSucursal.textContent
+            : "Todas las sucursales";
+      }
+
+      function cargarSucursales() {
+        $("branchId").innerHTML = `
+          <option value="">Todas las sucursales</option>
+          ${sucursales
+            .map(sucursal => `
+              <option value="${sucursal.id}">
+                ${sucursal.name}
+              </option>
+            `)
+            .join("")}
+        `;
+      }
+
+      function configurarSesion() {
+        const nombre = usuarioSesion.nombre || usuarioSesion.name;
+        const inicial = nombre.charAt(0).toUpperCase();
+
+        $("nombreMenu").textContent = nombre;
+        $("nombreSuperior").textContent = nombre;
+        $("inicialMenu").textContent = inicial;
+        $("inicialSuperior").textContent = inicial;
+        $("sucursalMenu").textContent =
+          usuarioSesion.sucursal?.nombre || "Acceso global";
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+
+          if (!tema) return;
+
+          const raiz = document.documentElement;
+
+          if (tema.principal) raiz.style.setProperty("--principal", tema.principal);
+          if (tema.menu) raiz.style.setProperty("--menu", tema.menu);
+          if (tema.fondo) raiz.style.setProperty("--fondo", tema.fondo);
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      ["branchId", "from", "to", "limit"].forEach(id => {
+        $(id).addEventListener("change", renderizar);
+        $(id).addEventListener("input", renderizar);
+      });
+
+      const sidebar = $("sidebar");
+      const fondoMenu = $("fondoMenu");
+
+      $("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      function cerrarMenu() {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      fondoMenu.addEventListener("click", cerrarMenu);
+
+      document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape") cerrarMenu();
+      });
+
+      cargarSucursales();
+      configurarSesion();
+      cargarTema();
+      renderizar();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gastos | La Michoacana</title>
+<style>
+:root{
+--p:#ed2b85;
+--po:#d51d70;
+--pc:rgba(237,43,133,.11);
+--menu:#ed2b85;
+--f:#f6f8fb;
+--t:#17141d;
+--ts:#716a74;
+--b:#e7e2e6;
+--v:#159a61;
+--r:#dc3545;
+--m:245px;
+--s:0 7px 25px rgba(38,23,32,.07)
+}*{
+box-sizing:border-box
+}body{
+margin:0;
+min-height:100vh;
+font-family:Inter,Arial,sans-serif;
+color:var(--t);
+background:var(--f)
+}body.bloqueado{
+overflow:hidden
+}button,input,select,textarea{
+font:inherit
+}button,select{
+cursor:pointer
+}a{
+color:inherit;
+text-decoration:none
+}.app{
+padding-left:var(--m);
+min-height:100vh
+}
+.side{
+width:var(--m);
+height:100vh;
+position:fixed;
+inset:0 auto 0 0;
+z-index:1000;
+display:flex;
+flex-direction:column;
+padding:22px 14px;
+color:white;
+background:linear-gradient(180deg,var(--menu),var(--po));
+overflow-y:auto;
+transition:.3s
+}.marca{
+display:flex;
+align-items:center;
+gap:12px;
+padding:2px 8px 20px
+}.marca img{
+width:55px;
+height:55px;
+object-fit:contain
+}.marca strong,.user strong{
+display:block;
+font-size:.87rem
+}.marca small,.user small{
+display:block;
+margin-top:4px;
+color:#ffffffbd;
+font-size:.68rem
+}.st{
+margin:18px 11px 7px;
+color:#ffffffa6;
+font-size:.65rem;
+font-weight:800;
+letter-spacing:.13em;
+text-transform:uppercase
+}.nav{
+display:grid;
+gap:5px
+}.nav a{
+min-height:43px;
+display:flex;
+align-items:center;
+gap:11px;
+padding:10px 12px;
+border-radius:10px;
+color:#fffffff0;
+font-size:.82rem;
+font-weight:650
+}.nav a:hover{
+background:#ffffff21
+}.nav a.on{
+color:var(--p);
+background:white
+}.nav i{
+width:22px;
+text-align:center;
+font-style:normal
+}.dot{
+width:6px;
+height:6px;
+margin-left:auto;
+border-radius:50%;
+background:var(--p)
+}.user{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:auto;
+padding:20px 8px 10px;
+border-top:1px solid #ffffff26
+}.av{
+width:40px;
+height:40px;
+display:grid;
+place-items:center;
+flex:none;
+border-radius:50%;
+color:var(--p);
+background:white;
+font-weight:850
+}
+.top{
+min-height:76px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+padding:12px 4vw;
+border-bottom:1px solid var(--b);
+background:white
+}.hamb{
+width:42px;
+height:42px;
+display:none;
+place-items:center;
+border:1px solid var(--b);
+border-radius:10px;
+background:white
+}.topdato{
+display:flex;
+align-items:center;
+gap:10px
+}.topdato:first-of-type{
+margin-right:auto
+}.topdato small{
+display:block;
+color:var(--ts);
+font-size:.7rem
+}.topdato strong{
+font-size:.82rem
+}.pin{
+width:40px;
+height:40px;
+display:grid;
+place-items:center;
+border-radius:11px;
+color:var(--p);
+background:var(--pc)
+}
+.contenido{
+max-width:1550px;
+margin:auto;
+padding:30px 4vw 50px
+}.head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+margin-bottom:22px
+}.head h1{
+margin:0 0 6px;
+font-size:clamp(1.7rem,3vw,2.2rem);
+letter-spacing:-.04em
+}.head p{
+margin:0;
+color:var(--ts)
+}.primario{
+min-height:50px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+padding:0 22px;
+border:0;
+border-radius:12px;
+color:white;
+background:linear-gradient(90deg,var(--p),var(--po));
+font-weight:850;
+box-shadow:0 8px 22px #ed2b8533
+}
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+margin-bottom:18px
+}.stat{
+padding:18px;
+border:1px solid var(--b);
+border-radius:15px;
+background:white;
+box-shadow:var(--s)
+}.stat small{
+display:block;
+margin-bottom:9px;
+color:var(--ts);
+font-size:.73rem
+}.stat strong{
+font-size:1.4rem
+}.stat em{
+display:block;
+margin-top:5px;
+color:var(--r);
+font-size:.7rem;
+font-style:normal
+}.filtros{
+display:grid;
+grid-template-columns:minmax(220px,1fr) repeat(3,minmax(140px,.35fr));
+gap:10px;
+margin-bottom:18px;
+padding:15px;
+border:1px solid var(--b);
+border-radius:15px;
+background:white;
+box-shadow:var(--s)
+}.control{
+min-height:43px;
+padding:0 12px;
+border:1px solid var(--b);
+border-radius:10px;
+background:white;
+outline:none
+}.control:focus{
+border-color:var(--p);
+box-shadow:0 0 0 3px var(--pc)
+}
+.card{
+overflow:hidden;
+border:1px solid var(--b);
+border-radius:16px;
+background:white;
+box-shadow:var(--s)
+}table{
+width:100%;
+border-collapse:collapse
+}th,td{
+padding:14px 16px;
+border-bottom:1px solid var(--b);
+text-align:left;
+font-size:.78rem
+}th{
+color:var(--ts);
+background:#fbfafb;
+font-size:.68rem;
+text-transform:uppercase
+}.monto{
+font-weight:850
+}.badge{
+display:inline-block;
+padding:6px 9px;
+border-radius:999px;
+color:var(--v);
+background:#e8f8f0;
+font-size:.67rem;
+font-weight:800
+}.badge.inactivo{
+color:var(--r);
+background:#ffecef
+}.acciones-fila{
+display:flex;
+gap:6px
+}.ver,.editar,.desactivar{
+min-height:34px;
+padding:0 10px;
+border:1px solid var(--b);
+border-radius:9px;
+background:white;
+font-size:.7rem;
+font-weight:800
+}.ver,.editar{
+color:var(--p)
+}.desactivar{
+color:var(--r)
+}tr.inactivo{
+opacity:.62
+}.vacio{
+padding:55px 20px;
+text-align:center;
+color:var(--ts)
+}
+.fondo,.menu-fondo{
+position:fixed;
+inset:0;
+visibility:hidden;
+opacity:0;
+background:#0a0e1873;
+transition:.25s
+}.menu-fondo{
+z-index:950
+}.fondo{
+z-index:2000;
+display:grid;
+place-items:center;
+padding:18px
+}.fondo.on,.menu-fondo.on{
+visibility:visible;
+opacity:1
+}.modal{
+width:min(600px,100%);
+max-height:92vh;
+overflow:auto;
+border-radius:19px;
+background:white;
+box-shadow:0 25px 70px #10101840
+}.mh{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:19px 21px;
+border-bottom:1px solid var(--b)
+}.mh h2{
+margin:0;
+font-size:1.08rem
+}.cerrar{
+width:36px;
+height:36px;
+border:0;
+border-radius:9px;
+background:var(--f);
+font-size:1.2rem
+}.form{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+padding:21px
+}.campo{
+display:grid;
+gap:7px
+}.campo.ancho{
+grid-column:1/-1
+}.campo label{
+color:var(--ts);
+font-size:.72rem;
+font-weight:800
+}.campo input,.campo select,.campo textarea{
+width:100%;
+min-height:44px;
+padding:10px 12px;
+border:1px solid var(--b);
+border-radius:10px;
+outline:none
+}.campo textarea{
+min-height:80px;
+resize:vertical
+}.campo input:focus,.campo select:focus,.campo textarea:focus{
+border-color:var(--p);
+box-shadow:0 0 0 3px var(--pc)
+}.archivo{
+padding:15px;
+border:1px dashed var(--b);
+border-radius:11px;
+background:var(--f)
+}.acciones{
+grid-column:1/-1;
+display:flex;
+justify-content:flex-end;
+gap:9px;
+padding-top:5px
+}.sec{
+min-height:45px;
+padding:0 16px;
+border:1px solid var(--b);
+border-radius:10px;
+background:white;
+font-weight:750
+}.guardar{
+min-height:45px;
+padding:0 19px;
+border:0;
+border-radius:10px;
+color:white;
+background:var(--p);
+font-weight:850
+}.toast{
+position:fixed;
+top:90px;
+right:20px;
+z-index:2500;
+padding:13px 17px;
+border-radius:11px;
+color:white;
+background:#25212a;
+opacity:0;
+transform:translateY(-8px);
+pointer-events:none;
+transition:.25s
+}.toast.on{
+opacity:1;
+transform:none
+}
+@media(max-width:1050px){
+.filtros{
+grid-template-columns:1fr 1fr
+}.tabla{
+overflow-x:auto
+}table{
+min-width:780px
+}
+}@media(max-width:850px){
+.app{
+padding-left:0
+}.side{
+transform:translateX(-105%)
+}.side.abierta{
+transform:none
+}.hamb{
+display:grid
+}
+}@media(max-width:620px){
+.top{
+padding:11px 16px
+}.topdato:last-child>div:last-child{
+display:none
+}.contenido{
+padding:25px 16px 40px
+}.head{
+gap:12px
+}.primario{
+width:50px;
+min-width:50px;
+padding:0;
+font-size:0
+}.primario span{
+font-size:1.25rem
+}.stats,.filtros,.form{
+grid-template-columns:1fr
+}.campo.ancho,.acciones{
+grid-column:auto
+}.acciones{
+display:grid
+}.guardar,.sec{
+width:100%
+}
+}
+</style>
+  <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+<body>
+<div class="app">
+<aside class="side" id="side">
+<div class="marca">
+<img src="../imagenes/logogranpaleteria.jpeg" alt="Logo">
+<div>
+<strong>La Michoacana</strong>
+<small>Sistema administrativo</small>
+</div>
+</div>
+<p class="st">Principal</p>
+<nav class="nav">
+<a href="../dashboard.html">
+<i>⌂</i>Inicio</a>
+</nav>
+<p class="st">Operación</p>
+<nav class="nav">
+<a href="registrar-venta.html">
+<i>🛒</i>Registrar venta</a>
+<a href="historial-ventas.html">
+<i>↺</i>Historial de ventas</a>
+<a class="on" href="gastos.html">
+<i>▣</i>Gastos<span class="dot">
+</span>
+</a>
+<a href="reabastecimiento.html">
+<i>♧</i>Reabastecimiento</a>
+<a href="inventario.html">
+<i>◇</i>Inventario</a>
+<a href="corte-caja.html">
+<i>▤</i>Corte de caja</a>
+</nav>
+<p class="st">Productos</p>
+<nav class="nav">
+<a href="productos.html">
+<i>◇</i>Productos</a>
+<a href="categorias.html">
+<i>⌑</i>Categorías</a>
+<a href="catalogo-sucursal.html">
+<i>⌂</i>Catálogo por sucursal</a>
+</nav>
+<div class="user">
+<div class="av" id="am">C</div>
+<div>
+<strong id="nm">Carlos Mendoza</strong>
+<small id="sm">Matriz · Zitácuaro</small>
+</div>
+</div>
+</aside>
+<div class="menu-fondo" id="menuFondo">
+</div>
+<main>
+<header class="top">
+<button class="hamb" id="hamb">☰</button>
+<div class="topdato">
+<span class="pin">⌖</span>
+<div>
+<small>Sucursal</small>
+<strong id="sucursal">Matriz · Zitácuaro</strong>
+</div>
+</div>
+<div class="topdato">
+<div class="av" id="at">C</div>
+<div>
+<small>Registrado por</small>
+<strong id="nt">Carlos Mendoza</strong>
+</div>
+</div>
+</header>
+<section class="contenido">
+<div class="head">
+<div>
+<h1>Gastos</h1>
+<p>Registra y consulta los gastos de la sucursal.</p>
+</div>
+<button class="primario" id="nuevo">
+<span>＋</span>Registrar gasto</button>
+</div>
+<div class="stats">
+<article class="stat">
+<small>Gastos encontrados</small>
+<strong id="cantidad">0</strong>
+<em>Movimientos registrados</em>
+</article>
+<article class="stat">
+<small>Total de gastos</small>
+<strong id="total">$0.00</strong>
+<em>Según los filtros aplicados</em>
+</article>
+<article class="stat">
+<small>Categoría principal</small>
+<strong id="categoriaTop">—</strong>
+<em>Mayor importe acumulado</em>
+</article>
+</div>
+<div class="filtros">
+<input class="control" id="buscar" type="search" placeholder="Buscar concepto, proveedor o folio...">
+<input class="control" id="fecha" type="date">
+<select class="control" id="fcat">
+<option value="todas">Todas las categorías</option>
+<option value="1">Insumos</option>
+<option value="2">Servicios</option>
+<option value="3">Mantenimiento</option>
+<option value="4">Transporte</option>
+<option value="5">Otros</option>
+</select>
+<select class="control" id="festado">
+<option value="todos">Todos los estados</option>
+<option value="activo">Activos</option>
+<option value="inactivo">Desactivados</option>
+</select>
+</div>
+<section class="card">
+<div class="tabla">
+<table>
+<thead>
+<tr>
+<th>Folio</th>
+<th>Fecha</th>
+<th>Descripción</th>
+<th>Proveedor</th>
+<th>Categoría</th>
+<th>Importe</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody id="filas">
+</tbody>
+</table>
+</div>
+<div class="vacio" id="vacio">Todavía no hay gastos registrados.</div>
+</section>
+</section>
+</main>
+</div>
+<div class="fondo" id="fondo">
+<section class="modal">
+<div class="mh">
+<h2 id="tituloModal">Registrar gasto</h2>
+<button class="cerrar" id="cerrar">×</button>
+</div>
+<form class="form" id="form">
+<div class="campo ancho">
+<label for="concepto">Descripción del gasto</label>
+<input id="concepto" required maxlength="100" placeholder="Ej. Compra de vasos y servilletas">
+</div>
+<div class="campo">
+<label for="importe">Importe</label>
+<input id="importe" required type="number" min=".01" step=".01" placeholder="$0.00">
+</div>
+<div class="campo">
+<label for="fechaGasto">Fecha y hora</label>
+<input id="fechaGasto" required type="datetime-local">
+</div>
+<div class="campo">
+<label for="proveedor">Proveedor opcional</label>
+<input id="proveedor" maxlength="100" placeholder="Nombre del proveedor">
+</div>
+<div class="campo">
+<label for="categoria">Categoría</label>
+<select id="categoria" required>
+<option value="">Seleccionar...</option>
+<option value="1">Insumos</option>
+<option value="2">Servicios</option>
+<option value="3">Mantenimiento</option>
+<option value="4">Transporte</option>
+<option value="5">Otros</option>
+</select>
+</div>
+<div class="campo">
+<label for="sucursalGasto">Sucursal</label>
+<select id="sucursalGasto">
+<option value="1">Matriz · Zitácuaro</option>
+<option value="2">Sucursal Centro</option>
+<option value="3">Sucursal Uruapan</option>
+<option value="4">Sucursal Morelia</option>
+<option value="5">Sucursal Pátzcuaro</option>
+<option value="6">Sucursal Lázaro Cárdenas</option>
+<option value="7">Sucursal Zamora</option>
+</select>
+</div>
+<div class="campo">
+<label for="registradoPor">Registrado por</label>
+<input id="registradoPor" disabled>
+</div>
+<div class="campo">
+<label for="comprobante">Comprobante opcional</label>
+<input class="archivo" id="comprobante" type="file" accept="image/*,.pdf">
+</div>
+<div class="campo ancho">
+<label for="notas">Notas opcionales</label>
+<textarea id="notas" maxlength="250" placeholder="Agrega información adicional...">
+</textarea>
+</div>
+<div class="acciones">
+<button class="sec" id="cancelar" type="button">Cancelar</button>
+<button class="guardar" id="guardarGasto" type="submit">Guardar gasto</button>
+</div>
+</form>
+</section>
+</div>
+<div class="toast" id="toast">Gasto registrado correctamente.</div>
+<script>
+const money=n=>new Intl.NumberFormat('es-MX',{
+style:'currency',currency:'MXN'
+}).format(n||0),usuario=JSON.parse(localStorage.getItem('usuarioSesion'))||{
+id:1,nombre:'Carlos Mendoza',rol:'EMPLEADO',sucursal:{
+id:1,nombre:'Matriz · Zitácuaro'
+}
+};
+
+const categoriasBase=[{
+id:1,name:'Insumos',isActive:true
+},{
+id:2,name:'Servicios',isActive:true
+},{
+id:3,name:'Mantenimiento',isActive:true
+},{
+id:4,name:'Transporte',isActive:true
+},{
+id:5,name:'Otros',isActive:true
+}];
+
+let categoriasLista=JSON.parse(localStorage.getItem('categoriasGastoMichoacana'))||categoriasBase;
+
+localStorage.setItem('categoriasGastoMichoacana',JSON.stringify(categoriasLista));
+
+const categorias=Object.fromEntries(categoriasLista.map(categoria=>[categoria.id,categoria.name]));
+
+let gastos=JSON.parse(localStorage.getItem('gastosMichoacana'))||[],editandoId=null;
+
+const $=id=>document.getElementById(id),texto=s=>(s||'').toLowerCase(),fecha=f=>new Intl.DateTimeFormat('es-MX',{
+dateStyle:'medium',timeStyle:'short'
+}).format(new Date(f));
+
+
+function cargarCategorias(){
+
+  const opciones=categoriasLista.map(categoria=>`<option value="${
+categoria.id
+}">${
+categoria.name
+}</option>`).join('');
+
+  $('fcat').innerHTML='<option value="todas">Todas las categorías</option>'+opciones;
+
+  $('categoria').innerHTML='<option value="">Seleccionar...</option>'+categoriasLista.filter(categoria=>categoria.isActive!==false).map(categoria=>`<option value="${
+categoria.id
+}">${
+categoria.name
+}</option>`).join('');
+
+
+}
+gastos=gastos.map(g=>{
+const categoryId=g.categoryId||Number(Object.keys(categorias).find(id=>categorias[id]===g.categoria))||5;
+return{
+...g,description:g.description||g.concepto||'Sin descripción',amount:Number(g.amount??g.importe??0),date:g.date||g.fecha||new Date().toISOString(),supplier:g.supplier||null,categoryId,categoryName:g.categoryName||categorias[categoryId],branchId:g.branchId||g.sucursalId||usuario.sucursal.id,branchName:g.branchName||g.sucursal||usuario.sucursal.nombre,registeredBy:g.registeredBy||usuario.id,registeredByName:g.registeredByName||g.empleado||usuario.nombre,active:g.active!==false
+}
+});
+
+function filtrados(){
+const q=texto($('buscar').value),d=$('fecha').value,c=$('fcat').value,e=$('festado').value;
+return gastos.filter(g=>(!q||texto(g.description||g.concepto).includes(q)||texto(g.supplier).includes(q)||texto(g.folio).includes(q))&&(!d||g.date.slice(0,10)===d)&&(c==='todas'||String(g.categoryId)===c)&&(e==='todos'||(g.active!==false?'activo':'inactivo')===e))
+}
+function render(){
+const l=filtrados();
+$('filas').innerHTML=l.map(g=>`<tr class="${
+g.active===false?'inactivo':''
+}">
+<td>
+<strong>${
+g.folio
+}</strong>
+</td>
+<td>${
+fecha(g.date)
+}</td>
+<td>${
+g.description
+}</td>
+<td>${
+g.supplier||'—'
+}</td>
+<td>${
+g.categoryName||categorias[g.categoryId]
+}</td>
+<td class="monto">${
+money(g.amount)
+}</td>
+<td>
+<span class="badge ${
+g.active===false?'inactivo':''
+}">${
+g.active===false?'Desactivado':'Activo'
+}</span>
+</td>
+<td>
+<div class="acciones-fila">
+<button class="editar" onclick="editarGasto(${
+g.id
+})">Editar</button>
+<button class="desactivar" onclick="desactivarGasto(${
+g.id
+})" ${
+g.active===false?'disabled':''
+}>Desactivar</button>
+</div>
+</td>
+</tr>`).join('');
+$('vacio').hidden=l.length>0;
+document.querySelector('.tabla').hidden=!l.length;
+$('cantidad').textContent=l.length;
+const activos=l.filter(g=>g.active!==false);
+$('total').textContent=money(activos.reduce((s,g)=>s+g.amount,0));
+const cats={
+
+};
+activos.forEach(g=>cats[g.categoryName]=(cats[g.categoryName]||0)+g.amount);
+$('categoriaTop').textContent=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—'
+}
+function ahoraLocal(){
+const d=new Date(),off=d.getTimezoneOffset();
+return new Date(d.getTime()-off*60000).toISOString().slice(0,16)
+}function prepararSucursal(){
+const admin=['ADMIN','ADMINISTRADOR'].includes((usuario.rol||'').toUpperCase());
+$('sucursalGasto').value=String(usuario.sucursal.id);
+$('sucursalGasto').disabled=!admin||editandoId!==null;
+$('registradoPor').value=usuario.nombre
+}
+function abrir(){
+window.location.href='registrar-gasto.html'
+}function cerrar(){
+$('fondo').classList.remove('on');
+document.body.classList.remove('bloqueado');
+editandoId=null
+}$('nuevo').onclick=abrir;
+$('cerrar').onclick=cerrar;
+$('cancelar').onclick=cerrar;
+$('fondo').addEventListener('click',e=>{
+if(e.target===$('fondo'))cerrar()
+});
+
+function editarGasto(id){
+const g=gastos.find(x=>x.id===id);
+if(!g||g.active===false)return;
+window.location.href='registrar-gasto.html?id='+encodeURIComponent(id)
+}
+function desactivarGasto(id){
+const g=gastos.find(x=>x.id===id);
+if(!g||g.active===false||!confirm('¿Desactivar este gasto? El registro permanecerá en el historial.'))return;
+g.active=false;
+g.deactivatedAt=new Date().toISOString();
+localStorage.setItem('gastosMichoacana',JSON.stringify(gastos));
+render()
+}
+$('form').addEventListener('submit',e=>{
+e.preventDefault();
+const fueEdicion=editandoId!==null,archivo=$('comprobante').files[0],categoryId=Number($('categoria').value),branchId=Number($('sucursalGasto').value),branchName=$('sucursalGasto').options[$('sucursalGasto').selectedIndex].text;
+if(fueEdicion){
+const g=gastos.find(x=>x.id===editandoId);
+Object.assign(g,{
+description:$('concepto').value.trim(),amount:Number($('importe').value),date:new Date($('fechaGasto').value).toISOString(),supplier:$('proveedor').value.trim()||null,categoryId,categoryName:categorias[categoryId],notes:$('notas').value.trim()||null,receiptName:archivo?archivo.name:g.receiptName,updatedAt:new Date().toISOString()
+})
+}else{
+const id=Date.now();
+gastos.unshift({
+id,folio:'G-'+String(id).slice(-6),description:$('concepto').value.trim(),amount:Number($('importe').value),date:new Date($('fechaGasto').value).toISOString(),supplier:$('proveedor').value.trim()||null,branchId,branchName,categoryId,categoryName:categorias[categoryId],registeredBy:usuario.id,registeredByName:usuario.nombre,notes:$('notas').value.trim()||null,receiptName:archivo?archivo.name:null,active:true,createdAt:new Date().toISOString()
+})
+}localStorage.setItem('gastosMichoacana',JSON.stringify(gastos));
+cerrar();
+render();
+$('toast').textContent=fueEdicion?'Gasto actualizado correctamente.':'Gasto registrado correctamente.';
+$('toast').classList.add('on');
+setTimeout(()=>$('toast').classList.remove('on'),1800)
+});
+
+['buscar','fecha','fcat','festado'].forEach(id=>$(id).addEventListener(id==='buscar'?'input':'change',render));
+$('nt').textContent=$('nm').textContent=usuario.nombre;
+$('sucursal').textContent=$('sm').textContent=usuario.sucursal.nombre;
+$('at').textContent=$('am').textContent=usuario.nombre[0].toUpperCase();
+
+function rgb(h){
+const v=h.replace('#','');
+return{
+r:parseInt(v.slice(0,2),16),g:parseInt(v.slice(2,4),16),b:parseInt(v.slice(4,6),16)
+}
+}function dark(h){
+const c=rgb(h);
+return`rgb(${
+Math.max(0,c.r-25)
+},${
+Math.max(0,c.g-25)
+},${
+Math.max(0,c.b-25)
+})`
+}function light(h){
+const c=rgb(h);
+return`rgba(${
+c.r
+},${
+c.g
+},${
+c.b
+},.11)`
+}try{
+const t=JSON.parse(localStorage.getItem('temaMichoacana'));
+if(t){
+const r=document.documentElement;
+r.style.setProperty('--p',t.principal);
+r.style.setProperty('--po',dark(t.principal));
+r.style.setProperty('--pc',light(t.principal));
+r.style.setProperty('--menu',t.menu);
+r.style.setProperty('--f',t.fondo);
+$('side').style.background=`linear-gradient(180deg,${
+t.menu
+},${
+dark(t.menu)
+})`
+}
+}catch(e){
+
+}
+const side=$('side'),mf=$('menuFondo');
+$('hamb').onclick=()=>{
+side.classList.add('abierta');
+mf.classList.add('on');
+document.body.classList.add('bloqueado')
+};
+mf.onclick=()=>{
+side.classList.remove('abierta');
+mf.classList.remove('on');
+document.body.classList.remove('bloqueado')
+};
+cargarCategorias();
+render();
+
+</script>
+    <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

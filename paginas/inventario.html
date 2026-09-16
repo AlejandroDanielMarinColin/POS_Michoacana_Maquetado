@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Inventario | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --tarjeta: #ffffff;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --amarillo: #d28a00;
+        --rojo: #dc3545;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: linear-gradient(
+          180deg,
+          var(--menu),
+          var(--principal-oscuro)
+        );
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+        box-shadow: 0 7px 18px rgba(123, 10, 60, 0.14);
+      }
+
+      .icono-menu {
+        width: 22px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .icono-sucursal {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1550px;
+        margin: 0 auto;
+        padding: 30px 4vw 50px;
+      }
+
+      .encabezado {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .solo-consulta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 0 13px;
+        border: 1px solid #cfe9dc;
+        border-radius: 999px;
+        color: var(--verde);
+        background: #f0fbf6;
+        font-size: 0.72rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      /* RESUMEN */
+
+      .resumen {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .tarjeta-resumen {
+        position: relative;
+        overflow: hidden;
+        min-height: 112px;
+        padding: 18px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tarjeta-resumen::after {
+        content: "";
+        position: absolute;
+        right: -24px;
+        bottom: -35px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: var(--tono, var(--principal-claro));
+      }
+
+      .tarjeta-resumen small {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-bottom: 9px;
+        color: var(--texto-secundario);
+        font-size: 0.73rem;
+      }
+
+      .tarjeta-resumen strong {
+        position: relative;
+        z-index: 1;
+        display: block;
+        font-size: 1.4rem;
+      }
+
+      .tarjeta-resumen span {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-top: 5px;
+        color: var(--estado, var(--verde));
+        font-size: 0.7rem;
+      }
+
+      /* FILTROS */
+
+      .filtros {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(160px, 0.34fr));
+        gap: 11px;
+        margin-bottom: 18px;
+        padding: 15px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .buscador {
+        min-height: 45px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: white;
+      }
+
+      .buscador span {
+        color: var(--texto-secundario);
+      }
+
+      .buscador input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        color: var(--texto);
+        background: transparent;
+      }
+
+      .control {
+        width: 100%;
+        min-height: 45px;
+        padding: 0 12px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .buscador:focus-within,
+      .control:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .control:disabled {
+        cursor: default;
+        color: var(--texto);
+        opacity: 1;
+        background: #f5f3f5;
+      }
+
+      /* TABLA */
+
+      .inventario {
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .titulo-tabla {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 19px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .titulo-tabla h2 {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .titulo-tabla span {
+        color: var(--texto-secundario);
+        font-size: 0.73rem;
+      }
+
+      .tabla-contenedor {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tbody tr:hover {
+        background: #fffafd;
+      }
+
+      .producto {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 210px;
+      }
+
+      .producto-icono {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: #fff2f8;
+        font-size: 1.55rem;
+      }
+
+      .producto strong,
+      .producto small {
+        display: block;
+      }
+
+      .producto small {
+        margin-top: 4px;
+        color: var(--texto-secundario);
+        font-size: 0.67rem;
+      }
+
+      .existencia {
+        font-size: 0.92rem;
+        font-weight: 850;
+      }
+
+      .estado {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 999px;
+        color: var(--verde);
+        background: #e8f8f0;
+        font-size: 0.67rem;
+        font-weight: 800;
+      }
+
+      .estado::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .estado.bajo {
+        color: #9a6700;
+        background: #fff5c7;
+      }
+
+      .estado.agotado {
+        color: var(--rojo);
+        background: #ffe8eb;
+      }
+
+      .mensaje-vacio {
+        padding: 55px 20px;
+        text-align: center;
+        color: var(--texto-secundario);
+      }
+
+      .pie-tabla {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 14px 19px;
+        border-top: 1px solid var(--borde);
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.42);
+        transition: 0.25s;
+      }
+
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1150px) {
+        .resumen {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filtros {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        table {
+          min-width: 850px;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px;
+        }
+
+        .encabezado {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .encabezado p {
+          font-size: 0.85rem;
+        }
+
+        .resumen,
+        .filtros {
+          grid-template-columns: 1fr;
+        }
+
+        .tarjeta-resumen {
+          min-height: 98px;
+        }
+
+        .titulo-tabla,
+        .pie-tabla {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img
+            src="../imagenes/logogranpaleteria.jpeg"
+            alt="Logo de La Michoacana"
+          />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Inicio
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu">
+            <i class="icono-menu">🛒</i>
+            Registrar venta
+          </a>
+
+          <a href="historial-ventas.html" class="opcion-menu">
+            <i class="icono-menu">↺</i>
+            Historial de ventas
+          </a>
+
+          <a href="gastos.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Gastos
+          </a>
+
+          <a href="reabastecimiento.html" class="opcion-menu">
+            <i class="icono-menu">♧</i>
+            Reabastecimiento
+          </a>
+
+          <a href="inventario.html" class="opcion-menu activa">
+            <i class="icono-menu">◇</i>
+            Inventario
+            <span class="punto-activo"></span>
+          </a>
+
+          <a href="corte-caja.html" class="opcion-menu">
+            <i class="icono-menu">▤</i>
+            Corte de caja
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Productos
+          </a>
+
+          <a href="categorias.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías
+          </a>
+
+          <a href="catalogo-sucursal.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Catálogo por sucursal
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">C</div>
+
+          <div>
+            <strong id="nombreMenu">Carlos Mendoza</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button
+            class="boton-menu"
+            id="abrirMenu"
+            type="button"
+            aria-label="Abrir menú"
+          >
+            ☰
+          </button>
+
+          <div class="dato-superior">
+            <span class="icono-sucursal">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Matriz · Zitácuaro</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="inicialSuperior">C</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreSuperior">Carlos Mendoza</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1>Inventario</h1>
+              <p>Consulta las existencias de productos por sucursal.</p>
+            </div>
+
+            <span class="solo-consulta">◉ Solo consulta</span>
+          </div>
+
+          <section class="resumen" aria-label="Resumen de inventario">
+            <article class="tarjeta-resumen">
+              <small>Productos encontrados</small>
+              <strong id="totalProductos">0</strong>
+              <span>En el filtro actual</span>
+            </article>
+
+            <article
+              class="tarjeta-resumen"
+              style="--tono: rgba(21, 154, 97, 0.12)"
+            >
+              <small>Existencia disponible</small>
+              <strong id="totalUnidades">0</strong>
+              <span>Unidades en inventario</span>
+            </article>
+
+            <article
+              class="tarjeta-resumen"
+              style="--tono: rgba(255, 212, 59, 0.2); --estado: #9a6700"
+            >
+              <small>Existencia baja</small>
+              <strong id="productosBajos">0</strong>
+              <span>Requieren atención</span>
+            </article>
+
+            <article
+              class="tarjeta-resumen"
+              style="--tono: rgba(220, 53, 69, 0.11); --estado: var(--rojo)"
+            >
+              <small>Productos agotados</small>
+              <strong id="productosAgotados">0</strong>
+              <span>Sin unidades disponibles</span>
+            </article>
+          </section>
+
+          <section class="filtros" aria-label="Filtros de inventario">
+            <label class="buscador">
+              <span>⌕</span>
+
+              <input
+                id="buscarProducto"
+                type="search"
+                placeholder="Buscar producto o código..."
+                autocomplete="off"
+              />
+            </label>
+
+            <select class="control" id="sucursalFiltro" aria-label="Sucursal">
+              <option value="1">Matriz · Zitácuaro</option>
+              <option value="2">Sucursal Centro</option>
+              <option value="3">Sucursal Uruapan</option>
+              <option value="4">Sucursal Morelia</option>
+              <option value="5">Sucursal Pátzcuaro</option>
+              <option value="6">Sucursal Lázaro Cárdenas</option>
+              <option value="7">Sucursal Zamora</option>
+            </select>
+
+            <select class="control" id="categoriaFiltro" aria-label="Categoría">
+              <option value="todas">Todas las categorías</option>
+              <option value="Paletas">Paletas</option>
+              <option value="Nieves">Nieves</option>
+              <option value="Aguas">Aguas</option>
+              <option value="Extras">Extras</option>
+              <option value="Promociones">Promociones</option>
+            </select>
+
+            <select class="control" id="estadoFiltro" aria-label="Estado">
+              <option value="todos">Todos los estados</option>
+              <option value="disponible">Disponible</option>
+              <option value="bajo">Existencia baja</option>
+              <option value="agotado">Agotado</option>
+            </select>
+          </section>
+
+          <section class="inventario">
+            <div class="titulo-tabla">
+              <h2>Existencias actuales</h2>
+              <span id="cantidadResultados">0 productos encontrados</span>
+            </div>
+
+            <div class="tabla-contenedor" id="tablaContenedor">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Existencia</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th>Última actualización</th>
+                  </tr>
+                </thead>
+
+                <tbody id="filasInventario"></tbody>
+              </table>
+            </div>
+
+            <div class="mensaje-vacio" id="mensajeVacio" hidden>
+              No encontramos productos con estos filtros.
+            </div>
+
+            <div class="pie-tabla">
+              <span>Las existencias cambian mediante ventas y reabastecimientos.</span>
+              <span id="nombreSucursalPie">Matriz · Zitácuaro</span>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const productosInventario = [
+        {
+          id: 101,
+          codigo: "PAL-FRE-001",
+          nombre: "Paleta de fresa",
+          categoria: "Paletas",
+          precio: 18,
+          icono: "🍓",
+          existencias: { 1: 24, 2: 18, 3: 12, 4: 21, 5: 9, 6: 15, 7: 19 },
+          actualizado: "2026-09-12T11:35:00",
+        },
+        {
+          id: 102,
+          codigo: "PAL-MAN-002",
+          nombre: "Paleta de mango",
+          categoria: "Paletas",
+          precio: 18,
+          icono: "🥭",
+          existencias: { 1: 18, 2: 5, 3: 14, 4: 10, 5: 17, 6: 7, 7: 13 },
+          actualizado: "2026-09-12T11:28:00",
+        },
+        {
+          id: 103,
+          codigo: "PAL-LIM-003",
+          nombre: "Paleta de limón",
+          categoria: "Paletas",
+          precio: 18,
+          icono: "🍋",
+          existencias: { 1: 15, 2: 22, 3: 8, 4: 18, 5: 11, 6: 0, 7: 16 },
+          actualizado: "2026-09-12T10:55:00",
+        },
+        {
+          id: 104,
+          codigo: "PAL-CHO-004",
+          nombre: "Paleta de chocolate",
+          categoria: "Paletas",
+          precio: 20,
+          icono: "🍫",
+          existencias: { 1: 9, 2: 13, 3: 4, 4: 20, 5: 6, 6: 12, 7: 3 },
+          actualizado: "2026-09-12T10:42:00",
+        },
+        {
+          id: 105,
+          codigo: "NIE-MAN-001",
+          nombre: "Nieve de mango",
+          categoria: "Nieves",
+          precio: 25,
+          icono: "🍨",
+          existencias: { 1: 12, 2: 9, 3: 6, 4: 14, 5: 10, 6: 8, 7: 11 },
+          actualizado: "2026-09-12T10:15:00",
+        },
+        {
+          id: 106,
+          codigo: "NIE-FRE-002",
+          nombre: "Nieve de fresa",
+          categoria: "Nieves",
+          precio: 25,
+          icono: "🍧",
+          existencias: { 1: 20, 2: 15, 3: 18, 4: 7, 5: 13, 6: 16, 7: 9 },
+          actualizado: "2026-09-12T09:48:00",
+        },
+        {
+          id: 107,
+          codigo: "AGU-LIM-001",
+          nombre: "Agua de limón",
+          categoria: "Aguas",
+          precio: 22,
+          icono: "🥤",
+          existencias: { 1: 7, 2: 11, 3: 0, 4: 16, 5: 5, 6: 14, 7: 8 },
+          actualizado: "2026-09-12T09:30:00",
+        },
+        {
+          id: 108,
+          codigo: "EXT-CHA-001",
+          nombre: "Chamoyada",
+          categoria: "Extras",
+          precio: 28,
+          icono: "🌶️",
+          existencias: { 1: 0, 2: 4, 3: 9, 4: 2, 5: 12, 6: 6, 7: 10 },
+          actualizado: "2026-09-12T09:05:00",
+        },
+      ];
+
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion"),
+      ) || {
+        id: 1,
+        nombre: "Carlos Mendoza",
+        rol: "EMPLEADO",
+        sucursal: {
+          id: 1,
+          nombre: "Matriz · Zitácuaro",
+        },
+      };
+
+      const obtenerElemento = (id) => document.getElementById(id);
+
+      const sucursalFiltro = obtenerElemento("sucursalFiltro");
+      const categoriaFiltro = obtenerElemento("categoriaFiltro");
+      const estadoFiltro = obtenerElemento("estadoFiltro");
+      const buscarProducto = obtenerElemento("buscarProducto");
+
+      function formatoMoneda(cantidad) {
+        return new Intl.NumberFormat("es-MX", {
+          style: "currency",
+          currency: "MXN",
+        }).format(cantidad);
+      }
+
+      function formatoFecha(fecha) {
+        return new Intl.DateTimeFormat("es-MX", {
+          day: "2-digit",
+          month: "short",
+          hour: "numeric",
+          minute: "2-digit",
+        }).format(new Date(fecha));
+      }
+
+      function obtenerEstado(existencia) {
+        if (existencia === 0) {
+          return "agotado";
+        }
+
+        if (existencia <= 9) {
+          return "bajo";
+        }
+
+        return "disponible";
+      }
+
+      function textoEstado(estado) {
+        const textos = {
+          disponible: "Disponible",
+          bajo: "Existencia baja",
+          agotado: "Agotado",
+        };
+
+        return textos[estado];
+      }
+
+      function obtenerReabastecimientos() {
+        try {
+          return (
+            JSON.parse(
+              localStorage.getItem("reabastecimientosMichoacana"),
+            ) || []
+          );
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function obtenerLista(clave) {
+        try {
+          return JSON.parse(localStorage.getItem(clave)) || [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function calcularExistencia(relacion, producto, sucursalId) {
+        const productoBase = productosInventario.find(
+          (item) => Number(item.id) === Number(producto.id),
+        );
+
+        const existenciaInicial = productoBase?.existencias?.[sucursalId] || 0;
+
+        const unidadesReabastecidas = obtenerReabastecimientos()
+          .filter(
+            (movimiento) =>
+              movimiento.active !== false &&
+              Number(movimiento.branchId) === sucursalId,
+          )
+          .reduce((total, movimiento) => {
+            const unidadesProducto = (movimiento.items || [])
+              .filter(
+                (item) =>
+                  Number(item.branchProductId) === Number(relacion.id) ||
+                  Number(item.branchProductId) === Number(producto.id) ||
+                  Number(item.productId) === Number(producto.id),
+              )
+              .reduce(
+                (subtotal, item) => subtotal + Number(item.quantity || 0),
+                0,
+              );
+
+            return total + unidadesProducto;
+          }, 0);
+
+        const unidadesVendidas = obtenerLista("historialVentas")
+          .filter(
+            (venta) =>
+              venta.estado !== "cancelada" &&
+              Number(venta.branchId) === sucursalId,
+          )
+          .reduce((total, venta) => {
+            const unidadesProducto = (venta.productos || [])
+              .filter(
+                (item) =>
+                  Number(item.id || item.productId) === Number(producto.id),
+              )
+              .reduce(
+                (subtotal, item) => subtotal + Number(item.cantidad || 0),
+                0,
+              );
+
+            return total + unidadesProducto;
+          }, 0);
+
+        return Math.max(
+          0,
+          existenciaInicial + unidadesReabastecidas - unidadesVendidas,
+        );
+      }
+
+      function productosFiltrados() {
+        const sucursalId = Number(sucursalFiltro.value);
+        const busqueda = buscarProducto.value.trim().toLowerCase();
+        const categoria = categoriaFiltro.value;
+        const estado = estadoFiltro.value;
+
+        const productosGenerales = obtenerLista("productosMichoacana");
+        const categorias = obtenerLista("categoriasProductosMichoacana");
+        const catalogo = obtenerLista("catalogoSucursalMichoacana");
+
+        return catalogo
+          .filter(
+            (relacion) =>
+              relacion.active !== false &&
+              Number(relacion.branchId) === sucursalId,
+          )
+          .map((relacion) => {
+            const producto = productosGenerales.find(
+              (item) => Number(item.id) === Number(relacion.productId),
+            );
+
+            if (!producto || producto.active === false) {
+              return null;
+            }
+
+            const categoriaProducto = categorias.find(
+              (item) => Number(item.id) === Number(producto.categoryId),
+            );
+
+            return {
+              id: producto.id,
+              branchProductId: relacion.id,
+              codigo: producto.sku,
+              nombre: producto.name,
+              categoria: categoriaProducto?.name || "Sin categoría",
+              precio: Number(relacion.price),
+              icono: producto.icono || "🍦",
+              imageUrl: producto.imageUrl || null,
+              actualizado:
+                relacion.updatedAt ||
+                relacion.createdAt ||
+                new Date().toISOString(),
+              existencia: calcularExistencia(
+                relacion,
+                producto,
+                sucursalId,
+              ),
+            };
+          })
+          .filter(Boolean)
+          .filter((producto) => {
+            const coincideBusqueda =
+              !busqueda ||
+              producto.nombre.toLowerCase().includes(busqueda) ||
+              producto.codigo.toLowerCase().includes(busqueda);
+
+            const coincideCategoria =
+              categoria === "todas" || producto.categoria === categoria;
+
+            const coincideEstado =
+              estado === "todos" || obtenerEstado(producto.existencia) === estado;
+
+            return coincideBusqueda && coincideCategoria && coincideEstado;
+          });
+      }
+
+      function actualizarSucursalVisible() {
+        const opcion = sucursalFiltro.options[sucursalFiltro.selectedIndex];
+        const nombre = opcion.textContent.trim();
+
+        obtenerElemento("sucursalActual").textContent = nombre;
+        obtenerElemento("nombreSucursalPie").textContent = nombre;
+      }
+
+      function renderizarInventario() {
+        const productos = productosFiltrados();
+
+        obtenerElemento("filasInventario").innerHTML = productos
+          .map((producto) => {
+            const estado = obtenerEstado(producto.existencia);
+
+            return `
+              <tr>
+                <td>
+                  <div class="producto">
+                    <span class="producto-icono">${producto.icono}</span>
+
+                    <div>
+                      <strong>${producto.nombre}</strong>
+                      <small>${producto.codigo}</small>
+                    </div>
+                  </div>
+                </td>
+
+                <td>${producto.categoria}</td>
+
+                <td>
+                  <span class="existencia">${producto.existencia}</span>
+                  unidades
+                </td>
+
+                <td>${formatoMoneda(producto.precio)}</td>
+
+                <td>
+                  <span class="estado ${estado}">
+                    ${textoEstado(estado)}
+                  </span>
+                </td>
+
+                <td>${formatoFecha(producto.actualizado)}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        const unidades = productos.reduce(
+          (total, producto) => total + producto.existencia,
+          0,
+        );
+
+        const bajos = productos.filter(
+          (producto) => obtenerEstado(producto.existencia) === "bajo",
+        ).length;
+
+        const agotados = productos.filter(
+          (producto) => obtenerEstado(producto.existencia) === "agotado",
+        ).length;
+
+        obtenerElemento("totalProductos").textContent = productos.length;
+        obtenerElemento("totalUnidades").textContent = unidades;
+        obtenerElemento("productosBajos").textContent = bajos;
+        obtenerElemento("productosAgotados").textContent = agotados;
+
+        obtenerElemento("cantidadResultados").textContent =
+          productos.length === 1
+            ? "1 producto encontrado"
+            : `${productos.length} productos encontrados`;
+
+        obtenerElemento("tablaContenedor").hidden = productos.length === 0;
+        obtenerElemento("mensajeVacio").hidden = productos.length !== 0;
+
+        actualizarSucursalVisible();
+      }
+
+      function configurarSesion() {
+        const inicial = usuarioSesion.nombre.charAt(0).toUpperCase();
+
+        obtenerElemento("nombreMenu").textContent = usuarioSesion.nombre;
+        obtenerElemento("nombreSuperior").textContent = usuarioSesion.nombre;
+        obtenerElemento("inicialMenu").textContent = inicial;
+        obtenerElemento("inicialSuperior").textContent = inicial;
+        obtenerElemento("sucursalMenu").textContent = usuarioSesion.sucursal.nombre;
+
+        const esAdministrador = ["ADMIN", "ADMINISTRADOR"].includes(
+          (usuarioSesion.rol || "").toUpperCase(),
+        );
+
+        if (!esAdministrador) {
+          const sucursalAsignada = String(usuarioSesion.sucursal.id);
+          const existeSucursal = [...sucursalFiltro.options].some(
+            (opcion) => opcion.value === sucursalAsignada,
+          );
+
+          if (existeSucursal) {
+            sucursalFiltro.value = sucursalAsignada;
+          }
+
+          sucursalFiltro.disabled = true;
+          sucursalFiltro.title = "Sucursal asignada por la sesión";
+        }
+      }
+
+      function oscurecerColor(hexadecimal) {
+        const valor = hexadecimal.replace("#", "");
+        const rojo = parseInt(valor.slice(0, 2), 16);
+        const verde = parseInt(valor.slice(2, 4), 16);
+        const azul = parseInt(valor.slice(4, 6), 16);
+
+        return `rgb(${Math.max(0, rojo - 25)}, ${Math.max(
+          0,
+          verde - 25,
+        )}, ${Math.max(0, azul - 25)})`;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+
+          if (!tema) {
+            return;
+          }
+
+          const raiz = document.documentElement;
+
+          raiz.style.setProperty("--principal", tema.principal);
+          raiz.style.setProperty("--principal-oscuro", oscurecerColor(tema.principal));
+          raiz.style.setProperty("--menu", tema.menu);
+          raiz.style.setProperty("--fondo", tema.fondo);
+
+          obtenerElemento("sidebar").style.background = `linear-gradient(
+            180deg,
+            ${tema.menu},
+            ${oscurecerColor(tema.menu)}
+          )`;
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      [buscarProducto, categoriaFiltro, estadoFiltro, sucursalFiltro].forEach(
+        (control) => {
+          control.addEventListener(
+            control === buscarProducto ? "input" : "change",
+            renderizarInventario,
+          );
+        },
+      );
+
+      const sidebar = obtenerElemento("sidebar");
+      const fondoMenu = obtenerElemento("fondoMenu");
+
+      obtenerElemento("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      function cerrarMenu() {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      fondoMenu.addEventListener("click", cerrarMenu);
+
+      document.addEventListener("keydown", (evento) => {
+        if (evento.key === "Escape") {
+          cerrarMenu();
+        }
+      });
+
+      window.addEventListener("pageshow", renderizarInventario);
+
+      window.addEventListener("storage", (evento) => {
+        if (evento.key === "reabastecimientosMichoacana") {
+          renderizarInventario();
+        }
+      });
+
+      configurarSesion();
+      cargarTema();
+      renderizarInventario();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

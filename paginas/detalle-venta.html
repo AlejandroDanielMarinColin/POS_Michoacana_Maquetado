@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de venta | La Michoacana</title>
+  <style>
+    :root {
+      --principal: #ed2b85;
+      --principal-oscuro: #d51d70;
+      --principal-claro: rgba(237, 43, 133, 0.11);
+      --secundario: #ffd43b;
+      --menu: #ed2b85;
+      --fondo: #f6f8fb;
+      --texto: #17141d;
+      --texto-secundario: #716a74;
+      --borde: #e7e2e6;
+      --verde: #159a61;
+      --rojo: #dc3545;
+      --ancho-menu: 245px;
+      --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: Inter, Arial, sans-serif; color: var(--texto); background: var(--fondo); }
+    body.sin-scroll { overflow: hidden; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    a { color: inherit; text-decoration: none; }
+    .aplicacion { min-height: 100vh; padding-left: var(--ancho-menu); }
+
+    .sidebar {
+      width: var(--ancho-menu); height: 100vh; position: fixed; inset: 0 auto 0 0; z-index: 1000;
+      display: flex; flex-direction: column; padding: 22px 14px; color: white;
+      background: linear-gradient(180deg, var(--menu), var(--principal-oscuro));
+      overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.3) transparent;
+      transition: transform .3s ease;
+    }
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(255,255,255,.3); }
+    .marca { display: flex; align-items: center; gap: 12px; padding: 2px 8px 20px; }
+    .marca img { width: 55px; height: 55px; flex-shrink: 0; object-fit: contain; }
+    .marca strong { display: block; font-size: .95rem; }
+    .marca small { display: block; margin-top: 4px; color: rgba(255,255,255,.78); font-size: .7rem; }
+    .titulo-menu { margin: 18px 11px 7px; color: rgba(255,255,255,.65); font-size: .65rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    .navegacion { display: grid; gap: 5px; }
+    .opcion-menu { min-height: 43px; display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 10px; color: rgba(255,255,255,.94); font-size: .82rem; font-weight: 650; }
+    .opcion-menu:hover { background: rgba(255,255,255,.13); }
+    .opcion-menu.activa { color: var(--principal); background: white; box-shadow: 0 7px 18px rgba(123,10,60,.14); }
+    .icono-menu { width: 22px; display: grid; place-items: center; flex-shrink: 0; }
+    .punto-activo { width: 6px; height: 6px; margin-left: auto; border-radius: 50%; background: var(--principal); }
+    .usuario-menu { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 20px 8px 10px; border-top: 1px solid rgba(255,255,255,.15); }
+    .avatar { width: 40px; height: 40px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; color: var(--principal); background: white; font-weight: 850; }
+    .usuario-menu strong { display: block; font-size: .8rem; }
+    .usuario-menu small { display: block; margin-top: 3px; color: rgba(255,255,255,.75); font-size: .67rem; }
+
+    .barra-superior { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 4vw; border-bottom: 1px solid var(--borde); background: white; }
+    .boton-menu { width: 42px; height: 42px; display: none; place-items: center; border: 1px solid var(--borde); border-radius: 10px; background: white; font-size: 1.25rem; }
+    .dato-superior { display: flex; align-items: center; gap: 10px; }
+    .dato-superior:first-of-type { margin-right: auto; }
+    .dato-superior .icono, .dato-superior .avatar { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; color: var(--principal); background: var(--principal-claro); }
+    .dato-superior .avatar { border-radius: 50%; }
+    .dato-superior small { display: block; margin-bottom: 3px; color: var(--texto-secundario); font-size: .7rem; }
+    .dato-superior strong { display: block; font-size: .82rem; }
+
+    .contenido { width: 100%; max-width: 1500px; margin: 0 auto; padding: 30px 4vw 50px; }
+    .encabezado { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+    .encabezado h1 { margin: 0 0 6px; font-size: clamp(1.7rem,3vw,2.2rem); letter-spacing: -.04em; }
+    .encabezado p { margin: 0; color: var(--texto-secundario); }
+    .volver { min-height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border: 1px solid var(--borde); border-radius: 10px; background: white; font-size: .8rem; }
+
+    .venta-grid { display: grid; grid-template-columns: minmax(0,1.55fr) minmax(310px,.75fr); gap: 20px; align-items: start; }
+    .tarjeta { border: 1px solid var(--borde); border-radius: 17px; background: white; box-shadow: var(--sombra); }
+    .tarjeta-titulo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--borde); }
+    .tarjeta-titulo h2 { margin: 0; font-size: 1rem; }
+    .tarjeta-titulo span { color: var(--texto-secundario); font-size: .75rem; }
+    .lista-productos { padding: 4px 20px; }
+    .fila-producto { display: grid; grid-template-columns: 58px minmax(0,1fr) auto auto auto; gap: 14px; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--borde); }
+    .fila-producto:last-child { border-bottom: 0; }
+    .producto-icono { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(145deg,#fff,#fff1f7); font-size: 2rem; }
+    .producto-info { min-width: 0; }
+    .producto-info strong { display: block; margin-bottom: 5px; font-size: .88rem; }
+    .producto-info small { color: var(--texto-secundario); font-size: .7rem; }
+    .cantidad { display: flex; align-items: center; border: 1px solid var(--borde); border-radius: 10px; overflow: hidden; }
+    .cantidad button { width: 34px; height: 34px; border: 0; color: var(--principal); background: white; font-weight: 900; }
+    .cantidad button:hover { background: var(--principal-claro); }
+    .cantidad span { min-width: 32px; text-align: center; font-size: .8rem; font-weight: 800; }
+    .importe { min-width: 76px; text-align: right; font-size: .86rem; font-weight: 850; }
+    .eliminar { width: 35px; height: 35px; border: 0; border-radius: 10px; color: var(--rojo); background: #fff0f2; }
+    .vacio { padding: 55px 20px; text-align: center; color: var(--texto-secundario); }
+    .vacio div { margin-bottom: 10px; font-size: 2.5rem; }
+
+    .resumen { position: sticky; top: 20px; overflow: hidden; }
+    .resumen-cuerpo { padding: 20px; }
+    .fila-total { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 13px; color: var(--texto-secundario); font-size: .82rem; }
+    .fila-total strong { color: var(--texto); }
+    .descuento { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: 18px 0; }
+    .descuento input { min-width: 0; min-height: 42px; padding: 0 12px; border: 1px solid var(--borde); border-radius: 10px; outline: none; }
+    .descuento input:focus { border-color: var(--principal); box-shadow: 0 0 0 3px var(--principal-claro); }
+    .descuento button { padding: 0 14px; border: 1px solid var(--principal); border-radius: 10px; color: var(--principal); background: white; font-size: .76rem; font-weight: 800; }
+    .total-final { display: flex; justify-content: space-between; align-items: center; margin: 18px 0; padding-top: 18px; border-top: 1px solid var(--borde); }
+    .total-final span { font-weight: 800; }
+    .total-final strong { font-size: 1.45rem; }
+    .metodos { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 10px 0 18px; }
+    .metodo { min-height: 66px; display: grid; place-items: center; gap: 3px; padding: 8px 4px; border: 1px solid var(--borde); border-radius: 11px; background: white; font-size: .7rem; font-weight: 750; }
+    .metodo span { font-size: 1.15rem; }
+    .metodo.activo { border-color: var(--principal); color: var(--principal); background: var(--principal-claro); }
+    .efectivo-campos { display: none; padding: 14px; margin-bottom: 16px; border-radius: 11px; background: var(--fondo); }
+    .efectivo-campos.visible { display: block; }
+    .efectivo-campos label { display: block; margin-bottom: 7px; color: var(--texto-secundario); font-size: .7rem; font-weight: 750; }
+    .efectivo-campos input { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid var(--borde); border-radius: 9px; outline: none; }
+    .cambio { display: flex; justify-content: space-between; margin-top: 10px; font-size: .8rem; }
+    .confirmar { width: 100%; min-height: 49px; border: 0; border-radius: 12px; color: white; background: linear-gradient(90deg,var(--principal),var(--principal-oscuro)); font-size: .84rem; font-weight: 850; box-shadow: 0 8px 22px rgba(237,43,133,.2); }
+    .confirmar:hover { filter: brightness(.96); }
+    .fondo-menu { position: fixed; inset: 0; z-index: 950; visibility: hidden; opacity: 0; background: rgba(10,14,24,.42); transition: .25s; }
+    .fondo-menu.visible { visibility: visible; opacity: 1; }
+    .mensaje { position: fixed; top: 90px; right: 20px; z-index: 1200; padding: 13px 17px; border-radius: 11px; color: white; background: #25212a; font-size: .8rem; box-shadow: 0 10px 28px rgba(20,16,20,.2); opacity: 0; transform: translateY(-10px); pointer-events: none; transition: .25s; }
+    .mensaje.visible { opacity: 1; transform: translateY(0); }
+
+    .confirmacion-fondo {
+      position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center;
+      padding: 20px; visibility: hidden; opacity: 0; background: rgba(20,16,20,.55);
+      backdrop-filter: blur(5px); transition: opacity .25s, visibility .25s;
+    }
+    .confirmacion-fondo.visible { visibility: visible; opacity: 1; }
+    .confirmacion {
+      width: min(430px,100%); padding: 30px; border-radius: 22px; background: white;
+      text-align: center; box-shadow: 0 24px 70px rgba(20,16,20,.25);
+      transform: scale(.94); transition: transform .25s;
+    }
+    .confirmacion-fondo.visible .confirmacion { transform: scale(1); }
+    .confirmacion-icono {
+      width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px;
+      border-radius: 50%; color: white; background: var(--verde); font-size: 2.3rem;
+      box-shadow: 0 10px 25px rgba(21,154,97,.24);
+    }
+    .confirmacion h2 { margin: 0 0 8px; font-size: 1.45rem; }
+    .confirmacion > p { margin: 0 0 22px; color: var(--texto-secundario); font-size: .86rem; }
+    .confirmacion-datos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+    .confirmacion-dato { padding: 14px 10px; border-radius: 12px; background: var(--fondo); }
+    .confirmacion-dato small { display: block; margin-bottom: 5px; color: var(--texto-secundario); font-size: .7rem; }
+    .confirmacion-dato strong { font-size: 1.2rem; }
+    .acciones-confirmacion { display: grid; gap: 10px; }
+    .enviar-whatsapp, .nueva-venta { width: 100%; min-height: 50px; border-radius: 12px; font-weight: 850; }
+    .enviar-whatsapp { border: 0; color: white; background: #20a85a; }
+    .nueva-venta { border: 0; color: white; background: linear-gradient(90deg,var(--principal),var(--principal-oscuro)); }
+    .formulario-whatsapp { display: none; margin-top: 15px; padding: 15px; border-radius: 13px; background: #eefaf3; text-align: left; }
+    .formulario-whatsapp.visible { display: block; }
+    .formulario-whatsapp label { display: block; margin-bottom: 7px; color: #34704d; font-size: .72rem; font-weight: 800; }
+    .telefono-grupo { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
+    .prefijo { min-height: 44px; display: grid; place-items: center; padding: 0 11px; border: 1px solid #cfe9da; border-radius: 10px; background: white; font-size: .82rem; font-weight: 800; }
+    .telefono-grupo input { min-width: 0; min-height: 44px; padding: 0 11px; border: 1px solid #cfe9da; border-radius: 10px; outline: none; }
+    .telefono-grupo input:focus { border-color: #20a85a; box-shadow: 0 0 0 3px rgba(32,168,90,.12); }
+    .simular-envio { padding: 0 14px; border: 0; border-radius: 10px; color: white; background: #20a85a; font-size: .76rem; font-weight: 850; }
+    .estado-envio { min-height: 17px; margin-top: 9px; color: #34704d; font-size: .7rem; }
+    .redireccion { margin-top: 12px; color: var(--texto-secundario); font-size: .7rem; }
+
+    @media (max-width: 1050px) { .venta-grid { grid-template-columns: 1fr; } .resumen { position: static; } }
+    @media (max-width: 850px) { .aplicacion { padding-left: 0; } .sidebar { transform: translateX(-105%); } .sidebar.abierta { transform: translateX(0); } .boton-menu { display: grid; } }
+    @media (max-width: 620px) {
+      .barra-superior { padding: 11px 16px; } .dato-superior:last-child > div:last-child { display: none; }
+      .contenido { padding: 25px 16px 40px; } .encabezado { align-items: flex-start; } .volver { width: 42px; padding: 0; justify-content: center; } .volver span:last-child { display: none; }
+      .fila-producto { grid-template-columns: 48px minmax(0,1fr) auto; gap: 10px; } .producto-icono { width: 48px; height: 48px; font-size: 1.7rem; }
+      .cantidad { grid-column: 2; width: max-content; } .importe { grid-column: 3; grid-row: 2; } .eliminar { grid-column: 3; grid-row: 1; }
+      .telefono-grupo { grid-template-columns: auto 1fr; }
+      .simular-envio { grid-column: 1 / -1; min-height: 44px; }
+    }
+  </style>
+  <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+<body>
+  <div class="aplicacion">
+    <aside class="sidebar" id="sidebar">
+      <div class="marca"><img src="../imagenes/logogranpaleteria.jpeg" alt="Logo de La Michoacana"><div><strong>La Michoacana</strong><small>Sistema administrativo</small></div></div>
+      <p class="titulo-menu">Principal</p>
+      <nav class="navegacion"><a href="../dashboard.html" class="opcion-menu"><span class="icono-menu">⌂</span>Inicio</a></nav>
+      <p class="titulo-menu">Operación</p>
+      <nav class="navegacion">
+        <a href="registrar-venta.html" class="opcion-menu activa"><span class="icono-menu">🛒</span>Registrar venta<span class="punto-activo"></span></a>
+        <a href="historial-ventas.html" class="opcion-menu"><span class="icono-menu">↺</span>Historial de ventas</a>
+        <a href="gastos.html" class="opcion-menu"><span class="icono-menu">▣</span>Gastos</a>
+        <a href="reabastecimiento.html" class="opcion-menu"><span class="icono-menu">♧</span>Reabastecimiento</a>
+        <a href="inventario.html" class="opcion-menu"><span class="icono-menu">◇</span>Inventario</a>
+        <a href="corte-caja.html" class="opcion-menu"><span class="icono-menu">▤</span>Corte de caja</a>
+      </nav>
+      <p class="titulo-menu">Productos</p>
+      <nav class="navegacion">
+        <a href="productos.html" class="opcion-menu"><span class="icono-menu">◇</span>Productos</a>
+        <a href="categorias.html" class="opcion-menu"><span class="icono-menu">⌑</span>Categorías</a>
+        <a href="catalogo-sucursal.html" class="opcion-menu"><span class="icono-menu">⌂</span>Catálogo por sucursal</a>
+      </nav>
+      <div class="usuario-menu"><div class="avatar" id="inicialMenu">C</div><div><strong id="nombreMenu">Carlos Mendoza</strong><small id="sucursalMenu">Matriz · Zitácuaro</small></div></div>
+    </aside>
+    <div class="fondo-menu" id="fondoMenu"></div>
+
+    <main>
+      <header class="barra-superior">
+        <button class="boton-menu" id="abrirMenu" type="button" aria-label="Abrir menú">☰</button>
+        <div class="dato-superior"><span class="icono">⌖</span><div><small>Sucursal</small><strong id="sucursalActual">Matriz · Zitácuaro</strong></div></div>
+        <div class="dato-superior"><div class="avatar" id="inicialVendedor">C</div><div><small>Venta registrada por</small><strong id="nombreVendedor">Carlos Mendoza</strong></div></div>
+      </header>
+
+      <section class="contenido">
+        <div class="encabezado"><div><h1>Detalle de venta</h1><p>Revisa los productos y selecciona el método de pago.</p></div><a class="volver" href="registrar-venta.html"><span>←</span><span>Seguir agregando</span></a></div>
+        <div class="venta-grid">
+          <section class="tarjeta">
+            <div class="tarjeta-titulo"><h2>Productos seleccionados</h2><span id="cantidadProductos">0 productos</span></div>
+            <div class="lista-productos" id="listaProductos"></div>
+          </section>
+
+          <aside class="tarjeta resumen">
+            <div class="tarjeta-titulo"><h2>Resumen de venta</h2><span>MXN</span></div>
+            <div class="resumen-cuerpo">
+              <div class="fila-total"><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+              <div class="fila-total"><span>Descuento</span><strong id="descuentoMostrado">-$0.00</strong></div>
+              <div class="descuento"><input id="descuento" type="number" min="0" step="1" placeholder="Descuento en pesos"><button id="aplicarDescuento" type="button">Aplicar</button></div>
+              <div class="total-final"><span>Total</span><strong id="total">$0.00</strong></div>
+              <span style="display:block;margin-bottom:9px;color:var(--texto-secundario);font-size:.72rem;font-weight:750">MÉTODO DE PAGO</span>
+              <div class="metodos" id="metodosPago"></div>
+              <div class="efectivo-campos visible" id="efectivoCampos"><label for="montoRecibido">Monto recibido</label><input id="montoRecibido" type="number" min="0" step=".50" placeholder="$0.00"><div class="cambio"><span>Cambio</span><strong id="cambio">$0.00</strong></div></div>
+              <button class="confirmar" id="confirmarVenta" type="button">Confirmar venta</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="mensaje" id="mensaje" aria-live="polite"></div>
+
+  <div class="confirmacion-fondo" id="confirmacionFondo" role="dialog" aria-modal="true" aria-labelledby="tituloConfirmacion">
+    <section class="confirmacion">
+      <div class="confirmacion-icono">✓</div>
+      <h2 id="tituloConfirmacion">¡Venta registrada!</h2>
+      <p>La operación se guardó correctamente.</p>
+      <div class="confirmacion-datos">
+        <div class="confirmacion-dato"><small>Total cobrado</small><strong id="totalConfirmado">$0.00</strong></div>
+        <div class="confirmacion-dato"><small>Cambio</small><strong id="cambioConfirmado">$0.00</strong></div>
+      </div>
+      <div class="acciones-confirmacion">
+        <button class="enviar-whatsapp" id="mostrarWhatsApp" type="button">Enviar ticket por WhatsApp</button>
+        <button class="nueva-venta" id="nuevaVenta" type="button">Registrar nueva venta →</button>
+      </div>
+      <div class="formulario-whatsapp" id="formularioWhatsApp">
+        <label for="telefonoTicket">Número del cliente</label>
+        <div class="telefono-grupo">
+          <span class="prefijo">+52</span>
+          <input id="telefonoTicket" type="tel" inputmode="numeric" maxlength="10" placeholder="10 dígitos" autocomplete="tel">
+          <button class="simular-envio" id="enviarTicket" type="button">Enviar</button>
+        </div>
+        <div class="estado-envio" id="estadoEnvio"></div>
+      </div>
+      <div class="redireccion">Regresaremos automáticamente en <span id="segundosRedireccion">5</span> segundos</div>
+    </section>
+  </div>
+
+  <script>
+    const formatoMoneda = cantidad => new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(cantidad);
+    const ventaGuardada = JSON.parse(localStorage.getItem("ventaActual")) || {};
+    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioSesion")) || { id: 1, nombre: ventaGuardada.sellerName || "Carlos Mendoza", rol: "EMPLEADO", sucursal: { id: ventaGuardada.branchId || 1, nombre: ventaGuardada.branchName || "Matriz · Zitácuaro" } };
+    const metodosIniciales = [
+      { id: 1, name: "Efectivo", isCash: true, isActive: true },
+      { id: 2, name: "Tarjeta", isCash: false, isActive: true },
+      { id: 3, name: "Transferencia", isCash: false, isActive: true },
+    ];
+
+    let metodosPago = JSON.parse(
+      localStorage.getItem("metodosPagoMichoacana"),
+    ) || metodosIniciales;
+
+    localStorage.setItem(
+      "metodosPagoMichoacana",
+      JSON.stringify(metodosPago),
+    );
+
+    let carrito = Array.isArray(ventaGuardada.productos) ? ventaGuardada.productos : (JSON.parse(localStorage.getItem("carritoMichoacana")) || []);
+    let descuentoAplicado = 0;
+    let metodoPago = metodosPago.find(metodo => metodo.isActive !== false) || null;
+    let ventaEnProceso = false;
+    let intervaloRedireccion = null;
+
+    const listaProductos = document.getElementById("listaProductos");
+    const subtotalElemento = document.getElementById("subtotal");
+    const descuentoMostrado = document.getElementById("descuentoMostrado");
+    const totalElemento = document.getElementById("total");
+    const montoRecibido = document.getElementById("montoRecibido");
+    const cambioElemento = document.getElementById("cambio");
+    const confirmarVenta = document.getElementById("confirmarVenta");
+    const mensaje = document.getElementById("mensaje");
+
+    function iconoMetodo(metodo) {
+      if (metodo.isCash) return "💵";
+
+      const nombre = metodo.name.toLowerCase();
+
+      if (nombre.includes("tarjeta")) return "💳";
+      if (nombre.includes("transfer")) return "↗";
+
+      return "▭";
+    }
+
+    function renderizarMetodosPago() {
+      const activos = metodosPago.filter(metodo => metodo.isActive !== false);
+      const contenedor = document.getElementById("metodosPago");
+
+      if (!activos.length) {
+        metodoPago = null;
+        contenedor.innerHTML = `
+          <p style="grid-column:1/-1;color:var(--rojo);font-size:.75rem">
+            No hay métodos de pago activos.
+          </p>
+        `;
+        document.getElementById("efectivoCampos").classList.remove("visible");
+        return;
+      }
+
+      if (!metodoPago || !activos.some(metodo => metodo.id === metodoPago.id)) {
+        metodoPago = activos[0];
+      }
+
+      contenedor.innerHTML = activos
+        .map(metodo => `
+          <button
+            class="metodo ${metodo.id === metodoPago.id ? "activo" : ""}"
+            data-metodo-id="${metodo.id}"
+            type="button"
+          >
+            <span>${iconoMetodo(metodo)}</span>
+            ${metodo.name}
+          </button>
+        `)
+        .join("");
+
+      contenedor.querySelectorAll(".metodo").forEach(boton => {
+        boton.addEventListener("click", () => {
+          metodoPago = activos.find(
+            metodo => String(metodo.id) === boton.dataset.metodoId,
+          );
+
+          renderizarMetodosPago();
+          calcularCambio();
+        });
+      });
+
+      document
+        .getElementById("efectivoCampos")
+        .classList.toggle("visible", metodoPago.isCash === true);
+    }
+
+    function totales() {
+      const subtotal = carrito.reduce((suma, producto) => suma + producto.precio * producto.cantidad, 0);
+      const descuento = Math.min(Math.max(descuentoAplicado, 0), subtotal);
+      return { subtotal, descuento, total: subtotal - descuento };
+    }
+
+    function guardarCambios() {
+      localStorage.setItem("carritoMichoacana", JSON.stringify(carrito));
+      localStorage.setItem("ventaActual", JSON.stringify({ ...ventaGuardada, branchId: usuarioSesion.sucursal.id, branchName: usuarioSesion.sucursal.nombre, registeredBy: usuarioSesion.id, sellerName: usuarioSesion.nombre, productos: carrito }));
+    }
+
+    function renderizar() {
+      const cantidad = carrito.reduce((suma, producto) => suma + producto.cantidad, 0);
+      document.getElementById("cantidadProductos").textContent = cantidad === 1 ? "1 producto" : cantidad + " productos";
+
+      if (!carrito.length) {
+        listaProductos.innerHTML = '<div class="vacio"><div>🛒</div>No hay productos en la venta.<br><a href="registrar-venta.html" style="color:var(--principal);font-weight:800">Agregar productos</a></div>';
+      } else {
+        listaProductos.innerHTML = carrito.map(producto => `
+          <article class="fila-producto">
+            <div class="producto-icono">${producto.icono || "🍦"}</div>
+            <div class="producto-info"><strong>${producto.nombre}</strong><small>${formatoMoneda(producto.precio)} por unidad</small></div>
+            <div class="cantidad"><button type="button" onclick="cambiarCantidad(${producto.id},-1)">−</button><span>${producto.cantidad}</span><button type="button" onclick="cambiarCantidad(${producto.id},1)">+</button></div>
+            <div class="importe">${formatoMoneda(producto.precio * producto.cantidad)}</div>
+            <button class="eliminar" type="button" aria-label="Eliminar ${producto.nombre}" onclick="eliminarProducto(${producto.id})">×</button>
+          </article>`).join("");
+      }
+
+      const valores = totales();
+      subtotalElemento.textContent = formatoMoneda(valores.subtotal);
+      descuentoMostrado.textContent = "-" + formatoMoneda(valores.descuento);
+      totalElemento.textContent = formatoMoneda(valores.total);
+      confirmarVenta.disabled = carrito.length === 0 || !metodoPago;
+      calcularCambio();
+      guardarCambios();
+    }
+
+    function cambiarCantidad(id, cambio) {
+      const producto = carrito.find(item => item.id === id);
+      if (!producto) return;
+      const nuevaCantidad = producto.cantidad + cambio;
+      if (nuevaCantidad < 1) return eliminarProducto(id);
+      if (producto.stock && nuevaCantidad > producto.stock) return mostrarMensaje("No hay más existencias disponibles.");
+      producto.cantidad = nuevaCantidad;
+      renderizar();
+    }
+
+    function eliminarProducto(id) {
+      carrito = carrito.filter(producto => producto.id !== id);
+      renderizar();
+    }
+
+    function calcularCambio() {
+      const recibido = Number(montoRecibido.value) || 0;
+      cambioElemento.textContent = formatoMoneda(Math.max(0, recibido - totales().total));
+    }
+
+    function mostrarMensaje(texto) {
+      mensaje.textContent = texto;
+      mensaje.classList.add("visible");
+      clearTimeout(mostrarMensaje.temporizador);
+      mostrarMensaje.temporizador = setTimeout(() => mensaje.classList.remove("visible"), 1900);
+    }
+
+    document.getElementById("aplicarDescuento").addEventListener("click", () => {
+      descuentoAplicado = Number(document.getElementById("descuento").value) || 0;
+      renderizar();
+    });
+
+    montoRecibido.addEventListener("input", calcularCambio);
+
+    confirmarVenta.addEventListener("click", () => {
+      if (!carrito.length || ventaEnProceso) return;
+      if (!metodoPago) return mostrarMensaje("No hay métodos de pago disponibles.");
+      const valores = totales();
+      if (metodoPago.isCash && (Number(montoRecibido.value) || 0) < valores.total) return mostrarMensaje("El monto recibido es menor que el total.");
+      ventaEnProceso = true;
+      confirmarVenta.disabled = true;
+
+      const cambioVenta = metodoPago.isCash ? Math.max(0, Number(montoRecibido.value) - valores.total) : 0;
+      const ventaConfirmada = { ...ventaGuardada, id: Date.now(), folio: "V-" + String(Date.now()).slice(-6), productos: carrito, subtotal: valores.subtotal, descuento: valores.descuento, total: valores.total, paymentMethodId: metodoPago.id, paymentMethodName: metodoPago.name, metodoPago: metodoPago.name.toLowerCase(), montoRecibido: metodoPago.isCash ? Number(montoRecibido.value) : valores.total, cambio: cambioVenta, estado: "completada", fecha: new Date().toISOString() };
+      localStorage.setItem("ventaConfirmada", JSON.stringify(ventaConfirmada));
+
+      const historialVentas = JSON.parse(localStorage.getItem("historialVentas")) || [];
+      historialVentas.unshift(ventaConfirmada);
+      localStorage.setItem("historialVentas", JSON.stringify(historialVentas));
+
+      localStorage.removeItem("carritoMichoacana");
+      localStorage.removeItem("ventaActual");
+
+      document.getElementById("totalConfirmado").textContent = formatoMoneda(valores.total);
+      document.getElementById("cambioConfirmado").textContent = formatoMoneda(cambioVenta);
+      document.getElementById("confirmacionFondo").classList.add("visible");
+
+      let segundos = 5;
+      const contador = document.getElementById("segundosRedireccion");
+      intervaloRedireccion = setInterval(() => {
+        segundos -= 1;
+        contador.textContent = segundos;
+        if (segundos <= 0) {
+          clearInterval(intervaloRedireccion);
+          window.location.replace("registrar-venta.html");
+        }
+      }, 1000);
+    });
+
+    document.getElementById("mostrarWhatsApp").addEventListener("click", () => {
+      clearInterval(intervaloRedireccion);
+      document.querySelector(".redireccion").style.display = "none";
+      document.getElementById("formularioWhatsApp").classList.add("visible");
+      document.getElementById("telefonoTicket").focus();
+    });
+
+    document.getElementById("enviarTicket").addEventListener("click", () => {
+      const telefono = document.getElementById("telefonoTicket").value.replace(/\D/g, "");
+      const estadoEnvio = document.getElementById("estadoEnvio");
+
+      if (telefono.length !== 10) {
+        estadoEnvio.textContent = "Escribe un número válido de 10 dígitos.";
+        return;
+      }
+
+      document.getElementById("enviarTicket").disabled = true;
+      estadoEnvio.textContent = "Enviando ticket...";
+
+      setTimeout(() => {
+        localStorage.setItem("ticketWhatsAppSimulado", JSON.stringify({ telefono: "+52" + telefono, venta: JSON.parse(localStorage.getItem("ventaConfirmada")), fechaEnvio: new Date().toISOString() }));
+        estadoEnvio.textContent = "✓ Ticket enviado correctamente (simulación).";
+        document.getElementById("mostrarWhatsApp").disabled = true;
+        document.getElementById("telefonoTicket").disabled = true;
+        document.getElementById("enviarTicket").textContent = "Enviado";
+      }, 900);
+    });
+
+    document.getElementById("nuevaVenta").addEventListener("click", () => {
+      window.location.replace("registrar-venta.html");
+    });
+
+    document.getElementById("sucursalActual").textContent = usuarioSesion.sucursal.nombre;
+    document.getElementById("sucursalMenu").textContent = usuarioSesion.sucursal.nombre;
+    document.getElementById("nombreVendedor").textContent = usuarioSesion.nombre;
+    document.getElementById("nombreMenu").textContent = usuarioSesion.nombre;
+    document.getElementById("inicialVendedor").textContent = usuarioSesion.nombre.charAt(0).toUpperCase();
+    document.getElementById("inicialMenu").textContent = usuarioSesion.nombre.charAt(0).toUpperCase();
+
+    function hexadecimalRgb(hexadecimal) { const valor = hexadecimal.replace("#", ""); return { rojo: parseInt(valor.substring(0,2),16), verde: parseInt(valor.substring(2,4),16), azul: parseInt(valor.substring(4,6),16) }; }
+    function oscurecerColor(hexadecimal) { const c = hexadecimalRgb(hexadecimal); return `rgb(${Math.max(0,c.rojo-25)},${Math.max(0,c.verde-25)},${Math.max(0,c.azul-25)})`; }
+    function crearColorClaro(hexadecimal) { const c = hexadecimalRgb(hexadecimal); return `rgba(${c.rojo},${c.verde},${c.azul},0.11)`; }
+    try {
+      const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+      if (tema) {
+        const raiz = document.documentElement;
+        raiz.style.setProperty("--principal", tema.principal);
+        raiz.style.setProperty("--principal-oscuro", oscurecerColor(tema.principal));
+        raiz.style.setProperty("--principal-claro", crearColorClaro(tema.principal));
+        raiz.style.setProperty("--secundario", tema.secundario);
+        raiz.style.setProperty("--menu", tema.menu);
+        raiz.style.setProperty("--fondo", tema.fondo);
+        document.getElementById("sidebar").style.background = `linear-gradient(180deg,${tema.menu},${oscurecerColor(tema.menu)})`;
+      }
+    } catch (error) { localStorage.removeItem("temaMichoacana"); }
+
+    const sidebar = document.getElementById("sidebar");
+    const fondoMenu = document.getElementById("fondoMenu");
+    document.getElementById("abrirMenu").addEventListener("click", () => { sidebar.classList.add("abierta"); fondoMenu.classList.add("visible"); document.body.classList.add("sin-scroll"); });
+    function cerrarMenu() { sidebar.classList.remove("abierta"); fondoMenu.classList.remove("visible"); document.body.classList.remove("sin-scroll"); }
+    fondoMenu.addEventListener("click", cerrarMenu);
+    document.addEventListener("keydown", evento => { if (evento.key === "Escape") cerrarMenu(); });
+    renderizarMetodosPago();
+    renderizar();
+  </script>
+    <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

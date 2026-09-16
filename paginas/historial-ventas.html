@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Historial de ventas | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --rojo: #dc3545;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ LATERAL */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: var(--menu);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        flex-shrink: 0;
+        text-align: center;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .icono-superior {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      .dato-superior .avatar {
+        background: var(--principal-claro);
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1550px;
+        margin: 0 auto;
+        padding: 30px 4vw 50px;
+      }
+
+      .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .nueva-venta {
+        min-width: 174px;
+        min-height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 0 22px;
+        border-radius: 12px;
+        color: white;
+        background: var(--principal);
+        font-size: 0.84rem;
+        font-weight: 800;
+        white-space: nowrap;
+        box-shadow: 0 8px 22px rgba(237, 43, 133, 0.2);
+      }
+
+      .indicadores {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .indicador {
+        padding: 18px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .indicador small,
+      .indicador em {
+        display: block;
+      }
+
+      .indicador small {
+        margin-bottom: 9px;
+        color: var(--texto-secundario);
+        font-size: 0.74rem;
+      }
+
+      .indicador strong {
+        font-size: 1.45rem;
+      }
+
+      .indicador em {
+        margin-top: 5px;
+        color: var(--verde);
+        font-size: 0.7rem;
+        font-style: normal;
+      }
+
+      .filtros {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) repeat(3, minmax(140px, 0.35fr));
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 15px;
+        border: 1px solid var(--borde);
+        border-radius: 15px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .control {
+        min-height: 43px;
+        padding: 0 12px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .control:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 3px var(--principal-claro);
+      }
+
+      .tarjeta {
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tabla-contenedor {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 800px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        font-size: 0.78rem;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+      }
+
+      tbody tr:hover {
+        background: #fffafd;
+      }
+
+      .folio {
+        font-weight: 850;
+      }
+
+      .estado {
+        display: inline-block;
+        padding: 6px 9px;
+        border-radius: 999px;
+        color: var(--verde);
+        background: #e8f8f0;
+        font-size: 0.67rem;
+        font-weight: 800;
+      }
+
+      .estado.cancelada {
+        color: var(--rojo);
+        background: #ffecef;
+      }
+
+      .ver-detalle {
+        min-height: 34px;
+        padding: 0 11px;
+        border: 1px solid var(--borde);
+        border-radius: 9px;
+        color: var(--principal);
+        background: white;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .vacio {
+        padding: 55px 20px;
+        text-align: center;
+        color: var(--texto-secundario);
+      }
+
+      .paginacion {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+
+      .rango {
+        color: var(--texto-secundario);
+        font-size: 0.72rem;
+      }
+
+      .paginas {
+        display: flex;
+        gap: 6px;
+      }
+
+      .pagina {
+        min-width: 35px;
+        height: 35px;
+        border: 1px solid var(--borde);
+        border-radius: 9px;
+        background: white;
+      }
+
+      .pagina.activa {
+        border-color: var(--principal);
+        color: white;
+        background: var(--principal);
+      }
+
+      /* VENTANA DE DETALLE */
+
+      .fondo-menu,
+      .fondo-modal {
+        position: fixed;
+        inset: 0;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.48);
+        transition: 0.25s;
+      }
+
+      .fondo-menu {
+        z-index: 950;
+      }
+
+      .fondo-modal {
+        z-index: 2000;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+
+      .fondo-menu.visible,
+      .fondo-modal.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal {
+        width: min(590px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 18px;
+        background: white;
+        box-shadow: 0 25px 70px rgba(10, 10, 20, 0.25);
+      }
+
+      .modal-cabecera {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 19px 20px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .modal-cabecera h2 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .cerrar-modal {
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--fondo);
+        font-size: 1.2rem;
+      }
+
+      .modal-contenido {
+        padding: 20px;
+      }
+
+      .detalle-datos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .detalle-dato {
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--fondo);
+      }
+
+      .detalle-dato small {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--texto-secundario);
+        font-size: 0.68rem;
+      }
+
+      .detalle-producto,
+      .detalle-total {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .detalle-producto {
+        padding: 11px 0;
+        border-bottom: 1px solid var(--borde);
+        font-size: 0.78rem;
+      }
+
+      .detalle-totales {
+        margin-top: 17px;
+        padding-top: 14px;
+        border-top: 1px solid var(--borde);
+      }
+
+      .detalle-total {
+        margin: 9px 0;
+        font-size: 0.82rem;
+      }
+
+      .detalle-total.final {
+        font-size: 1.05rem;
+        font-weight: 850;
+      }
+
+      @media (max-width: 1050px) {
+        .filtros {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px 40px;
+        }
+
+        .encabezado {
+          gap: 12px;
+        }
+
+        .nueva-venta {
+          width: 50px;
+          min-width: 50px;
+          height: 50px;
+          padding: 0;
+        }
+
+        .texto-nueva-venta {
+          display: none;
+        }
+
+        .indicadores,
+        .filtros,
+        .detalle-datos {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo de La Michoacana" />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Inicio
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu">
+            <i class="icono-menu">🛒</i>
+            Registrar venta
+          </a>
+
+          <a href="historial-ventas.html" class="opcion-menu activa">
+            <i class="icono-menu">↺</i>
+            Historial de ventas
+            <span class="punto-activo"></span>
+          </a>
+
+          <a href="gastos.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Gastos
+          </a>
+
+          <a href="reabastecimiento.html" class="opcion-menu">
+            <i class="icono-menu">♧</i>
+            Reabastecimiento
+          </a>
+
+          <a href="inventario.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Inventario
+          </a>
+
+          <a href="corte-caja.html" class="opcion-menu">
+            <i class="icono-menu">▤</i>
+            Corte de caja
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Productos
+          </a>
+
+          <a href="categorias.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías
+          </a>
+
+          <a href="catalogo-sucursal.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Catálogo por sucursal
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Administración</p>
+
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Sucursales
+          </a>
+
+          <a href="usuarios.html" class="opcion-menu">
+            <i class="icono-menu">♙</i>
+            Usuarios
+          </a>
+
+          <a href="categorias-gasto.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías de gasto
+          </a>
+
+          <a href="metodos-pago.html" class="opcion-menu">
+            <i class="icono-menu">▭</i>
+            Métodos de pago
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Supervisión</p>
+
+        <nav class="navegacion">
+          <a href="reportes.html" class="opcion-menu">
+            <i class="icono-menu">⌁</i>
+            Reportes
+          </a>
+
+          <a href="auditoria.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Auditoría
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="avatarMenu">C</div>
+
+          <div>
+            <strong id="nombreMenu">Carlos Mendoza</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button class="boton-menu" id="abrirMenu" type="button" aria-label="Abrir menú">
+            ☰
+          </button>
+
+          <div class="dato-superior">
+            <span class="icono-superior">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Matriz · Zitácuaro</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="avatarTop">C</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreTop">Carlos Mendoza</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1>Historial de ventas</h1>
+              <p>Consulta y revisa las ventas registradas.</p>
+            </div>
+
+            <a href="registrar-venta.html" class="nueva-venta">
+              <span>＋</span>
+              <span class="texto-nueva-venta">Nueva venta</span>
+            </a>
+          </div>
+
+          <section class="indicadores">
+            <article class="indicador">
+              <small>Ventas encontradas</small>
+              <strong id="ventasTotal">0</strong>
+              <em>Operaciones registradas</em>
+            </article>
+
+            <article class="indicador">
+              <small>Ingresos</small>
+              <strong id="ingresosTotal">$0.00</strong>
+              <em>Ventas completadas</em>
+            </article>
+
+            <article class="indicador">
+              <small>Descuentos</small>
+              <strong id="descuentosTotal">$0.00</strong>
+              <em>Total aplicado</em>
+            </article>
+          </section>
+
+          <section class="filtros">
+            <input
+              class="control"
+              id="buscar"
+              type="search"
+              placeholder="Buscar por folio o vendedor..."
+              autocomplete="off"
+            />
+
+            <input class="control" id="fecha" type="date" />
+
+            <select class="control" id="metodo">
+              <option value="todos">Todos los pagos</option>
+              <option value="efectivo">Efectivo</option>
+              <option value="tarjeta">Tarjeta</option>
+              <option value="transferencia">Transferencia</option>
+            </select>
+
+            <select class="control" id="estado">
+              <option value="todos">Todos los estados</option>
+              <option value="completada">Completadas</option>
+              <option value="cancelada">Canceladas</option>
+            </select>
+          </section>
+
+          <section class="tarjeta">
+            <div class="tabla-contenedor" id="tablaContenedor">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Folio</th>
+                    <th>Fecha y hora</th>
+                    <th>Vendedor</th>
+                    <th>Pago</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Consulta</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tablaVentas"></tbody>
+              </table>
+            </div>
+
+            <div class="vacio" id="sinVentas" hidden>
+              No encontramos ventas con estos filtros.
+            </div>
+
+            <div class="paginacion">
+              <span class="rango" id="rango"></span>
+              <div class="paginas" id="paginas"></div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="fondo-modal" id="fondoModal" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+      <section class="modal">
+        <div class="modal-cabecera">
+          <h2 id="tituloModal">Detalle de venta</h2>
+          <button class="cerrar-modal" id="cerrarModal" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="modal-contenido" id="contenidoModal"></div>
+      </section>
+    </div>
+
+    <script>
+      const $ = id => document.getElementById(id);
+
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion")
+      ) || {
+        nombre: "Carlos Mendoza",
+        sucursal: {
+          nombre: "Matriz · Zitácuaro"
+        }
+      };
+
+      let ventas = JSON.parse(
+        localStorage.getItem("historialVentas")
+      ) || [];
+
+      let paginaActual = 1;
+      const ventasPorPagina = 10;
+
+      function formatoMoneda(cantidad) {
+        return new Intl.NumberFormat("es-MX", {
+          style: "currency",
+          currency: "MXN"
+        }).format(Number(cantidad) || 0);
+      }
+
+      function textoNormalizado(texto) {
+        return String(texto || "").toLowerCase();
+      }
+
+      function formatoFecha(fecha) {
+        const valor = new Date(fecha);
+
+        if (Number.isNaN(valor.getTime())) {
+          return "Sin fecha";
+        }
+
+        return new Intl.DateTimeFormat("es-MX", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }).format(valor);
+      }
+
+      function ventasFiltradas() {
+        const busqueda = textoNormalizado($("buscar").value);
+        const fecha = $("fecha").value;
+        const metodo = $("metodo").value;
+        const estado = $("estado").value;
+
+        return ventas.filter(venta => {
+          const coincideBusqueda =
+            !busqueda ||
+            textoNormalizado(venta.folio).includes(busqueda) ||
+            textoNormalizado(venta.sellerName).includes(busqueda);
+
+          const coincideFecha =
+            !fecha ||
+            String(venta.fecha || "").slice(0, 10) === fecha;
+
+          const coincideMetodo =
+            metodo === "todos" ||
+            venta.metodoPago === metodo;
+
+          const coincideEstado =
+            estado === "todos" ||
+            venta.estado === estado;
+
+          return (
+            coincideBusqueda &&
+            coincideFecha &&
+            coincideMetodo &&
+            coincideEstado
+          );
+        });
+      }
+
+      function renderizar() {
+        const lista = ventasFiltradas();
+        const totalPaginas = Math.max(
+          1,
+          Math.ceil(lista.length / ventasPorPagina)
+        );
+
+        paginaActual = Math.min(paginaActual, totalPaginas);
+
+        const inicio = (paginaActual - 1) * ventasPorPagina;
+        const visibles = lista.slice(
+          inicio,
+          inicio + ventasPorPagina
+        );
+
+        $("tablaVentas").innerHTML = visibles
+          .map(venta => `
+            <tr>
+              <td class="folio">${venta.folio || "Sin folio"}</td>
+              <td>${formatoFecha(venta.fecha)}</td>
+              <td>${venta.sellerName || "Sin vendedor"}</td>
+              <td style="text-transform: capitalize;">${venta.metodoPago || "-"}</td>
+              <td><strong>${formatoMoneda(venta.total)}</strong></td>
+              <td>
+                <span class="estado ${venta.estado === "cancelada" ? "cancelada" : ""}">
+                  ${venta.estado === "cancelada" ? "Cancelada" : "Completada"}
+                </span>
+              </td>
+              <td>
+                <button
+                  class="ver-detalle"
+                  type="button"
+                  data-venta-id="${venta.id}"
+                >
+                  Ver detalle
+                </button>
+              </td>
+            </tr>
+          `)
+          .join("");
+
+        $("sinVentas").hidden = lista.length > 0;
+        $("tablaContenedor").hidden = lista.length === 0;
+
+        $("rango").textContent = lista.length
+          ? `Mostrando ${inicio + 1}–${Math.min(inicio + ventasPorPagina, lista.length)} de ${lista.length}`
+          : "";
+
+        $("paginas").innerHTML = Array.from(
+          { length: totalPaginas },
+          (_, indice) => `
+            <button
+              class="pagina ${indice + 1 === paginaActual ? "activa" : ""}"
+              type="button"
+              data-pagina="${indice + 1}"
+            >
+              ${indice + 1}
+            </button>
+          `
+        ).join("");
+
+        const completadas = lista.filter(
+          venta => venta.estado !== "cancelada"
+        );
+
+        $("ventasTotal").textContent = lista.length;
+
+        $("ingresosTotal").textContent = formatoMoneda(
+          completadas.reduce(
+            (total, venta) => total + Number(venta.total || 0),
+            0
+          )
+        );
+
+        $("descuentosTotal").textContent = formatoMoneda(
+          completadas.reduce(
+            (total, venta) => total + Number(venta.descuento || 0),
+            0
+          )
+        );
+      }
+
+      function verDetalle(id) {
+        const venta = ventas.find(
+          elemento => String(elemento.id) === String(id)
+        );
+
+        if (!venta) return;
+
+        $("tituloModal").textContent = `Venta ${venta.folio || "sin folio"}`;
+
+        $("contenidoModal").innerHTML = `
+          <div class="detalle-datos">
+            <div class="detalle-dato">
+              <small>Fecha</small>
+              <strong>${formatoFecha(venta.fecha)}</strong>
+            </div>
+
+            <div class="detalle-dato">
+              <small>Vendedor</small>
+              <strong>${venta.sellerName || "Sin vendedor"}</strong>
+            </div>
+
+            <div class="detalle-dato">
+              <small>Sucursal</small>
+              <strong>${venta.branchName || "Sin sucursal"}</strong>
+            </div>
+
+            <div class="detalle-dato">
+              <small>Método de pago</small>
+              <strong style="text-transform: capitalize;">${venta.metodoPago || "-"}</strong>
+            </div>
+          </div>
+
+          <strong>Productos</strong>
+
+          ${(venta.productos || [])
+            .map(producto => `
+              <div class="detalle-producto">
+                <span>${producto.cantidad} × ${producto.nombre}</span>
+                <strong>${formatoMoneda(producto.cantidad * producto.precio)}</strong>
+              </div>
+            `)
+            .join("")}
+
+          <div class="detalle-totales">
+            <div class="detalle-total">
+              <span>Subtotal</span>
+              <strong>${formatoMoneda(venta.subtotal)}</strong>
+            </div>
+
+            <div class="detalle-total">
+              <span>Descuento</span>
+              <strong>-${formatoMoneda(venta.descuento)}</strong>
+            </div>
+
+            <div class="detalle-total final">
+              <span>Total</span>
+              <strong>${formatoMoneda(venta.total)}</strong>
+            </div>
+          </div>
+        `;
+
+        $("fondoModal").classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      }
+
+      function cerrarModal() {
+        $("fondoModal").classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      function cargarUsuario() {
+        const nombre = usuarioSesion.nombre || "Carlos Mendoza";
+        const sucursal = usuarioSesion.sucursal?.nombre || "Matriz · Zitácuaro";
+        const inicial = nombre.charAt(0).toUpperCase();
+
+        $("nombreTop").textContent = nombre;
+        $("nombreMenu").textContent = nombre;
+        $("sucursalActual").textContent = sucursal;
+        $("sucursalMenu").textContent = sucursal;
+        $("avatarTop").textContent = inicial;
+        $("avatarMenu").textContent = inicial;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(
+            localStorage.getItem("temaMichoacana")
+          );
+
+          if (!tema) return;
+
+          const raiz = document.documentElement;
+
+          if (tema.principal) {
+            raiz.style.setProperty("--principal", tema.principal);
+          }
+
+          if (tema.menu) {
+            raiz.style.setProperty("--menu", tema.menu);
+          }
+
+          if (tema.fondo) {
+            raiz.style.setProperty("--fondo", tema.fondo);
+          }
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      ["buscar", "fecha", "metodo", "estado"].forEach(id => {
+        $(id).addEventListener(
+          id === "buscar" ? "input" : "change",
+          () => {
+            paginaActual = 1;
+            renderizar();
+          }
+        );
+      });
+
+      $("tablaVentas").addEventListener("click", evento => {
+        const boton = evento.target.closest("[data-venta-id]");
+
+        if (boton) {
+          verDetalle(boton.dataset.ventaId);
+        }
+      });
+
+      $("paginas").addEventListener("click", evento => {
+        const boton = evento.target.closest("[data-pagina]");
+
+        if (boton) {
+          paginaActual = Number(boton.dataset.pagina);
+          renderizar();
+        }
+      });
+
+      $("cerrarModal").addEventListener("click", cerrarModal);
+
+      $("fondoModal").addEventListener("click", evento => {
+        if (evento.target === $("fondoModal")) {
+          cerrarModal();
+        }
+      });
+
+      const sidebar = $("sidebar");
+      const fondoMenu = $("fondoMenu");
+
+      $("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      function cerrarMenu() {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      fondoMenu.addEventListener("click", cerrarMenu);
+
+      document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape") {
+          cerrarMenu();
+          cerrarModal();
+        }
+      });
+
+      cargarTema();
+      cargarUsuario();
+      renderizar();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1571 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Corte de caja | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --tarjeta: #ffffff;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --verde: #159a61;
+        --amarillo: #d97706;
+        --rojo: #dc3545;
+        --azul: #2878d4;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      select {
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      /* MENÚ */
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: linear-gradient(
+          180deg,
+          var(--menu),
+          var(--principal-oscuro)
+        );
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .icono-sucursal {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      /* CONTENIDO */
+
+      .contenido {
+        width: 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 30px 4vw 50px;
+      }
+
+      .encabezado {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .estado-caja {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 39px;
+        padding: 0 14px;
+        border-radius: 999px;
+        color: var(--verde);
+        background: #e8f8f0;
+        font-size: 0.73rem;
+        font-weight: 850;
+      }
+
+      .estado-caja::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .estado-caja.cerrada {
+        color: var(--texto-secundario);
+        background: #eeeaf0;
+      }
+
+      .panel {
+        margin-bottom: 20px;
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 17px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .panel-encabezado {
+        padding: 19px 21px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .panel-encabezado h2 {
+        margin: 0 0 5px;
+        font-size: 1rem;
+      }
+
+      .panel-encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+        font-size: 0.77rem;
+      }
+
+      /* APERTURA */
+
+      .apertura-cuerpo {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        padding: 22px;
+      }
+
+      .formulario {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .campo {
+        display: grid;
+        gap: 7px;
+      }
+
+      .campo.ancho {
+        grid-column: 1 / -1;
+      }
+
+      .campo label {
+        color: var(--texto-secundario);
+        font-size: 0.71rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .campo input,
+      .campo select {
+        width: 100%;
+        min-height: 47px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .campo input:focus,
+      .campo select:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .campo input:disabled,
+      .campo select:disabled {
+        cursor: default;
+        opacity: 1;
+        background: #f5f3f5;
+      }
+
+      .ayuda {
+        color: var(--texto-secundario);
+        font-size: 0.68rem;
+      }
+
+      .boton-principal {
+        min-height: 49px;
+        padding: 0 22px;
+        border: 0;
+        border-radius: 11px;
+        color: white;
+        background: linear-gradient(
+          90deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+        font-weight: 850;
+        box-shadow: 0 8px 22px rgba(237, 43, 133, 0.2);
+      }
+
+      .explicacion {
+        padding: 20px;
+        border-radius: 14px;
+        background: linear-gradient(145deg, #fff5fa, #ffffff);
+      }
+
+      .explicacion strong {
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .explicacion ul {
+        display: grid;
+        gap: 11px;
+        margin: 0;
+        padding-left: 19px;
+        color: var(--texto-secundario);
+        font-size: 0.76rem;
+        line-height: 1.45;
+      }
+
+      /* CAJA ABIERTA */
+
+      .datos-apertura {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px 25px;
+        padding: 16px 21px;
+        border-bottom: 1px solid var(--borde);
+        color: var(--texto-secundario);
+        font-size: 0.73rem;
+      }
+
+      .datos-apertura strong {
+        color: var(--texto);
+      }
+
+      .resumen {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 13px;
+        padding: 20px;
+      }
+
+      .tarjeta-resumen {
+        min-height: 105px;
+        padding: 17px;
+        border: 1px solid var(--borde);
+        border-radius: 13px;
+        background: var(--tono, #fff8fb);
+      }
+
+      .tarjeta-resumen small {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .tarjeta-resumen strong {
+        display: block;
+        font-size: 1.25rem;
+      }
+
+      .tarjeta-resumen span {
+        display: block;
+        margin-top: 6px;
+        color: var(--detalle, var(--verde));
+        font-size: 0.67rem;
+      }
+
+      .total-esperado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin: 0 20px 20px;
+        padding: 19px;
+        border-radius: 14px;
+        color: white;
+        background: linear-gradient(
+          105deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+      }
+
+      .total-esperado small,
+      .total-esperado strong {
+        display: block;
+      }
+
+      .total-esperado small {
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.71rem;
+      }
+
+      .total-esperado strong {
+        font-size: 1.55rem;
+      }
+
+      .cerrar-caja {
+        min-height: 46px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 10px;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      /* HISTORIAL */
+
+      .tabla-contenedor {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--borde);
+        text-align: left;
+        font-size: 0.76rem;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--texto-secundario);
+        background: #fbfafb;
+        font-size: 0.67rem;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .diferencia {
+        color: var(--verde);
+        font-weight: 850;
+      }
+
+      .diferencia.faltante {
+        color: var(--rojo);
+      }
+
+      .diferencia.sobrante {
+        color: var(--amarillo);
+      }
+
+      .vacio {
+        padding: 45px 20px;
+        text-align: center;
+        color: var(--texto-secundario);
+        font-size: 0.8rem;
+      }
+
+      /* MODAL */
+
+      .modal-fondo {
+        position: fixed;
+        inset: 0;
+        z-index: 1200;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(20, 16, 24, 0.5);
+        transition: 0.22s;
+      }
+
+      .modal-fondo.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal {
+        width: min(100%, 470px);
+        padding: 23px;
+        border-radius: 17px;
+        background: white;
+        box-shadow: 0 22px 60px rgba(20, 15, 20, 0.22);
+      }
+
+      .modal h2 {
+        margin: 0 0 6px;
+        font-size: 1.2rem;
+      }
+
+      .modal > p {
+        margin: 0 0 19px;
+        color: var(--texto-secundario);
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      .resultado-cierre {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin: 16px 0;
+        padding: 13px;
+        border-radius: 10px;
+        background: #f7f5f7;
+        font-size: 0.78rem;
+      }
+
+      .acciones-modal {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        margin-top: 20px;
+      }
+
+      .boton-secundario {
+        min-height: 45px;
+        padding: 0 17px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        font-weight: 750;
+      }
+
+      .mensaje {
+        position: fixed;
+        top: 92px;
+        right: 22px;
+        z-index: 1400;
+        padding: 13px 17px;
+        border-radius: 11px;
+        color: white;
+        background: #25212a;
+        font-size: 0.78rem;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: 0.25s;
+      }
+
+      .mensaje.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.42);
+        transition: 0.25s;
+      }
+
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1150px) {
+        .resumen {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        table {
+          min-width: 1050px;
+        }
+      }
+
+      @media (max-width: 930px) {
+        .apertura-cuerpo {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px;
+        }
+
+        .encabezado {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .formulario,
+        .resumen {
+          grid-template-columns: 1fr;
+        }
+
+        .apertura-cuerpo,
+        .resumen {
+          padding: 16px;
+        }
+
+        .total-esperado {
+          align-items: stretch;
+          flex-direction: column;
+          margin: 0 16px 16px;
+        }
+
+        .cerrar-caja {
+          width: 100%;
+        }
+
+        .acciones-modal {
+          flex-direction: column-reverse;
+        }
+
+        .acciones-modal button {
+          width: 100%;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img
+            src="../imagenes/logogranpaleteria.jpeg"
+            alt="Logo de La Michoacana"
+          />
+
+          <div>
+            <strong>La Michoacana</strong>
+            <small>Sistema administrativo</small>
+          </div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Inicio
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu">
+            <i class="icono-menu">🛒</i>
+            Registrar venta
+          </a>
+
+          <a href="historial-ventas.html" class="opcion-menu">
+            <i class="icono-menu">↺</i>
+            Historial de ventas
+          </a>
+
+          <a href="gastos.html" class="opcion-menu">
+            <i class="icono-menu">▣</i>
+            Gastos
+          </a>
+
+          <a href="reabastecimiento.html" class="opcion-menu">
+            <i class="icono-menu">♧</i>
+            Reabastecimiento
+          </a>
+
+          <a href="inventario.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Inventario
+          </a>
+
+          <a href="corte-caja.html" class="opcion-menu activa">
+            <i class="icono-menu">▤</i>
+            Corte de caja
+            <span class="punto-activo"></span>
+          </a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu">
+            <i class="icono-menu">◇</i>
+            Productos
+          </a>
+
+          <a href="categorias.html" class="opcion-menu">
+            <i class="icono-menu">⌑</i>
+            Categorías
+          </a>
+
+          <a href="catalogo-sucursal.html" class="opcion-menu">
+            <i class="icono-menu">⌂</i>
+            Catálogo por sucursal
+          </a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">C</div>
+
+          <div>
+            <strong id="nombreMenu">Carlos Mendoza</strong>
+            <small id="sucursalMenu">Matriz · Zitácuaro</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button
+            class="boton-menu"
+            id="abrirMenu"
+            type="button"
+            aria-label="Abrir menú"
+          >
+            ☰
+          </button>
+
+          <div class="dato-superior">
+            <span class="icono-sucursal">⌖</span>
+
+            <div>
+              <small>Sucursal</small>
+              <strong id="sucursalActual">Matriz · Zitácuaro</strong>
+            </div>
+          </div>
+
+          <div class="dato-superior">
+            <div class="avatar" id="inicialSuperior">C</div>
+
+            <div>
+              <small>Usuario</small>
+              <strong id="nombreSuperior">Carlos Mendoza</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1>Corte de caja</h1>
+              <p>Controla la apertura y el cierre de caja de la sucursal.</p>
+            </div>
+
+            <span class="estado-caja cerrada" id="estadoCaja">Caja cerrada</span>
+          </div>
+
+          <section class="panel" id="panelApertura">
+            <div class="panel-encabezado">
+              <h2>Abrir caja</h2>
+              <p>Registra el fondo inicial antes de comenzar las operaciones.</p>
+            </div>
+
+            <div class="apertura-cuerpo">
+              <form class="formulario" id="formApertura">
+                <div class="campo ancho">
+                  <label for="sucursalApertura">Sucursal</label>
+
+                  <select id="sucursalApertura" required>
+                    <option value="1">Matriz · Zitácuaro</option>
+                    <option value="2">Sucursal Centro</option>
+                    <option value="3">Sucursal Uruapan</option>
+                    <option value="4">Sucursal Morelia</option>
+                    <option value="5">Sucursal Pátzcuaro</option>
+                    <option value="6">Sucursal Lázaro Cárdenas</option>
+                    <option value="7">Sucursal Zamora</option>
+                  </select>
+
+                  <span class="ayuda" id="ayudaSucursal"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="responsableApertura">Abierta por</label>
+
+                  <input id="responsableApertura" type="text" disabled />
+
+                  <span class="ayuda">Se obtiene de la sesión por NIP.</span>
+                </div>
+
+                <div class="campo">
+                  <label for="montoApertura">Fondo inicial</label>
+
+                  <input
+                    id="montoApertura"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="$0.00"
+                    required
+                  />
+                </div>
+
+                <button class="boton-principal ancho" type="submit">
+                  Abrir caja
+                </button>
+              </form>
+
+              <aside class="explicacion">
+                <strong>Antes de abrir</strong>
+
+                <ul>
+                  <li>Cuenta el efectivo disponible como fondo inicial.</li>
+                  <li>Verifica que corresponda con la sucursal mostrada.</li>
+                  <li>Solo puede existir una caja abierta por sucursal.</li>
+                  <li>La apertura no podrá editarse ni eliminarse después.</li>
+                </ul>
+              </aside>
+            </div>
+          </section>
+
+          <section class="panel" id="panelCajaAbierta" hidden>
+            <div class="panel-encabezado">
+              <h2>Resumen de la caja actual</h2>
+              <p>Movimientos registrados desde la apertura de caja.</p>
+            </div>
+
+            <div class="datos-apertura">
+              <span>Apertura: <strong id="fechaApertura">—</strong></span>
+              <span>Responsable: <strong id="abiertaPor">—</strong></span>
+              <span>Sucursal: <strong id="sucursalCaja">—</strong></span>
+            </div>
+
+            <div class="resumen">
+              <article class="tarjeta-resumen">
+                <small>Fondo inicial</small>
+                <strong id="fondoInicial">$0.00</strong>
+                <span>Monto de apertura</span>
+              </article>
+
+              <article
+                class="tarjeta-resumen"
+                style="--tono: #eef7ff; --detalle: var(--azul)"
+              >
+                <small>Ventas en efectivo</small>
+                <strong id="ventasEfectivo">$0.00</strong>
+                <span id="cantidadEfectivo">0 operaciones</span>
+              </article>
+
+              <article
+                class="tarjeta-resumen"
+                style="--tono: #f5efff; --detalle: #7a46bd"
+              >
+                <small>Ventas con tarjeta</small>
+                <strong id="ventasTarjeta">$0.00</strong>
+                <span id="cantidadTarjeta">0 operaciones</span>
+              </article>
+
+              <article
+                class="tarjeta-resumen"
+                style="--tono: #ecfbf8; --detalle: #07897b"
+              >
+                <small>Transferencias</small>
+                <strong id="ventasTransferencia">$0.00</strong>
+                <span id="cantidadTransferencia">0 operaciones</span>
+              </article>
+
+              <article
+                class="tarjeta-resumen"
+                style="--tono: #fff7ec; --detalle: var(--amarillo)"
+              >
+                <small>Gastos del turno</small>
+                <strong id="gastosEfectivo">$0.00</strong>
+                <span>Se descuentan del efectivo</span>
+              </article>
+
+              <article
+                class="tarjeta-resumen"
+                style="--tono: #eefaf3"
+              >
+                <small>Ventas totales</small>
+                <strong id="ventasTotales">$0.00</strong>
+                <span id="cantidadVentas">0 operaciones</span>
+              </article>
+            </div>
+
+            <div class="total-esperado">
+              <div>
+                <small>Efectivo esperado en caja</small>
+                <strong id="efectivoEsperado">$0.00</strong>
+              </div>
+
+              <button class="cerrar-caja" id="abrirCierre" type="button">
+                Cerrar caja
+              </button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-encabezado">
+              <h2>Historial de cortes</h2>
+              <p>Los cortes cerrados son únicamente de consulta.</p>
+            </div>
+
+            <div class="tabla-contenedor" id="tablaContenedor">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Folio</th>
+                    <th>Sucursal</th>
+                    <th>Apertura</th>
+                    <th>Cierre</th>
+                    <th>Abierta por</th>
+                    <th>Cerrada por</th>
+                    <th>Esperado</th>
+                    <th>Contado</th>
+                    <th>Diferencia</th>
+                  </tr>
+                </thead>
+
+                <tbody id="filasHistorial"></tbody>
+              </table>
+            </div>
+
+            <div class="vacio" id="historialVacio">
+              Todavía no hay cortes de caja cerrados.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-fondo" id="modalCierre">
+      <section class="modal" role="dialog" aria-modal="true">
+        <h2>Cerrar caja</h2>
+
+        <p>
+          Cuenta físicamente todo el efectivo disponible. Una vez confirmado,
+          el corte no podrá editarse ni eliminarse.
+        </p>
+
+        <form id="formCierre">
+          <div class="campo">
+            <label for="responsableCierre">Cerrada por</label>
+            <input id="responsableCierre" type="text" disabled />
+          </div>
+
+          <div class="campo" style="margin-top: 15px">
+            <label for="montoContado">Efectivo contado</label>
+
+            <input
+              id="montoContado"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="$0.00"
+              required
+            />
+          </div>
+
+          <div class="resultado-cierre">
+            <span>Diferencia estimada</span>
+            <strong id="diferenciaPrevia">$0.00</strong>
+          </div>
+
+          <div class="acciones-modal">
+            <button class="boton-secundario" id="cancelarCierre" type="button">
+              Cancelar
+            </button>
+
+            <button class="boton-principal" type="submit">
+              Confirmar cierre
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="mensaje" id="mensaje" aria-live="polite"></div>
+
+    <script>
+      const usuarioSesion = JSON.parse(
+        localStorage.getItem("usuarioSesion"),
+      ) || {
+        id: 1,
+        nombre: "Carlos Mendoza",
+        rol: "EMPLEADO",
+        sucursal: {
+          id: 1,
+          nombre: "Matriz · Zitácuaro",
+        },
+      };
+
+      const obtenerElemento = (id) => document.getElementById(id);
+
+      const sucursalApertura = obtenerElemento("sucursalApertura");
+      const panelApertura = obtenerElemento("panelApertura");
+      const panelCajaAbierta = obtenerElemento("panelCajaAbierta");
+      const modalCierre = obtenerElemento("modalCierre");
+
+      let cortes = obtenerLista("cortesCajaMichoacana");
+      let resumenActual = null;
+
+      function obtenerLista(clave) {
+        try {
+          return JSON.parse(localStorage.getItem(clave)) || [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function guardarCortes() {
+        localStorage.setItem("cortesCajaMichoacana", JSON.stringify(cortes));
+      }
+
+      function formatoMoneda(cantidad) {
+        return new Intl.NumberFormat("es-MX", {
+          style: "currency",
+          currency: "MXN",
+        }).format(Number(cantidad) || 0);
+      }
+
+      function formatoFecha(fecha) {
+        return new Intl.DateTimeFormat("es-MX", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(fecha));
+      }
+
+      function esAdministrador() {
+        return ["ADMIN", "ADMINISTRADOR"].includes(
+          (usuarioSesion.rol || "").toUpperCase(),
+        );
+      }
+
+      function cajaAbiertaSucursal(sucursalId) {
+        return cortes.find(
+          (corte) =>
+            corte.status === "abierta" &&
+            Number(corte.branchId) === Number(sucursalId),
+        );
+      }
+
+      function cajaVisible() {
+        return cajaAbiertaSucursal(Number(sucursalApertura.value));
+      }
+
+      function calcularResumen(caja) {
+        const ventas = obtenerLista("historialVentas").filter(
+          (venta) =>
+            venta.estado !== "cancelada" &&
+            Number(venta.branchId) === Number(caja.branchId) &&
+            new Date(venta.fecha) >= new Date(caja.openedAt),
+        );
+
+        const gastos = obtenerLista("gastosMichoacana").filter((gasto) => {
+          const fechaGasto = gasto.date || gasto.fecha;
+
+          return (
+            gasto.active !== false &&
+            Number(gasto.branchId || gasto.sucursalId) === Number(caja.branchId) &&
+            new Date(fechaGasto) >= new Date(caja.openedAt)
+          );
+        });
+
+        const ventasMetodo = (metodo) =>
+          ventas
+            .filter((venta) => venta.metodoPago === metodo)
+            .reduce((total, venta) => total + Number(venta.total || 0), 0);
+
+        const efectivo = ventasMetodo("efectivo");
+        const tarjeta = ventasMetodo("tarjeta");
+        const transferencia = ventasMetodo("transferencia");
+        const gastosEfectivo = gastos.reduce(
+          (total, gasto) => total + Number(gasto.amount ?? gasto.importe ?? 0),
+          0,
+        );
+
+        return {
+          ventas,
+          efectivo,
+          tarjeta,
+          transferencia,
+          gastosEfectivo,
+          ventasTotales: efectivo + tarjeta + transferencia,
+          efectivoEsperado:
+            Number(caja.openingAmount) + efectivo - gastosEfectivo,
+        };
+      }
+
+      function cantidadTexto(cantidad) {
+        return cantidad === 1 ? "1 operación" : `${cantidad} operaciones`;
+      }
+
+      function actualizarResumen(caja) {
+        resumenActual = calcularResumen(caja);
+
+        obtenerElemento("fechaApertura").textContent = formatoFecha(caja.openedAt);
+        obtenerElemento("abiertaPor").textContent = caja.openedByName;
+        obtenerElemento("sucursalCaja").textContent = caja.branchName;
+        obtenerElemento("fondoInicial").textContent = formatoMoneda(
+          caja.openingAmount,
+        );
+
+        obtenerElemento("ventasEfectivo").textContent = formatoMoneda(
+          resumenActual.efectivo,
+        );
+        obtenerElemento("ventasTarjeta").textContent = formatoMoneda(
+          resumenActual.tarjeta,
+        );
+        obtenerElemento("ventasTransferencia").textContent = formatoMoneda(
+          resumenActual.transferencia,
+        );
+        obtenerElemento("gastosEfectivo").textContent = formatoMoneda(
+          resumenActual.gastosEfectivo,
+        );
+        obtenerElemento("ventasTotales").textContent = formatoMoneda(
+          resumenActual.ventasTotales,
+        );
+        obtenerElemento("efectivoEsperado").textContent = formatoMoneda(
+          resumenActual.efectivoEsperado,
+        );
+
+        obtenerElemento("cantidadEfectivo").textContent = cantidadTexto(
+          resumenActual.ventas.filter(
+            (venta) => venta.metodoPago === "efectivo",
+          ).length,
+        );
+        obtenerElemento("cantidadTarjeta").textContent = cantidadTexto(
+          resumenActual.ventas.filter(
+            (venta) => venta.metodoPago === "tarjeta",
+          ).length,
+        );
+        obtenerElemento("cantidadTransferencia").textContent = cantidadTexto(
+          resumenActual.ventas.filter(
+            (venta) => venta.metodoPago === "transferencia",
+          ).length,
+        );
+        obtenerElemento("cantidadVentas").textContent = cantidadTexto(
+          resumenActual.ventas.length,
+        );
+      }
+
+      function mostrarEstado() {
+        const caja = cajaVisible();
+
+        panelApertura.hidden = Boolean(caja);
+        panelCajaAbierta.hidden = !caja;
+
+        obtenerElemento("estadoCaja").textContent = caja
+          ? "Caja abierta"
+          : "Caja cerrada";
+        obtenerElemento("estadoCaja").classList.toggle("cerrada", !caja);
+
+        if (caja) {
+          actualizarResumen(caja);
+        }
+      }
+
+      function claseDiferencia(diferencia) {
+        if (diferencia < 0) {
+          return "faltante";
+        }
+
+        if (diferencia > 0) {
+          return "sobrante";
+        }
+
+        return "";
+      }
+
+      function textoDiferencia(diferencia) {
+        if (diferencia < 0) {
+          return `${formatoMoneda(Math.abs(diferencia))} faltante`;
+        }
+
+        if (diferencia > 0) {
+          return `${formatoMoneda(diferencia)} sobrante`;
+        }
+
+        return "$0.00 exacta";
+      }
+
+      function renderizarHistorial() {
+        const cerrados = cortes.filter(
+          (corte) => corte.status === "cerrada",
+        );
+
+        obtenerElemento("filasHistorial").innerHTML = cerrados
+          .map(
+            (corte) => `
+              <tr>
+                <td><strong>${corte.folio}</strong></td>
+                <td>${corte.branchName}</td>
+                <td>${formatoFecha(corte.openedAt)}</td>
+                <td>${formatoFecha(corte.closedAt)}</td>
+                <td>${corte.openedByName}</td>
+                <td>${corte.closedByName}</td>
+                <td>${formatoMoneda(corte.expectedAmount)}</td>
+                <td>${formatoMoneda(corte.countedAmount)}</td>
+                <td>
+                  <span class="diferencia ${claseDiferencia(corte.difference)}">
+                    ${textoDiferencia(corte.difference)}
+                  </span>
+                </td>
+              </tr>
+            `,
+          )
+          .join("");
+
+        obtenerElemento("tablaContenedor").hidden = cerrados.length === 0;
+        obtenerElemento("historialVacio").hidden = cerrados.length !== 0;
+      }
+
+      function mostrarMensaje(texto) {
+        const mensaje = obtenerElemento("mensaje");
+
+        mensaje.textContent = texto;
+        mensaje.classList.add("visible");
+
+        clearTimeout(mostrarMensaje.temporizador);
+
+        mostrarMensaje.temporizador = setTimeout(() => {
+          mensaje.classList.remove("visible");
+        }, 2000);
+      }
+
+      obtenerElemento("formApertura").addEventListener("submit", (evento) => {
+        evento.preventDefault();
+
+        const branchId = Number(sucursalApertura.value);
+
+        if (cajaAbiertaSucursal(branchId)) {
+          mostrarMensaje("Esta sucursal ya tiene una caja abierta.");
+          mostrarEstado();
+          return;
+        }
+
+        const id = Date.now();
+        const branchName =
+          sucursalApertura.options[sucursalApertura.selectedIndex].text;
+
+        cortes.unshift({
+          id,
+          folio: `C-${String(id).slice(-6)}`,
+          branchId,
+          branchName,
+          openedBy: usuarioSesion.id,
+          openedByName: usuarioSesion.nombre,
+          openingAmount: Number(obtenerElemento("montoApertura").value),
+          openedAt: new Date().toISOString(),
+          status: "abierta",
+        });
+
+        guardarCortes();
+        obtenerElemento("montoApertura").value = "";
+        mostrarEstado();
+        renderizarHistorial();
+        mostrarMensaje("Caja abierta correctamente.");
+      });
+
+      obtenerElemento("abrirCierre").addEventListener("click", () => {
+        const caja = cajaVisible();
+
+        if (!caja) {
+          return;
+        }
+
+        actualizarResumen(caja);
+        obtenerElemento("montoContado").value = "";
+        obtenerElemento("diferenciaPrevia").textContent = formatoMoneda(
+          -resumenActual.efectivoEsperado,
+        );
+        modalCierre.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      obtenerElemento("montoContado").addEventListener("input", () => {
+        const contado = Number(obtenerElemento("montoContado").value) || 0;
+        const diferencia = contado - resumenActual.efectivoEsperado;
+        const elemento = obtenerElemento("diferenciaPrevia");
+
+        elemento.textContent = textoDiferencia(diferencia);
+        elemento.className = `diferencia ${claseDiferencia(diferencia)}`;
+      });
+
+      function cerrarModal() {
+        modalCierre.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      }
+
+      obtenerElemento("cancelarCierre").addEventListener("click", cerrarModal);
+
+      modalCierre.addEventListener("click", (evento) => {
+        if (evento.target === modalCierre) {
+          cerrarModal();
+        }
+      });
+
+      obtenerElemento("formCierre").addEventListener("submit", (evento) => {
+        evento.preventDefault();
+
+        const caja = cajaVisible();
+
+        if (!caja) {
+          cerrarModal();
+          return;
+        }
+
+        actualizarResumen(caja);
+
+        const countedAmount = Number(obtenerElemento("montoContado").value);
+
+        Object.assign(caja, {
+          closedBy: usuarioSesion.id,
+          closedByName: usuarioSesion.nombre,
+          countedAmount,
+          expectedAmount: resumenActual.efectivoEsperado,
+          difference: countedAmount - resumenActual.efectivoEsperado,
+          salesCash: resumenActual.efectivo,
+          salesCard: resumenActual.tarjeta,
+          salesTransfer: resumenActual.transferencia,
+          expenses: resumenActual.gastosEfectivo,
+          closedAt: new Date().toISOString(),
+          status: "cerrada",
+        });
+
+        guardarCortes();
+        cerrarModal();
+        mostrarEstado();
+        renderizarHistorial();
+        mostrarMensaje("Corte de caja registrado correctamente.");
+      });
+
+      function configurarSesion() {
+        const inicial = usuarioSesion.nombre.charAt(0).toUpperCase();
+
+        obtenerElemento("nombreMenu").textContent = usuarioSesion.nombre;
+        obtenerElemento("nombreSuperior").textContent = usuarioSesion.nombre;
+        obtenerElemento("inicialMenu").textContent = inicial;
+        obtenerElemento("inicialSuperior").textContent = inicial;
+        obtenerElemento("sucursalMenu").textContent = usuarioSesion.sucursal.nombre;
+        obtenerElemento("sucursalActual").textContent = usuarioSesion.sucursal.nombre;
+        obtenerElemento("responsableApertura").value = usuarioSesion.nombre;
+        obtenerElemento("responsableCierre").value = usuarioSesion.nombre;
+
+        sucursalApertura.value = String(usuarioSesion.sucursal.id);
+        sucursalApertura.disabled = !esAdministrador();
+        obtenerElemento("ayudaSucursal").textContent = esAdministrador()
+          ? "Puedes seleccionar la sucursal que deseas operar."
+          : "Asignada automáticamente por tu sesión.";
+      }
+
+      function oscurecerColor(hexadecimal) {
+        const valor = hexadecimal.replace("#", "");
+        const rojo = parseInt(valor.slice(0, 2), 16);
+        const verde = parseInt(valor.slice(2, 4), 16);
+        const azul = parseInt(valor.slice(4, 6), 16);
+
+        return `rgb(${Math.max(0, rojo - 25)}, ${Math.max(
+          0,
+          verde - 25,
+        )}, ${Math.max(0, azul - 25)})`;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+
+          if (!tema) {
+            return;
+          }
+
+          const raiz = document.documentElement;
+
+          raiz.style.setProperty("--principal", tema.principal);
+          raiz.style.setProperty(
+            "--principal-oscuro",
+            oscurecerColor(tema.principal),
+          );
+          raiz.style.setProperty("--menu", tema.menu);
+          raiz.style.setProperty("--fondo", tema.fondo);
+
+          obtenerElemento("sidebar").style.background = `linear-gradient(
+            180deg,
+            ${tema.menu},
+            ${oscurecerColor(tema.menu)}
+          )`;
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      sucursalApertura.addEventListener("change", () => {
+        obtenerElemento("sucursalActual").textContent =
+          sucursalApertura.options[sucursalApertura.selectedIndex].text;
+        mostrarEstado();
+      });
+
+      const sidebar = obtenerElemento("sidebar");
+      const fondoMenu = obtenerElemento("fondoMenu");
+
+      obtenerElemento("abrirMenu").addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      });
+
+      fondoMenu.addEventListener("click", () => {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      });
+
+      window.addEventListener("pageshow", () => {
+        cortes = obtenerLista("cortesCajaMichoacana");
+        mostrarEstado();
+        renderizarHistorial();
+      });
+
+      configurarSesion();
+      cargarTema();
+      mostrarEstado();
+      renderizarHistorial();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

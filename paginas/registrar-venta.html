@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Registrar venta | La Michoacana</title>
+
+  <style>
+    :root {
+      --principal: #ed2b85;
+      --principal-oscuro: #d51d70;
+      --principal-claro: rgba(237, 43, 133, 0.11);
+
+      --secundario: #ffd43b;
+      --menu: #ed2b85;
+      --fondo: #f6f8fb;
+      --tarjeta: #ffffff;
+
+      --texto: #17141d;
+      --texto-secundario: #716a74;
+      --borde: #e7e2e6;
+
+      --verde: #159a61;
+      --naranja: #d97706;
+      --rojo: #dc3545;
+
+      --ancho-menu: 245px;
+      --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: var(--texto);
+      background: var(--fondo);
+    }
+
+    body.sin-scroll {
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ESTRUCTURA */
+
+    .aplicacion {
+      min-height: 100vh;
+      padding-left: var(--ancho-menu);
+    }
+
+    /* MENÚ */
+
+    .sidebar {
+      width: var(--ancho-menu);
+      height: 100vh;
+
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+
+      display: flex;
+      flex-direction: column;
+
+      padding: 22px 14px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          180deg,
+          var(--menu),
+          var(--principal-oscuro)
+        );
+
+      overflow-y: auto;
+
+      scrollbar-width: thin;
+      scrollbar-color:
+        rgba(255, 255, 255, 0.3)
+        transparent;
+
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .marca {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 2px 8px 20px;
+    }
+
+    .marca img {
+      width: 55px;
+      height: 55px;
+
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .marca strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .marca small {
+      display: block;
+      margin-top: 4px;
+
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.7rem;
+    }
+
+    .titulo-menu {
+      margin: 18px 11px 7px;
+
+      color: rgba(255, 255, 255, 0.65);
+
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .navegacion {
+      display: grid;
+      gap: 5px;
+    }
+
+    .opcion-menu {
+      min-height: 43px;
+
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      padding: 10px 12px;
+      border-radius: 10px;
+
+      color: rgba(255, 255, 255, 0.94);
+
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    .opcion-menu:hover {
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .opcion-menu.activa {
+      color: var(--principal);
+      background: white;
+
+      box-shadow:
+        0 7px 18px rgba(123, 10, 60, 0.14);
+    }
+
+    .icono-menu {
+      width: 22px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .punto-activo {
+      width: 6px;
+      height: 6px;
+
+      margin-left: auto;
+
+      border-radius: 50%;
+      background: var(--principal);
+    }
+
+    .usuario-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-top: auto;
+      padding: 20px 8px 10px;
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+      place-items: center;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      color: var(--principal);
+      background: white;
+
+      font-weight: 850;
+    }
+
+    .usuario-menu strong {
+      display: block;
+      font-size: 0.8rem;
+    }
+
+    .usuario-menu small {
+      display: block;
+      margin-top: 3px;
+
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.67rem;
+    }
+
+    /* BARRA SUPERIOR */
+
+    .barra-superior {
+      min-height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+
+      padding: 12px 4vw;
+
+      border-bottom: 1px solid var(--borde);
+      background: white;
+    }
+
+    .boton-menu {
+      width: 42px;
+      height: 42px;
+
+      display: none;
+      place-items: center;
+
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+
+      color: var(--texto);
+      background: white;
+
+      font-size: 1.25rem;
+    }
+
+    .sucursal-superior {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-right: auto;
+    }
+
+    .icono-sucursal {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      color: var(--principal);
+      background: var(--principal-claro);
+    }
+
+    .sucursal-superior small,
+    .vendedor-superior small {
+      display: block;
+      margin-bottom: 3px;
+
+      color: var(--texto-secundario);
+      font-size: 0.7rem;
+    }
+
+    .sucursal-superior strong,
+    .vendedor-superior strong {
+      display: block;
+      font-size: 0.82rem;
+    }
+
+    .vendedor-superior {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .vendedor-superior .avatar {
+      background: var(--principal-claro);
+    }
+
+    /* CONTENIDO */
+
+    .contenido {
+      width: 100%;
+      max-width: 1600px;
+
+      margin: 0 auto;
+      padding: 30px 4vw 110px;
+    }
+
+    .encabezado {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+
+      margin-bottom: 22px;
+    }
+
+    .encabezado h1 {
+      margin: 0 0 6px;
+
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      letter-spacing: -0.04em;
+    }
+
+    .encabezado p {
+      margin: 0;
+      color: var(--texto-secundario);
+    }
+
+    .volver {
+      min-height: 42px;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 0 14px;
+
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+
+      background: white;
+      font-size: 0.8rem;
+    }
+
+
+    /* BÚSQUEDA */
+
+    .herramientas {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      margin-bottom: 15px;
+    }
+
+    .buscador {
+      min-height: 48px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      flex: 1;
+
+      padding: 0 15px;
+
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+
+      background: white;
+      box-shadow: var(--sombra);
+    }
+
+    .buscador span {
+      color: var(--texto-secundario);
+    }
+
+    .buscador input {
+      width: 100%;
+
+      border: none;
+      outline: none;
+
+      color: var(--texto);
+      background: transparent;
+    }
+
+    .boton-carrito {
+      min-height: 48px;
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      padding: 0 17px;
+
+      border: none;
+      border-radius: 12px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+
+      font-size: 0.82rem;
+      font-weight: 750;
+    }
+
+    .contador {
+      min-width: 24px;
+      height: 24px;
+
+      display: grid;
+      place-items: center;
+
+      padding: 0 6px;
+
+      border-radius: 999px;
+
+      color: var(--principal);
+      background: white;
+
+      font-size: 0.72rem;
+    }
+
+    /* CATEGORÍAS */
+
+    .categorias {
+      display: flex;
+      gap: 8px;
+
+      margin-bottom: 22px;
+      padding-bottom: 3px;
+
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .categorias::-webkit-scrollbar {
+      display: none;
+    }
+
+    .categoria {
+      min-height: 39px;
+
+      padding: 0 15px;
+
+      flex-shrink: 0;
+
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+
+      color: var(--texto);
+      background: white;
+
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .categoria:hover {
+      border-color: var(--principal);
+      color: var(--principal);
+    }
+
+    .categoria.activa {
+      border-color: var(--principal);
+      color: white;
+      background: var(--principal);
+    }
+
+    /* PRODUCTOS */
+
+    .titulo-productos {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 14px;
+    }
+
+    .titulo-productos h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .controles-productos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cantidad-resultados {
+      color: var(--texto-secundario);
+      font-size: 0.75rem;
+    }
+
+    .orden-productos {
+      min-height: 39px;
+      padding: 0 34px 0 12px;
+
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+
+      color: var(--texto);
+      background: white;
+      outline: none;
+
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .orden-productos:focus {
+      border-color: var(--principal);
+      box-shadow: 0 0 0 3px var(--principal-claro);
+    }
+
+    .productos {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(180px, 1fr));
+
+      gap: 15px;
+    }
+
+    .contenedor-cargar-mas {
+      display: flex;
+      justify-content: center;
+      padding-top: 24px;
+    }
+
+    .cargar-mas {
+      min-height: 44px;
+      padding: 0 20px;
+
+      border: 1px solid var(--principal);
+      border-radius: 12px;
+
+      color: var(--principal);
+      background: white;
+
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .cargar-mas:hover {
+      color: white;
+      background: var(--principal);
+    }
+
+    .cargar-mas.oculto {
+      display: none;
+    }
+
+    .producto {
+      position: relative;
+      overflow: hidden;
+
+      border: 1px solid var(--borde);
+      border-radius: 17px;
+
+      background: white;
+      box-shadow: var(--sombra);
+
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+    }
+
+    .producto:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 12px 30px rgba(38, 23, 32, 0.11);
+    }
+
+    .producto-imagen {
+      height: 170px;
+
+      display: grid;
+      place-items: center;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff,
+          #fff1f7
+        );
+
+      font-size: 4.5rem;
+    }
+
+    .existencia {
+      position: absolute;
+      top: 11px;
+      left: 11px;
+
+      padding: 6px 9px;
+
+      border-radius: 999px;
+
+      color: var(--texto-secundario);
+      background: rgba(255, 255, 255, 0.93);
+
+      font-size: 0.67rem;
+      font-weight: 700;
+
+      box-shadow:
+        0 4px 12px rgba(40, 25, 34, 0.08);
+    }
+
+    .existencia.baja {
+      color: #9a6700;
+      background: #fff5c7;
+    }
+
+    .existencia.agotado {
+      color: var(--rojo);
+      background: #ffe8eb;
+    }
+
+    .producto-informacion {
+      padding: 15px;
+    }
+
+    .producto-categoria {
+      margin-bottom: 5px;
+
+      color: var(--texto-secundario);
+      font-size: 0.68rem;
+    }
+
+    .producto h3 {
+      margin: 0 0 12px;
+
+      font-size: 0.9rem;
+    }
+
+    .producto-inferior {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .precio {
+      font-size: 1rem;
+      font-weight: 850;
+    }
+
+    .agregar {
+      width: 39px;
+      height: 39px;
+
+      display: grid;
+      place-items: center;
+
+      flex-shrink: 0;
+
+      border: none;
+      border-radius: 11px;
+
+      color: white;
+      background: var(--principal);
+
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .agregar:hover {
+      background: var(--principal-oscuro);
+    }
+
+    /* BARRA PARA CONTINUAR */
+
+    .barra-continuar {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: var(--ancho-menu);
+      z-index: 800;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      padding: 15px 4vw;
+
+      border-top: 1px solid var(--borde);
+
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+
+      box-shadow:
+        0 -8px 25px rgba(38, 23, 32, 0.07);
+    }
+
+    .resumen-carrito small {
+      display: block;
+      margin-bottom: 4px;
+
+      color: var(--texto-secundario);
+      font-size: 0.7rem;
+    }
+
+    .resumen-carrito strong {
+      font-size: 1.05rem;
+    }
+
+    .continuar {
+      min-height: 48px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 0 21px;
+
+      border: none;
+      border-radius: 12px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--principal),
+          var(--principal-oscuro)
+        );
+
+      font-size: 0.82rem;
+      font-weight: 800;
+
+      box-shadow:
+        0 8px 22px rgba(237, 43, 133, 0.2);
+    }
+
+    /* MENSAJE */
+
+    .mensaje {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      z-index: 1200;
+
+      padding: 13px 17px;
+
+      border-radius: 11px;
+
+      color: white;
+      background: #25212a;
+
+      font-size: 0.8rem;
+
+      box-shadow:
+        0 10px 28px rgba(20, 16, 20, 0.2);
+
+      opacity: 0;
+      pointer-events: none;
+
+      transform: translateY(-10px);
+
+      transition:
+        opacity 0.25s,
+        transform 0.25s;
+    }
+
+    .mensaje.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fondo-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+
+      visibility: hidden;
+      opacity: 0;
+
+      background: rgba(10, 14, 24, 0.42);
+
+      transition:
+        visibility 0.25s,
+        opacity 0.25s;
+    }
+
+    .fondo-menu.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1200px) {
+      .productos {
+        grid-template-columns:
+          repeat(3, minmax(170px, 1fr));
+      }
+    }
+
+    @media (max-width: 850px) {
+      .aplicacion {
+        padding-left: 0;
+      }
+
+      .sidebar {
+        transform: translateX(-105%);
+      }
+
+      .sidebar.abierta {
+        transform: translateX(0);
+      }
+
+      .boton-menu {
+        display: grid;
+      }
+
+      .barra-continuar {
+        left: 0;
+      }
+
+      .productos {
+        grid-template-columns:
+          repeat(2, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .barra-superior {
+        padding: 11px 16px;
+      }
+
+      .icono-sucursal {
+        display: none;
+      }
+
+      .vendedor-superior > div:last-child {
+        display: none;
+      }
+
+      .contenido {
+        padding:
+          25px
+          16px
+          115px;
+      }
+
+      .encabezado {
+        align-items: flex-start;
+      }
+
+      .encabezado p {
+        font-size: 0.85rem;
+      }
+
+      .volver {
+        width: 42px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .volver span:last-child {
+        display: none;
+      }
+
+        .herramientas {
+          align-items: stretch;
+        }
+
+        .titulo-productos {
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .controles-productos {
+          align-items: flex-end;
+          flex-direction: column-reverse;
+          gap: 7px;
+        }
+
+        .orden-productos {
+          max-width: 165px;
+        }
+
+      .boton-carrito {
+        padding: 0 14px;
+      }
+
+      .boton-carrito .texto-carrito {
+        display: none;
+      }
+
+      .productos {
+        gap: 10px;
+      }
+
+      .producto-imagen {
+        height: 135px;
+        font-size: 3.5rem;
+      }
+
+      .producto-informacion {
+        padding: 12px;
+      }
+
+      .barra-continuar {
+        padding: 12px 16px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .productos {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .producto-imagen {
+        height: 118px;
+        font-size: 3rem;
+      }
+
+      .producto h3 {
+        min-height: 34px;
+        font-size: 0.78rem;
+      }
+
+      .producto-categoria {
+        font-size: 0.62rem;
+      }
+
+      .precio {
+        font-size: 0.88rem;
+      }
+
+      .agregar {
+        width: 35px;
+        height: 35px;
+      }
+
+      .resumen-carrito strong {
+        font-size: 0.9rem;
+      }
+
+      .continuar {
+        padding: 0 14px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+<body>
+
+  <div class="aplicacion">
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="marca">
+        <img
+          src="../imagenes/logogranpaleteria.jpeg"
+          alt="Logo de La Michoacana"
+        >
+
+        <div>
+          <strong>La Michoacana</strong>
+          <small>Sistema administrativo</small>
+        </div>
+      </div>
+
+      <p class="titulo-menu">Principal</p>
+
+      <nav class="navegacion">
+        <a
+          href="../dashboard.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">⌂</span>
+          Inicio
+        </a>
+      </nav>
+
+      <p class="titulo-menu">Operación</p>
+
+      <nav class="navegacion">
+
+        <a
+          href="registrar-venta.html"
+          class="opcion-menu activa"
+        >
+          <span class="icono-menu">🛒</span>
+          Registrar venta
+          <span class="punto-activo"></span>
+        </a>
+
+        <a
+          href="historial-ventas.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">↺</span>
+          Historial de ventas
+        </a>
+
+        <a
+          href="gastos.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">▣</span>
+          Gastos
+        </a>
+
+        <a
+          href="reabastecimiento.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">♧</span>
+          Reabastecimiento
+        </a>
+
+        <a
+          href="inventario.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">◇</span>
+          Inventario
+        </a>
+
+        <a
+          href="corte-caja.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">▤</span>
+          Corte de caja
+        </a>
+      </nav>
+
+      <p class="titulo-menu">Productos</p>
+
+      <nav class="navegacion">
+        <a href="productos.html" class="opcion-menu">
+          <span class="icono-menu">◇</span>
+          Productos
+        </a>
+
+        <a href="categorias.html" class="opcion-menu">
+          <span class="icono-menu">⌑</span>
+          Categorías
+        </a>
+
+        <a
+          href="catalogo-sucursal.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">⌂</span>
+          Catálogo por sucursal
+        </a>
+      </nav>
+
+      <p class="titulo-menu">Administración</p>
+
+      <nav class="navegacion">
+        <a href="sucursales.html" class="opcion-menu">
+          <span class="icono-menu">⌂</span>
+          Sucursales
+        </a>
+
+        <a href="usuarios.html" class="opcion-menu">
+          <span class="icono-menu">♙</span>
+          Usuarios
+        </a>
+
+        <a
+          href="categorias-gasto.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">⌑</span>
+          Categorías de gasto
+        </a>
+
+        <a
+          href="metodos-pago.html"
+          class="opcion-menu"
+        >
+          <span class="icono-menu">▭</span>
+          Métodos de pago
+        </a>
+      </nav>
+
+      <p class="titulo-menu">Supervisión</p>
+
+      <nav class="navegacion">
+        <a href="reportes.html" class="opcion-menu">
+          <span class="icono-menu">⌁</span>
+          Reportes
+        </a>
+
+        <a href="auditoria.html" class="opcion-menu">
+          <span class="icono-menu">▣</span>
+          Auditoría
+        </a>
+      </nav>
+
+      <div class="usuario-menu">
+        <div class="avatar">A</div>
+
+        <div>
+          <strong>Administrador</strong>
+          <small id="sucursalUsuario">
+            Matriz · Zitácuaro
+          </small>
+        </div>
+      </div>
+    </aside>
+
+    <div class="fondo-menu" id="fondoMenu"></div>
+
+    <main>
+
+      <header class="barra-superior">
+
+        <button
+          class="boton-menu"
+          id="abrirMenu"
+          type="button"
+          aria-label="Abrir menú"
+        >
+          ☰
+        </button>
+
+        <div class="sucursal-superior">
+          <span class="icono-sucursal">⌖</span>
+
+          <div>
+            <small>Sucursal</small>
+
+            <strong id="sucursalActual">
+              Matriz · Zitácuaro
+            </strong>
+          </div>
+        </div>
+
+        <div class="vendedor-superior">
+
+          <div
+            class="avatar"
+            id="inicialVendedor"
+          >
+            C
+          </div>
+
+          <div>
+            <small>Venta registrada por</small>
+
+            <strong id="nombreVendedor">
+              Carlos Mendoza
+            </strong>
+          </div>
+
+        </div>
+      </header>
+
+      <section class="contenido">
+
+        <div class="encabezado">
+          <div>
+            <h1>Registrar venta</h1>
+
+            <p>
+              Selecciona los productos que desea el cliente.
+            </p>
+          </div>
+
+          <a href="../dashboard.html" class="volver">
+            <span>←</span>
+            <span>Volver al inicio</span>
+          </a>
+        </div>
+
+        <div class="herramientas">
+
+          <label class="buscador">
+            <span>⌕</span>
+
+            <input
+              type="search"
+              id="buscadorProductos"
+              placeholder="Buscar producto..."
+              autocomplete="off"
+            >
+          </label>
+
+          <button
+            class="boton-carrito"
+            id="verCarrito"
+            type="button"
+          >
+            🛒
+
+            <span class="texto-carrito">
+              Ver carrito
+            </span>
+
+            <span class="contador contador-carrito">
+              0
+            </span>
+          </button>
+        </div>
+
+        <div class="categorias">
+          <button
+            class="categoria activa"
+            type="button"
+            data-categoria="Todos"
+          >
+            Todos
+          </button>
+
+          <button
+            class="categoria"
+            type="button"
+            data-categoria="Paletas"
+          >
+            Paletas
+          </button>
+
+          <button
+            class="categoria"
+            type="button"
+            data-categoria="Nieves"
+          >
+            Nieves
+          </button>
+
+          <button
+            class="categoria"
+            type="button"
+            data-categoria="Aguas"
+          >
+            Aguas
+          </button>
+
+          <button
+            class="categoria"
+            type="button"
+            data-categoria="Extras"
+          >
+            Extras
+          </button>
+
+          <button
+            class="categoria"
+            type="button"
+            data-categoria="Promociones"
+          >
+            Promociones
+          </button>
+        </div>
+
+        <div class="titulo-productos">
+          <h2>Productos</h2>
+
+          <div class="controles-productos">
+            <span
+              class="cantidad-resultados"
+              id="cantidadResultados"
+            >
+              8 productos encontrados
+            </span>
+
+            <select
+              class="orden-productos"
+              id="ordenProductos"
+              aria-label="Ordenar productos"
+            >
+              <option value="mas-vendidos">
+                Más vendidos
+              </option>
+
+              <option value="az">Nombre A–Z</option>
+              <option value="precio-menor">
+                Menor precio
+              </option>
+              <option value="precio-mayor">
+                Mayor precio
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <section
+          class="productos"
+          id="contenedorProductos"
+        ></section>
+
+        <div class="contenedor-cargar-mas">
+          <button
+            class="cargar-mas oculto"
+            id="cargarMas"
+            type="button"
+          >
+            Cargar 12 productos más
+          </button>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <footer class="barra-continuar">
+
+    <div class="resumen-carrito">
+      <small>
+        Productos seleccionados
+      </small>
+
+      <strong>
+        <span class="contador-carrito">0</span>
+        productos ·
+        <span id="totalCarrito">$0.00</span>
+      </strong>
+    </div>
+
+    <button
+      class="continuar"
+      id="continuarVenta"
+      type="button"
+      disabled
+    >
+      Continuar
+      <span>→</span>
+    </button>
+
+  </footer>
+
+  <div
+    class="mensaje"
+    id="mensaje"
+    aria-live="polite"
+  ></div>
+
+  <script>
+    const usuarioSesion = JSON.parse(
+      localStorage.getItem("usuarioSesion")
+    ) || {
+      id: 1,
+      nombre: "Carlos Mendoza",
+      rol: "EMPLEADO",
+      sucursal: {
+        id: 1,
+        nombre: "Matriz · Zitácuaro"
+      }
+    };
+
+    const existenciasIniciales = {
+      101: { 1: 24, 2: 18, 3: 12, 4: 21, 5: 9, 6: 15, 7: 19 },
+      102: { 1: 18, 2: 5, 3: 14, 4: 10, 5: 17, 6: 7, 7: 13 },
+      103: { 1: 15, 2: 22, 3: 8, 4: 18, 5: 11, 6: 0, 7: 16 },
+      104: { 1: 9, 2: 13, 3: 4, 4: 20, 5: 6, 6: 12, 7: 3 },
+      105: { 1: 12, 2: 9, 3: 6, 4: 14, 5: 10, 6: 8, 7: 11 },
+      106: { 1: 20, 2: 15, 3: 18, 4: 7, 5: 13, 6: 16, 7: 9 },
+      107: { 1: 7, 2: 11, 3: 0, 4: 16, 5: 5, 6: 14, 7: 8 },
+      108: { 1: 0, 2: 4, 3: 9, 4: 2, 5: 12, 6: 6, 7: 10 }
+    };
+
+    function obtenerLista(clave) {
+      try {
+        return JSON.parse(localStorage.getItem(clave)) || [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function calcularStock(relacion, producto) {
+      const branchId = Number(usuarioSesion.sucursal.id);
+      const inicial = existenciasIniciales[producto.id]?.[branchId] || 0;
+
+      const entradas = obtenerLista("reabastecimientosMichoacana")
+        .filter(movimiento =>
+          movimiento.active !== false &&
+          Number(movimiento.branchId) === branchId
+        )
+        .reduce((total, movimiento) => {
+          return total + (movimiento.items || [])
+            .filter(item =>
+              Number(item.branchProductId) === Number(relacion.id) ||
+              Number(item.branchProductId) === Number(producto.id) ||
+              Number(item.productId) === Number(producto.id)
+            )
+            .reduce((subtotal, item) => subtotal + Number(item.quantity || 0), 0);
+        }, 0);
+
+      const salidas = obtenerLista("historialVentas")
+        .filter(venta =>
+          venta.estado !== "cancelada" &&
+          Number(venta.branchId) === branchId
+        )
+        .reduce((total, venta) => {
+          return total + (venta.productos || [])
+            .filter(item => Number(item.id || item.productId) === Number(producto.id))
+            .reduce((subtotal, item) => subtotal + Number(item.cantidad || 0), 0);
+        }, 0);
+
+      return Math.max(0, inicial + entradas - salidas);
+    }
+
+    function obtenerProductosSucursal() {
+      const productosGenerales = obtenerLista("productosMichoacana");
+      const categorias = obtenerLista("categoriasProductosMichoacana");
+      const catalogo = obtenerLista("catalogoSucursalMichoacana");
+      const branchId = Number(usuarioSesion.sucursal.id);
+
+      return catalogo
+        .filter(relacion =>
+          relacion.active !== false &&
+          Number(relacion.branchId) === branchId
+        )
+        .map(relacion => {
+          const producto = productosGenerales.find(
+            item => Number(item.id) === Number(relacion.productId)
+          );
+
+          if (!producto || producto.active === false) {
+            return null;
+          }
+
+          const categoria = categorias.find(
+            item => Number(item.id) === Number(producto.categoryId)
+          );
+
+          const ventas = obtenerLista("historialVentas")
+            .filter(venta =>
+              venta.estado !== "cancelada" &&
+              Number(venta.branchId) === branchId
+            )
+            .reduce((total, venta) => {
+              return total + (venta.productos || [])
+                .filter(item => Number(item.id || item.productId) === Number(producto.id))
+                .reduce((subtotal, item) => subtotal + Number(item.cantidad || 0), 0);
+            }, 0);
+
+          return {
+            id: producto.id,
+            productId: producto.id,
+            branchProductId: relacion.id,
+            nombre: producto.name,
+            categoria: categoria?.name || "Sin categoría",
+            precio: Number(relacion.price),
+            ventas,
+            stock: calcularStock(relacion, producto),
+            icono: producto.icono || "🍦",
+            imageUrl: producto.imageUrl || null
+          };
+        })
+        .filter(Boolean);
+    }
+
+    let productos = obtenerProductosSucursal();
+    const carrito = new Map();
+
+    const contenedorProductos =
+      document.getElementById(
+        "contenedorProductos"
+      );
+
+    const buscador =
+      document.getElementById(
+        "buscadorProductos"
+      );
+
+    const cantidadResultados =
+      document.getElementById(
+        "cantidadResultados"
+      );
+
+    const ordenProductos =
+      document.getElementById(
+        "ordenProductos"
+      );
+
+    const cargarMas =
+      document.getElementById(
+        "cargarMas"
+      );
+
+    const continuarVenta =
+      document.getElementById(
+        "continuarVenta"
+      );
+
+    const totalCarrito =
+      document.getElementById(
+        "totalCarrito"
+      );
+
+    const mensaje =
+      document.getElementById("mensaje");
+
+    document.getElementById(
+      "nombreVendedor"
+    ).textContent = usuarioSesion.nombre;
+
+    document.getElementById(
+      "sucursalActual"
+    ).textContent = usuarioSesion.sucursal.nombre;
+
+    document.getElementById(
+      "sucursalUsuario"
+    ).textContent = usuarioSesion.sucursal.nombre;
+
+    document.getElementById(
+      "inicialVendedor"
+    ).textContent = usuarioSesion.nombre
+      .charAt(0)
+      .toUpperCase();
+
+    let categoriaSeleccionada = "Todos";
+    let limiteVisible = 12;
+
+    function ordenarProductos(lista) {
+      return [...lista].sort((a, b) => {
+        if (ordenProductos.value === "az") {
+          return a.nombre.localeCompare(
+            b.nombre,
+            "es"
+          );
+        }
+
+        if (
+          ordenProductos.value ===
+          "precio-menor"
+        ) {
+          return a.precio - b.precio;
+        }
+
+        if (
+          ordenProductos.value ===
+          "precio-mayor"
+        ) {
+          return b.precio - a.precio;
+        }
+
+        return (b.ventas || 0) - (a.ventas || 0);
+      });
+    }
+
+    function formatoMoneda(cantidad) {
+      return new Intl.NumberFormat(
+        "es-MX",
+        {
+          style: "currency",
+          currency: "MXN"
+        }
+      ).format(cantidad);
+    }
+
+    function mostrarProductos() {
+      const busqueda =
+        buscador.value
+          .trim()
+          .toLowerCase();
+
+      const filtrados =
+        productos.filter((producto) => {
+          const coincideCategoria =
+            categoriaSeleccionada === "Todos" ||
+            producto.categoria ===
+              categoriaSeleccionada;
+
+          const coincideBusqueda =
+            producto.nombre
+              .toLowerCase()
+              .includes(busqueda);
+
+          return (
+            coincideCategoria &&
+            coincideBusqueda
+          );
+        });
+
+      const ordenados =
+        ordenarProductos(filtrados);
+
+      const productosVisibles = busqueda
+        ? ordenados
+        : ordenados.slice(0, limiteVisible);
+
+      cantidadResultados.textContent =
+        filtrados.length === 1
+          ? "1 producto encontrado"
+          : filtrados.length +
+            " productos encontrados";
+
+      cargarMas.classList.toggle(
+        "oculto",
+        Boolean(busqueda) ||
+          productosVisibles.length >=
+            ordenados.length
+      );
+
+      if (filtrados.length === 0) {
+        contenedorProductos.innerHTML = `
+          <p style="
+            grid-column: 1 / -1;
+            padding: 40px;
+            text-align: center;
+            color: var(--texto-secundario);
+          ">
+            No encontramos productos.
+          </p>
+        `;
+
+        return;
+      }
+
+      contenedorProductos.innerHTML =
+        productosVisibles
+          .map((producto) => {
+            let estadoStock = "";
+            let textoStock =
+              producto.stock +
+              " disponibles";
+
+            if (producto.stock === 0) {
+              estadoStock = "agotado";
+              textoStock = "Agotado";
+            } else if (producto.stock <= 9) {
+              estadoStock = "baja";
+            }
+
+            return `
+              <article class="producto">
+
+                <span
+                  class="existencia ${estadoStock}"
+                >
+                  ${textoStock}
+                </span>
+
+                <div class="producto-imagen">
+                  ${
+                    producto.imageUrl
+                      ? `<img src="${producto.imageUrl}" alt="${producto.nombre}" style="width:100%;height:100%;object-fit:cover" onerror="this.replaceWith(document.createTextNode('${producto.icono}'))">`
+                      : producto.icono
+                  }
+                </div>
+
+                <div class="producto-informacion">
+
+                  <div class="producto-categoria">
+                    ${producto.categoria}
+                  </div>
+
+                  <h3>${producto.nombre}</h3>
+
+                  <div class="producto-inferior">
+
+                    <span class="precio">
+                      ${formatoMoneda(
+                        producto.precio
+                      )}
+                    </span>
+
+                    <button
+                      class="agregar"
+                      type="button"
+                      aria-label="
+                        Agregar ${producto.nombre}
+                      "
+                      onclick="
+                        agregarProducto(
+                          ${producto.id}
+                        )
+                      "
+                      ${
+                        producto.stock === 0
+                          ? "disabled"
+                          : ""
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+    }
+
+    function agregarProducto(id) {
+      const producto =
+        productos.find(
+          (elemento) =>
+            elemento.id === id
+        );
+
+      if (!producto || producto.stock === 0) {
+        return;
+      }
+
+      const cantidadActual =
+        carrito.get(id) || 0;
+
+      if (
+        cantidadActual >= producto.stock
+      ) {
+        mostrarMensaje(
+          "No hay más existencias disponibles."
+        );
+
+        return;
+      }
+
+      carrito.set(
+        id,
+        cantidadActual + 1
+      );
+
+      actualizarCarrito();
+
+      mostrarMensaje(
+        producto.nombre +
+        " agregado al carrito"
+      );
+    }
+
+    function actualizarCarrito() {
+      const cantidad =
+        [...carrito.values()]
+          .reduce(
+            (total, valor) =>
+              total + valor,
+            0
+          );
+
+      const total =
+        [...carrito.entries()]
+          .reduce(
+            (
+              acumulado,
+              [id, cantidadProducto]
+            ) => {
+              const producto =
+                productos.find(
+                  (elemento) =>
+                    elemento.id === id
+                );
+
+              return (
+                acumulado +
+                producto.precio *
+                cantidadProducto
+              );
+            },
+            0
+          );
+
+      document
+        .querySelectorAll(
+          ".contador-carrito"
+        )
+        .forEach((elemento) => {
+          elemento.textContent = cantidad;
+        });
+
+      totalCarrito.textContent =
+        formatoMoneda(total);
+
+      continuarVenta.disabled =
+        cantidad === 0;
+
+      guardarCarrito();
+    }
+
+    function guardarCarrito() {
+      const productosCarrito =
+        [...carrito.entries()]
+          .map(([id, cantidad]) => {
+            const producto =
+              productos.find(
+                (elemento) =>
+                  elemento.id === id
+              );
+
+            return {
+              ...producto,
+              cantidad
+            };
+          });
+
+      localStorage.setItem(
+        "carritoMichoacana",
+        JSON.stringify(productosCarrito)
+      );
+    }
+
+    function guardarVentaActual() {
+      guardarCarrito();
+
+      const informacionVenta = {
+        branchId: usuarioSesion.sucursal.id,
+        branchName: usuarioSesion.sucursal.nombre,
+        registeredBy: usuarioSesion.id,
+        sellerName: usuarioSesion.nombre,
+        productos: JSON.parse(
+          localStorage.getItem(
+            "carritoMichoacana"
+          )
+        ) || []
+      };
+
+      localStorage.setItem(
+        "ventaActual",
+        JSON.stringify(informacionVenta)
+      );
+    }
+
+    function mostrarMensaje(texto) {
+      mensaje.textContent = texto;
+      mensaje.classList.add("visible");
+
+      clearTimeout(
+        mostrarMensaje.temporizador
+      );
+
+      mostrarMensaje.temporizador =
+        setTimeout(() => {
+          mensaje.classList.remove(
+            "visible"
+          );
+        }, 1800);
+    }
+
+    buscador.addEventListener(
+      "input",
+      () => {
+        limiteVisible = 12;
+        mostrarProductos();
+      }
+    );
+
+    ordenProductos.addEventListener(
+      "change",
+      () => {
+        limiteVisible = 12;
+        mostrarProductos();
+      }
+    );
+
+    cargarMas.addEventListener(
+      "click",
+      () => {
+        limiteVisible += 12;
+        mostrarProductos();
+      }
+    );
+
+    document
+      .querySelectorAll(".categoria")
+      .forEach((boton) => {
+        boton.addEventListener(
+          "click",
+          () => {
+            document
+              .querySelectorAll(
+                ".categoria"
+              )
+              .forEach((elemento) => {
+                elemento.classList.remove(
+                  "activa"
+                );
+              });
+
+            boton.classList.add("activa");
+
+                categoriaSeleccionada =
+                  boton.dataset.categoria;
+
+                limiteVisible = 12;
+
+                mostrarProductos();
+          }
+        );
+      });
+
+    document
+      .getElementById("verCarrito")
+      .addEventListener("click", () => {
+        if (carrito.size === 0) {
+          mostrarMensaje(
+            "Todavía no agregas productos."
+          );
+
+          return;
+        }
+
+        guardarVentaActual();
+
+        window.location.href =
+          "detalle-venta.html";
+      });
+
+    continuarVenta.addEventListener(
+      "click",
+      () => {
+        if (carrito.size === 0) {
+          return;
+        }
+
+        guardarVentaActual();
+
+        window.location.href =
+          "detalle-venta.html";
+      }
+    );
+
+    /* TEMA DEL DASHBOARD */
+
+    function hexadecimalRgb(hexadecimal) {
+      const valor =
+        hexadecimal.replace("#", "");
+
+      return {
+        rojo:
+          parseInt(valor.substring(0, 2), 16),
+        verde:
+          parseInt(valor.substring(2, 4), 16),
+        azul:
+          parseInt(valor.substring(4, 6), 16)
+      };
+    }
+
+    function crearColorClaro(hexadecimal) {
+      const color =
+        hexadecimalRgb(hexadecimal);
+
+      return (
+        "rgba(" +
+        color.rojo + "," +
+        color.verde + "," +
+        color.azul + ",0.11)"
+      );
+    }
+
+    function oscurecerColor(hexadecimal) {
+      const color =
+        hexadecimalRgb(hexadecimal);
+
+      return (
+        "rgb(" +
+        Math.max(0, color.rojo - 25) + "," +
+        Math.max(0, color.verde - 25) + "," +
+        Math.max(0, color.azul - 25) +
+        ")"
+      );
+    }
+
+    try {
+      const temaGuardado =
+        JSON.parse(
+          localStorage.getItem(
+            "temaMichoacana"
+          )
+        );
+
+      if (temaGuardado) {
+        const raiz =
+          document.documentElement;
+
+        raiz.style.setProperty(
+          "--principal",
+          temaGuardado.principal
+        );
+
+        raiz.style.setProperty(
+          "--principal-oscuro",
+          oscurecerColor(
+            temaGuardado.principal
+          )
+        );
+
+        raiz.style.setProperty(
+          "--principal-claro",
+          crearColorClaro(
+            temaGuardado.principal
+          )
+        );
+
+        raiz.style.setProperty(
+          "--secundario",
+          temaGuardado.secundario
+        );
+
+        raiz.style.setProperty(
+          "--menu",
+          temaGuardado.menu
+        );
+
+        raiz.style.setProperty(
+          "--fondo",
+          temaGuardado.fondo
+        );
+
+        document.getElementById(
+          "sidebar"
+        ).style.background =
+          "linear-gradient(180deg," +
+          temaGuardado.menu + "," +
+          oscurecerColor(
+            temaGuardado.menu
+          ) +
+          ")";
+      }
+    } catch (error) {
+      localStorage.removeItem(
+        "temaMichoacana"
+      );
+    }
+
+    /* MENÚ RESPONSIVE */
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const fondoMenu =
+      document.getElementById(
+        "fondoMenu"
+      );
+
+    document
+      .getElementById("abrirMenu")
+      .addEventListener("click", () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+
+        document.body.classList.add(
+          "sin-scroll"
+        );
+      });
+
+    function cerrarMenu() {
+      sidebar.classList.remove("abierta");
+      fondoMenu.classList.remove("visible");
+
+      document.body.classList.remove(
+        "sin-scroll"
+      );
+    }
+
+    fondoMenu.addEventListener(
+      "click",
+      cerrarMenu
+    );
+
+    document.addEventListener(
+      "keydown",
+      (evento) => {
+        if (evento.key === "Escape") {
+          cerrarMenu();
+        }
+      }
+    );
+
+    window.addEventListener(
+      "pageshow",
+      () => {
+        productos = obtenerProductosSucursal();
+        mostrarProductos();
+        actualizarCarrito();
+      }
+    );
+
+    mostrarProductos();
+    actualizarCarrito();
+  </script>
+    <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

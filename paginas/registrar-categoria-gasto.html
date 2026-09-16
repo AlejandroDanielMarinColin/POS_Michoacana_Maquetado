@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar categoría de gasto | La Michoacana</title>
+
+    <style>
+      :root {
+        --principal: #ed2b85;
+        --principal-oscuro: #d51d70;
+        --principal-claro: rgba(237, 43, 133, 0.11);
+        --menu: #ed2b85;
+        --fondo: #f6f8fb;
+        --texto: #17141d;
+        --texto-secundario: #716a74;
+        --borde: #e7e2e6;
+        --rojo: #dc3545;
+        --ancho-menu: 245px;
+        --sombra: 0 7px 25px rgba(38, 23, 32, 0.07);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--texto);
+        background: var(--fondo);
+      }
+
+      body.sin-scroll {
+        overflow: hidden;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .aplicacion {
+        min-height: 100vh;
+        padding-left: var(--ancho-menu);
+      }
+
+      .sidebar {
+        width: var(--ancho-menu);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 14px;
+        color: white;
+        background: linear-gradient(180deg, var(--menu), var(--principal-oscuro));
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 8px 20px;
+      }
+
+      .marca img {
+        width: 55px;
+        height: 55px;
+        object-fit: contain;
+      }
+
+      .marca strong,
+      .usuario-menu strong {
+        display: block;
+        font-size: 0.87rem;
+      }
+
+      .marca small,
+      .usuario-menu small {
+        display: block;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.68rem;
+      }
+
+      .titulo-menu {
+        margin: 18px 11px 7px;
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .navegacion {
+        display: grid;
+        gap: 5px;
+      }
+
+      .opcion-menu {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.82rem;
+        font-weight: 650;
+      }
+
+      .opcion-menu:hover {
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .opcion-menu.activa {
+        color: var(--principal);
+        background: white;
+      }
+
+      .icono-menu {
+        width: 22px;
+        text-align: center;
+        font-style: normal;
+      }
+
+      .punto-activo {
+        width: 6px;
+        height: 6px;
+        margin-left: auto;
+        border-radius: 50%;
+        background: var(--principal);
+      }
+
+      .usuario-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: auto;
+        padding: 20px 8px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        color: var(--principal);
+        background: white;
+        font-weight: 850;
+      }
+
+      .barra-superior {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 12px 4vw;
+        border-bottom: 1px solid var(--borde);
+        background: white;
+      }
+
+      .boton-menu {
+        width: 42px;
+        height: 42px;
+        display: none;
+        place-items: center;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: white;
+        font-size: 1.2rem;
+      }
+
+      .dato-superior {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dato-superior:first-of-type {
+        margin-right: auto;
+      }
+
+      .dato-superior small {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--texto-secundario);
+        font-size: 0.7rem;
+      }
+
+      .dato-superior strong {
+        display: block;
+        font-size: 0.82rem;
+      }
+
+      .icono-sucursal {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--principal);
+        background: var(--principal-claro);
+      }
+
+      .contenido {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 30px 4vw 50px;
+      }
+
+      .encabezado {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+
+      .encabezado h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+      }
+
+      .volver {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 14px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: white;
+        font-size: 0.78rem;
+      }
+
+      .tarjeta {
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: 17px;
+        background: white;
+        box-shadow: var(--sombra);
+      }
+
+      .tarjeta-encabezado {
+        padding: 19px 22px;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .tarjeta-encabezado h2 {
+        margin: 0 0 5px;
+        font-size: 1rem;
+      }
+
+      .tarjeta-encabezado p {
+        margin: 0;
+        color: var(--texto-secundario);
+        font-size: 0.75rem;
+      }
+
+      .formulario {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 17px;
+        padding: 22px;
+      }
+
+      .campo {
+        display: grid;
+        gap: 7px;
+      }
+
+      .campo.ancho,
+      .acciones,
+      .error {
+        grid-column: 1 / -1;
+      }
+
+      .campo label {
+        color: var(--texto-secundario);
+        font-size: 0.71rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .campo input {
+        width: 100%;
+        min-height: 47px;
+        padding: 0 13px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        color: var(--texto);
+        background: white;
+        outline: none;
+      }
+
+      .campo input:focus {
+        border-color: var(--principal);
+        box-shadow: 0 0 0 4px var(--principal-claro);
+      }
+
+      .ayuda {
+        color: var(--texto-secundario);
+        font-size: 0.67rem;
+      }
+
+      .error {
+        min-height: 18px;
+        margin: 0;
+        color: var(--rojo);
+        font-size: 0.72rem;
+      }
+
+      .acciones {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        padding-top: 5px;
+      }
+
+      .cancelar,
+      .guardar {
+        min-height: 47px;
+        padding: 0 19px;
+        border-radius: 10px;
+        font-weight: 800;
+      }
+
+      .cancelar {
+        border: 1px solid var(--borde);
+        background: white;
+      }
+
+      .guardar {
+        border: 0;
+        color: white;
+        background: linear-gradient(90deg, var(--principal), var(--principal-oscuro));
+      }
+
+      .mensaje {
+        position: fixed;
+        top: 92px;
+        right: 22px;
+        z-index: 1200;
+        padding: 13px 17px;
+        border-radius: 11px;
+        color: white;
+        background: #25212a;
+        font-size: 0.78rem;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: 0.25s;
+      }
+
+      .mensaje.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fondo-menu {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(10, 14, 24, 0.42);
+        transition: 0.25s;
+      }
+
+      .fondo-menu.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      @media (max-width: 850px) {
+        .aplicacion {
+          padding-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-105%);
+        }
+
+        .sidebar.abierta {
+          transform: translateX(0);
+        }
+
+        .boton-menu {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .barra-superior {
+          padding: 11px 16px;
+        }
+
+        .dato-superior:last-child > div:last-child {
+          display: none;
+        }
+
+        .contenido {
+          padding: 25px 16px;
+        }
+
+        .volver {
+          width: 43px;
+          padding: 0;
+          justify-content: center;
+          font-size: 0;
+        }
+
+        .volver span {
+          font-size: 1rem;
+        }
+
+        .formulario {
+          grid-template-columns: 1fr;
+          padding: 16px;
+        }
+
+        .campo.ancho,
+        .acciones,
+        .error {
+          grid-column: auto;
+        }
+
+        .acciones {
+          flex-direction: column-reverse;
+        }
+
+        .acciones button {
+          width: 100%;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../estilos/menu-compartido.css" />
+  </head>
+
+  <body>
+    <div class="aplicacion">
+      <aside class="sidebar" id="sidebar">
+        <div class="marca">
+          <img src="../imagenes/logogranpaleteria.jpeg" alt="Logo" />
+          <div><strong>La Michoacana</strong><small>Sistema administrativo</small></div>
+        </div>
+
+        <p class="titulo-menu">Principal</p>
+        <nav class="navegacion">
+          <a href="../dashboard.html" class="opcion-menu"><i class="icono-menu">⌂</i>Inicio</a>
+        </nav>
+
+        <p class="titulo-menu">Operación</p>
+        <nav class="navegacion">
+          <a href="registrar-venta.html" class="opcion-menu"><i class="icono-menu">🛒</i>Registrar venta</a>
+          <a href="historial-ventas.html" class="opcion-menu"><i class="icono-menu">↺</i>Historial de ventas</a>
+          <a href="gastos.html" class="opcion-menu"><i class="icono-menu">▣</i>Gastos</a>
+          <a href="reabastecimiento.html" class="opcion-menu"><i class="icono-menu">♧</i>Reabastecimiento</a>
+          <a href="inventario.html" class="opcion-menu"><i class="icono-menu">◇</i>Inventario</a>
+          <a href="corte-caja.html" class="opcion-menu"><i class="icono-menu">▤</i>Corte de caja</a>
+        </nav>
+
+        <p class="titulo-menu">Productos</p>
+        <nav class="navegacion">
+          <a href="productos.html" class="opcion-menu"><i class="icono-menu">◇</i>Productos</a>
+          <a href="categorias.html" class="opcion-menu"><i class="icono-menu">⌑</i>Categorías</a>
+          <a href="catalogo-sucursal.html" class="opcion-menu"><i class="icono-menu">⌂</i>Catálogo por sucursal</a>
+        </nav>
+
+        <p class="titulo-menu">Administración</p>
+        <nav class="navegacion">
+          <a href="sucursales.html" class="opcion-menu"><i class="icono-menu">⌂</i>Sucursales</a>
+          <a href="usuarios.html" class="opcion-menu"><i class="icono-menu">♙</i>Usuarios</a>
+          <a href="categorias-gasto.html" class="opcion-menu activa"><i class="icono-menu">⌑</i>Categorías de gasto<span class="punto-activo"></span></a>
+          <a href="metodos-pago.html" class="opcion-menu"><i class="icono-menu">▭</i>Métodos de pago</a>
+        </nav>
+
+        <div class="usuario-menu">
+          <div class="avatar" id="inicialMenu">A</div>
+          <div><strong id="nombreMenu">Administrador</strong><small id="sucursalMenu">Matriz · Zitácuaro</small></div>
+        </div>
+      </aside>
+
+      <div class="fondo-menu" id="fondoMenu"></div>
+
+      <main>
+        <header class="barra-superior">
+          <button class="boton-menu" id="abrirMenu" type="button">☰</button>
+          <div class="dato-superior"><span class="icono-sucursal">⌖</span><div><small>Sucursal</small><strong id="sucursalActual">Matriz · Zitácuaro</strong></div></div>
+          <div class="dato-superior"><div class="avatar" id="inicialSuperior">A</div><div><small>Usuario</small><strong id="nombreSuperior">Administrador</strong></div></div>
+        </header>
+
+        <section class="contenido">
+          <div class="encabezado">
+            <div>
+              <h1 id="tituloPagina">Nueva categoría de gasto</h1>
+              <p id="subtituloPagina">Agrega una categoría para clasificar los gastos.</p>
+            </div>
+            <a class="volver" href="categorias-gasto.html"><span>←</span>Volver a categorías</a>
+          </div>
+
+          <section class="tarjeta">
+            <div class="tarjeta-encabezado">
+              <h2>Información de la categoría</h2>
+              <p>Los campos marcados son necesarios para guardar el registro.</p>
+            </div>
+
+            <form class="formulario" id="formCategoria">
+              <div class="campo ancho">
+                <label for="nombre">Nombre *</label>
+                <input id="nombre" maxlength="80" placeholder="Ej. Insumos" autocomplete="off" required />
+                <span class="ayuda">El nombre no puede repetirse.</span>
+              </div>
+
+              <p class="error" id="errorFormulario"></p>
+
+              <div class="acciones">
+                <button class="cancelar" id="cancelar" type="button">Cancelar</button>
+                <button class="guardar" id="guardar" type="submit">Guardar categoría</button>
+              </div>
+            </form>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="mensaje" id="mensaje"></div>
+
+    <script>
+      const usuarioSesion = JSON.parse(localStorage.getItem("usuarioSesion")) || {
+        id: 1,
+        nombre: "Administrador",
+        rol: "ADMINISTRADOR",
+        sucursal: { id: 1, nombre: "Matriz · Zitácuaro" },
+      };
+
+      const $ = id => document.getElementById(id);
+      const parametros = new URLSearchParams(location.search);
+      const editId = Number(parametros.get("id")) || null;
+
+      function obtenerCategorias() {
+        try {
+          return JSON.parse(localStorage.getItem("categoriasGastoMichoacana")) || [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      let categorias = obtenerCategorias();
+      const categoriaActual = editId
+        ? categorias.find(item => item.id === editId)
+        : null;
+
+      function prepararEdicion() {
+        if (!categoriaActual) return;
+
+        $("tituloPagina").textContent = "Editar categoría de gasto";
+        $("subtituloPagina").textContent = "Actualiza el nombre de la categoría.";
+        $("guardar").textContent = "Guardar cambios";
+        $("nombre").value = categoriaActual.name;
+      }
+
+      function nombreDuplicado(nombre) {
+        return categorias.some(categoria =>
+          categoria.id !== editId &&
+          categoria.name.trim().toLocaleLowerCase("es-MX") ===
+            nombre.trim().toLocaleLowerCase("es-MX"),
+        );
+      }
+
+      $("formCategoria").addEventListener("submit", evento => {
+        evento.preventDefault();
+
+        const nombre = $("nombre").value.trim();
+
+        if (nombreDuplicado(nombre)) {
+          $("errorFormulario").textContent = "Ya existe una categoría con ese nombre.";
+          $("nombre").focus();
+          return;
+        }
+
+        const datos = {
+          name: nombre,
+        };
+
+        if (categoriaActual) {
+          Object.assign(categoriaActual, datos, { updatedAt: new Date().toISOString() });
+        } else {
+          const id = Date.now();
+          categorias.unshift({ id, ...datos, isActive: true, createdAt: new Date().toISOString() });
+        }
+
+        localStorage.setItem("categoriasGastoMichoacana", JSON.stringify(categorias));
+        $("guardar").disabled = true;
+        $("mensaje").textContent = categoriaActual
+          ? "Categoría actualizada correctamente."
+          : "Categoría registrada correctamente.";
+        $("mensaje").classList.add("visible");
+
+        setTimeout(() => location.replace("categorias-gasto.html"), 1100);
+      });
+
+      $("cancelar").onclick = () => location.href = "categorias-gasto.html";
+
+      function configurarSesion() {
+        const inicial = usuarioSesion.nombre.charAt(0).toUpperCase();
+        $("nombreMenu").textContent = usuarioSesion.nombre;
+        $("nombreSuperior").textContent = usuarioSesion.nombre;
+        $("inicialMenu").textContent = inicial;
+        $("inicialSuperior").textContent = inicial;
+        $("sucursalMenu").textContent = usuarioSesion.sucursal.nombre;
+        $("sucursalActual").textContent = usuarioSesion.sucursal.nombre;
+      }
+
+      function oscurecerColor(hexadecimal) {
+        const valor = hexadecimal.replace("#", "");
+        const rojo = parseInt(valor.slice(0, 2), 16);
+        const verde = parseInt(valor.slice(2, 4), 16);
+        const azul = parseInt(valor.slice(4, 6), 16);
+        return `rgb(${Math.max(0, rojo - 25)}, ${Math.max(0, verde - 25)}, ${Math.max(0, azul - 25)})`;
+      }
+
+      function cargarTema() {
+        try {
+          const tema = JSON.parse(localStorage.getItem("temaMichoacana"));
+          if (!tema) return;
+          const raiz = document.documentElement;
+          raiz.style.setProperty("--principal", tema.principal);
+          raiz.style.setProperty("--principal-oscuro", oscurecerColor(tema.principal));
+          raiz.style.setProperty("--menu", tema.menu);
+          raiz.style.setProperty("--fondo", tema.fondo);
+          $("sidebar").style.background = `linear-gradient(180deg, ${tema.menu}, ${oscurecerColor(tema.menu)})`;
+        } catch (error) {
+          localStorage.removeItem("temaMichoacana");
+        }
+      }
+
+      const sidebar = $("sidebar");
+      const fondoMenu = $("fondoMenu");
+
+      $("abrirMenu").onclick = () => {
+        sidebar.classList.add("abierta");
+        fondoMenu.classList.add("visible");
+        document.body.classList.add("sin-scroll");
+      };
+
+      fondoMenu.onclick = () => {
+        sidebar.classList.remove("abierta");
+        fondoMenu.classList.remove("visible");
+        document.body.classList.remove("sin-scroll");
+      };
+
+      prepararEdicion();
+      configurarSesion();
+      cargarTema();
+    </script>
+      <script src="../scripts/menu-compartido.js"></script>
+  </body>
+</html>

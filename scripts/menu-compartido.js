@@ -14,8 +14,7 @@
     usuarios: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.7-3 2.8-5 5.5-5s4.8 2 5.5 5"/><circle cx="17" cy="9" r="2.2"/><path d="M15.5 14.5c2.5.2 4.2 1.7 5 4"/></svg>',
     reportes: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
     auditoria: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h5"/><path d="m15.5 15.5 1.5 1.5 3-3"/></svg>',
-    configuracion: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06L7.06 3.8l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.4 9c.1.4.3.7.6 1 .3.3.7.4 1.1.4h.1v4h-.1c-.4 0-.8.1-1.1.4-.3.3-.5.6-.6 1Z"/></svg>',
-    salir: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4"/><path d="M8 12h10"/></svg>'
+    configuracion: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06L7.06 3.8l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.4 9c.1.4.3.7.6 1 .3.3.7.4 1.1.4h.1v4h-.1c-.4 0-.8.1-1.1.4-.3.3-.5.6-.6 1Z"/></svg>'
   };
 
   const gruposMenu = [
@@ -31,24 +30,10 @@
       { archivo: "corte-caja.html", texto: "Corte de caja", icono: "caja" }
     ]},
     { titulo: "Productos", opciones: [
-      {
-        archivo: "productos.html",
-        texto: "Productos",
-        icono: "productos",
-        hijos: [
-          { archivo: "categorias.html", texto: "Categorías" }
-        ]
-      }
+      { archivo: "productos.html", texto: "Productos", icono: "productos", hijos: ["categorias.html"] }
     ]},
     { titulo: "Administración", opciones: [
-      {
-        archivo: "sucursales.html",
-        texto: "Sucursales",
-        icono: "sucursales",
-        hijos: [
-          { archivo: "catalogo-sucursal.html", texto: "Catálogo por sucursal" }
-        ]
-      },
+      { archivo: "sucursales.html", texto: "Sucursales", icono: "sucursales", hijos: ["catalogo-sucursal.html"] },
       { archivo: "usuarios.html", texto: "Usuarios", icono: "usuarios" }
     ]},
     { titulo: "Supervisión", opciones: [
@@ -56,15 +41,7 @@
       { archivo: "auditoria.html", texto: "Auditoría", icono: "auditoria" }
     ]},
     { titulo: "Sistema", opciones: [
-      {
-        archivo: "configuracion.html",
-        texto: "Configuración",
-        icono: "configuracion",
-        hijos: [
-          { archivo: "categorias-gasto.html", texto: "Categorías de gasto" },
-          { archivo: "metodos-pago.html", texto: "Formas de pago" }
-        ]
-      }
+      { archivo: "configuracion.html", texto: "Configuración", icono: "configuracion", hijos: ["categorias-gasto.html", "metodos-pago.html"] }
     ]}
   ];
 
@@ -191,73 +168,51 @@
     navegacion.className = "menu-navegacion";
 
     grupo.opciones.forEach(opcion => {
-      const bloque = document.createElement("div");
-      bloque.className = "menu-bloque-opcion";
-
-      const hijoActivo = (opcion.hijos || []).some(hijo => hijo.archivo === archivoActivo);
       const enlace = document.createElement("a");
+      const hijoActivo = (opcion.hijos || []).includes(archivoActivo);
       enlace.className = "menu-opcion";
       enlace.href = rutaOpcion(opcion.archivo, estaEnPaginas);
       enlace.append(crearIcono(opcion.icono), document.createTextNode(opcion.texto));
       if (opcion.archivo === archivoActivo || hijoActivo) enlace.classList.add("activa");
-      bloque.appendChild(enlace);
-
-      if (opcion.hijos?.length) {
-        const submenu = document.createElement("div");
-        submenu.className = "menu-submenu";
-        opcion.hijos.forEach(hijo => {
-          const subenlace = document.createElement("a");
-          subenlace.className = "menu-subopcion";
-          subenlace.href = rutaOpcion(hijo.archivo, estaEnPaginas);
-          subenlace.textContent = hijo.texto;
-          if (hijo.archivo === archivoActivo) subenlace.classList.add("activa");
-          submenu.appendChild(subenlace);
-        });
-        bloque.appendChild(submenu);
-      }
-
-      navegacion.appendChild(bloque);
+      navegacion.appendChild(enlace);
     });
 
     fragmento.append(titulo,navegacion);
     return fragmento;
   }
 
-  function construirUsuario(sidebar, usuarioOriginal, estaEnPaginas) {
-    const sesion = (() => { try { return JSON.parse(localStorage.getItem("usuarioSesion")); } catch (_) { return null; } })();
-    const nombre = sesion?.nombre || usuarioOriginal?.querySelector("strong")?.textContent || "Administrador";
-    const rol = sesion?.rol || "Administrador";
-    const bloque = document.createElement("div");
-    bloque.className = "menu-usuario";
-    const resumen = document.createElement("div");
-    resumen.className = "menu-usuario-resumen";
-    const avatar = document.createElement("div");
-    avatar.className = "menu-avatar";
-    avatar.textContent = nombre.charAt(0).toUpperCase();
-    const texto = document.createElement("div");
-    texto.className = "menu-usuario-texto";
-    const fuerte = document.createElement("strong");
-    fuerte.textContent = nombre;
-    const pequeno = document.createElement("small");
-    pequeno.textContent = rol === "ADMINISTRADOR" ? "Administrador" : rol;
-    texto.append(fuerte,pequeno);
-    const cerrar = document.createElement("button");
-    cerrar.className = "menu-cerrar-sesion";
-    cerrar.type = "button";
-    cerrar.title = "Cerrar sesión";
-    cerrar.setAttribute("aria-label","Cerrar sesión");
-    cerrar.appendChild(crearIcono("salir"));
-    cerrar.addEventListener("click",() => {
-      if (!window.confirm("¿Deseas cerrar la sesión actual?")) return;
-      localStorage.removeItem("usuarioSesion");
-      localStorage.removeItem("carritoMichoacana");
-      localStorage.removeItem("ventaActual");
-      localStorage.removeItem("ventaConfirmada");
-      window.location.href = estaEnPaginas ? "../index.html" : "index.html";
-    });
-    resumen.append(avatar,texto,cerrar);
-    bloque.appendChild(resumen);
-    sidebar.appendChild(bloque);
+  function asegurarMarca(sidebar, estaEnPaginas) {
+    let marca = sidebar.querySelector(".marca, .brand");
+
+    if (!marca) {
+      marca = [...sidebar.children].find(elemento => elemento.querySelector?.("img")) || null;
+    }
+
+    if (!marca) {
+      marca = document.createElement("div");
+      const imagen = document.createElement("img");
+      const texto = document.createElement("div");
+      const nombre = document.createElement("strong");
+      const detalle = document.createElement("small");
+      imagen.src = estaEnPaginas ? "../imagenes/logogranpaleteria.jpeg" : "imagenes/logogranpaleteria.jpeg";
+      imagen.alt = "Logo";
+      nombre.textContent = "La Michoacana";
+      detalle.textContent = "Sistema administrativo";
+      texto.append(nombre,detalle);
+      marca.append(imagen,texto);
+      sidebar.prepend(marca);
+    }
+
+    marca.classList.add("marca");
+    marca.classList.remove("brand");
+    return marca;
+  }
+
+  function normalizarContenedor(sidebar) {
+    sidebar.classList.add("sidebar");
+    sidebar.dataset.menuCompartido = "1";
+    const contenedor = sidebar.closest(".app, .aplicacion") || document.querySelector(".app, .aplicacion");
+    if (contenedor) contenedor.classList.add("layout-menu-compartido");
   }
 
   function sincronizarInputsTema(tema) {
@@ -384,22 +339,20 @@
   function construirMenu() {
     const sidebar = document.querySelector(".sidebar, .side");
     if (!sidebar) return;
-    aplicarTemaGlobal(temaGuardado());
-    const marca = sidebar.querySelector(".marca");
-    const usuario = sidebar.querySelector(".usuario-menu, .usuario, .user, .userbox");
-    if (!marca) return;
 
     const archivoActual = nombreArchivoActual();
     const archivoActivo = paginasRelacionadas[archivoActual] || archivoActual;
     const estaEnPaginas = window.location.pathname.includes("/paginas/");
 
+    aplicarTemaGlobal(temaGuardado());
+    normalizarContenedor(sidebar);
+    const marca = asegurarMarca(sidebar,estaEnPaginas);
+
     [...sidebar.children].forEach(elemento => {
-      if (elemento !== marca && elemento !== usuario) elemento.remove();
+      if (elemento !== marca) elemento.remove();
     });
 
     gruposMenu.forEach(grupo => sidebar.appendChild(crearGrupo(grupo,archivoActivo,estaEnPaginas)));
-    if (usuario) usuario.remove();
-    construirUsuario(sidebar,usuario,estaEnPaginas);
     instalarPaletas();
     instalarSincronizacionManual();
   }

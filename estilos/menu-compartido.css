@@ -90,6 +90,10 @@
   gap: 3px;
 }
 
+.menu-bloque-opcion {
+  display: grid;
+}
+
 .menu-opcion {
   min-height: 44px;
   position: relative;
@@ -130,43 +134,34 @@
   border-radius: 0 !important;
 }
 
-/* Categorías vive dentro de Productos y Catálogo por sucursal dentro de Sucursales. */
-.sidebar .menu-opcion[href$="categorias.html"],
-.side .menu-opcion[href$="categorias.html"],
-.sidebar .menu-opcion[href$="catalogo-sucursal.html"],
-.side .menu-opcion[href$="catalogo-sucursal.html"] {
-  display: none !important;
+.menu-submenu {
+  display: grid;
+  gap: 2px;
+  margin: 3px 0 5px 29px;
+  padding-left: 11px;
+  border-left: 1px solid var(--sidebar-line);
 }
 
-.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"],
-.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"],
-.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"],
-.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] {
-  color: var(--sidebar-active-text) !important;
-  background: var(--sidebar-active-bg) !important;
-  border-radius: 0 !important;
-  padding-left: 17px !important;
-  font-weight: 700 !important;
+.menu-subopcion {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 5px;
+  color: var(--sidebar-muted);
+  font-size: .71rem;
+  font-weight: 650;
+  text-decoration: none;
 }
 
-.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"]::before,
-.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"]::before,
-.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before,
-.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"]::before {
-  content: "";
-  width: 6px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--sidebar-active);
+.menu-subopcion:hover {
+  color: var(--sidebar-text);
+  background: var(--sidebar-hover);
 }
 
-.sidebar:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"] .menu-icono,
-.side:has(.menu-opcion[href$="categorias.html"].activa) .menu-opcion[href$="productos.html"] .menu-icono,
-.sidebar:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono,
-.side:has(.menu-opcion[href$="catalogo-sucursal.html"].activa) .menu-opcion[href$="sucursales.html"] .menu-icono {
-  color: var(--sidebar-active-text) !important;
+.menu-subopcion.activa {
+  color: var(--sidebar-active);
+  font-weight: 800;
 }
 
 .menu-icono {
@@ -225,10 +220,7 @@
   font-weight: 800;
 }
 
-.menu-usuario-texto {
-  min-width: 0;
-}
-
+.menu-usuario-texto { min-width: 0; }
 .menu-usuario-texto strong,
 .menu-usuario-texto small {
   display: block;
@@ -236,18 +228,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.menu-usuario-texto strong {
-  color: var(--sidebar-text);
-  font-size: .8rem;
-  font-weight: 750;
-}
-
-.menu-usuario-texto small {
-  margin-top: 2px;
-  color: var(--sidebar-muted);
-  font-size: .66rem;
-}
+.menu-usuario-texto strong { color: var(--sidebar-text); font-size: .8rem; font-weight: 750; }
+.menu-usuario-texto small { margin-top: 2px; color: var(--sidebar-muted); font-size: .66rem; }
 
 .menu-cerrar-sesion {
   width: 28px;
@@ -260,21 +242,9 @@
   color: var(--sidebar-icon);
   background: transparent;
 }
-
-.menu-cerrar-sesion:hover {
-  color: var(--sidebar-text);
-  background: var(--sidebar-hover);
-}
-
-.menu-cerrar-sesion .menu-icono {
-  width: 17px;
-  height: 17px;
-}
-
-.menu-cerrar-sesion .menu-icono svg {
-  width: 17px;
-  height: 17px;
-}
+.menu-cerrar-sesion:hover { color: var(--sidebar-text); background: var(--sidebar-hover); }
+.menu-cerrar-sesion .menu-icono,
+.menu-cerrar-sesion .menu-icono svg { width: 17px; height: 17px; }
 
 .sidebar > .usuario-menu,
 .sidebar > .usuario,
@@ -283,9 +253,7 @@
 .side > .usuario-menu,
 .side > .usuario,
 .side > .user,
-.side > .userbox {
-  display: none !important;
-}
+.side > .userbox { display: none !important; }
 
 .panel-colores {
   overflow-y: auto !important;

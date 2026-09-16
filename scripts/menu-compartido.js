@@ -23,41 +23,29 @@
 
   const gruposMenu = [
     { titulo: "Principal", opciones: [{ archivo: "dashboard.html", texto: "Inicio", icono: "inicio" }] },
-    {
-      titulo: "Operación",
-      opciones: [
-        { archivo: "registrar-venta.html", texto: "Registrar venta", icono: "venta" },
-        { archivo: "historial-ventas.html", texto: "Historial de ventas", icono: "historial" },
-        { archivo: "gastos.html", texto: "Gastos", icono: "gastos" },
-        { archivo: "reabastecimiento.html", texto: "Reabastecimiento", icono: "reabastecimiento" },
-        { archivo: "inventario.html", texto: "Inventario", icono: "inventario" },
-        { archivo: "corte-caja.html", texto: "Corte de caja", icono: "caja" }
-      ]
-    },
-    {
-      titulo: "Productos",
-      opciones: [
-        { archivo: "productos.html", texto: "Productos", icono: "productos" },
-        { archivo: "categorias.html", texto: "Categorías", icono: "categorias" },
-        { archivo: "catalogo-sucursal.html", texto: "Catálogo por sucursal", icono: "catalogo" }
-      ]
-    },
-    {
-      titulo: "Administración",
-      opciones: [
-        { archivo: "sucursales.html", texto: "Sucursales", icono: "sucursales" },
-        { archivo: "usuarios.html", texto: "Usuarios", icono: "usuarios" },
-        { archivo: "categorias-gasto.html", texto: "Categorías de gasto", icono: "categoriasGasto" },
-        { archivo: "metodos-pago.html", texto: "Métodos de pago", icono: "pagos" }
-      ]
-    },
-    {
-      titulo: "Supervisión",
-      opciones: [
-        { archivo: "reportes.html", texto: "Reportes", icono: "reportes" },
-        { archivo: "auditoria.html", texto: "Auditoría", icono: "auditoria" }
-      ]
-    }
+    { titulo: "Operación", opciones: [
+      { archivo: "registrar-venta.html", texto: "Registrar venta", icono: "venta" },
+      { archivo: "historial-ventas.html", texto: "Historial de ventas", icono: "historial" },
+      { archivo: "gastos.html", texto: "Gastos", icono: "gastos" },
+      { archivo: "reabastecimiento.html", texto: "Reabastecimiento", icono: "reabastecimiento" },
+      { archivo: "inventario.html", texto: "Inventario", icono: "inventario" },
+      { archivo: "corte-caja.html", texto: "Corte de caja", icono: "caja" }
+    ]},
+    { titulo: "Productos", opciones: [
+      { archivo: "productos.html", texto: "Productos", icono: "productos" },
+      { archivo: "categorias.html", texto: "Categorías", icono: "categorias" },
+      { archivo: "catalogo-sucursal.html", texto: "Catálogo por sucursal", icono: "catalogo" }
+    ]},
+    { titulo: "Administración", opciones: [
+      { archivo: "sucursales.html", texto: "Sucursales", icono: "sucursales" },
+      { archivo: "usuarios.html", texto: "Usuarios", icono: "usuarios" },
+      { archivo: "categorias-gasto.html", texto: "Categorías de gasto", icono: "categoriasGasto" },
+      { archivo: "metodos-pago.html", texto: "Métodos de pago", icono: "pagos" }
+    ]},
+    { titulo: "Supervisión", opciones: [
+      { archivo: "reportes.html", texto: "Reportes", icono: "reportes" },
+      { archivo: "auditoria.html", texto: "Auditoría", icono: "auditoria" }
+    ]}
   ];
 
   const paginasRelacionadas = {
@@ -70,6 +58,22 @@
     "registrar-sucursal.html": "sucursales.html",
     "registrar-usuario.html": "usuarios.html"
   };
+
+  const paletas = [
+    {
+      id: "michoacana-clasica",
+      nombre: "Michoacana clásica",
+      descripcion: "Rosa de marca, menú profundo y fondo limpio",
+      principal: "#ed2b85",
+      secundario: "#ffd43b",
+      menu: "#151a23",
+      fondo: "#f6f8fb",
+      tarjeta: "#ffffff",
+      texto: "#17141d",
+      textoSecundario: "#716a74",
+      borde: "#e2e6ec"
+    }
+  ];
 
   function nombreArchivoActual() {
     return window.location.pathname.split("/").pop() || "dashboard.html";
@@ -87,11 +91,64 @@
     return contenedor;
   }
 
+  function hexARgb(hex) {
+    const limpio = String(hex || "").replace("#", "");
+    if (limpio.length !== 6) return null;
+    return {
+      r: parseInt(limpio.slice(0, 2), 16),
+      g: parseInt(limpio.slice(2, 4), 16),
+      b: parseInt(limpio.slice(4, 6), 16)
+    };
+  }
+
+  function oscurecer(hex, cantidad) {
+    const rgb = hexARgb(hex);
+    if (!rgb) return hex;
+    const n = valor => Math.max(0, Math.min(255, valor - cantidad));
+    return `rgb(${n(rgb.r)}, ${n(rgb.g)}, ${n(rgb.b)})`;
+  }
+
+  function rgba(hex, alpha) {
+    const rgb = hexARgb(hex);
+    if (!rgb) return `rgba(237,43,133,${alpha})`;
+    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+  }
+
+  function temaGuardado() {
+    try { return JSON.parse(localStorage.getItem("temaMichoacana")); }
+    catch (_) { return null; }
+  }
+
+  function aplicarTemaGlobal(tema) {
+    if (!tema) return;
+    const raiz = document.documentElement;
+
+    if (tema.principal) {
+      raiz.style.setProperty("--principal", tema.principal);
+      raiz.style.setProperty("--principal-oscuro", oscurecer(tema.principal, 24));
+      raiz.style.setProperty("--principal-claro", rgba(tema.principal, .11));
+      raiz.style.setProperty("--sidebar-active", tema.principal);
+      raiz.style.setProperty("--sidebar-active-bg", rgba(tema.principal, .28));
+    }
+
+    if (tema.secundario) raiz.style.setProperty("--secundario", tema.secundario);
+    if (tema.fondo) raiz.style.setProperty("--fondo", tema.fondo);
+    if (tema.tarjeta) raiz.style.setProperty("--tarjeta", tema.tarjeta);
+    if (tema.texto) raiz.style.setProperty("--texto", tema.texto);
+    if (tema.textoSecundario) raiz.style.setProperty("--texto-secundario", tema.textoSecundario);
+    if (tema.borde) raiz.style.setProperty("--borde", tema.borde);
+
+    if (tema.menu) {
+      raiz.style.setProperty("--menu", tema.menu);
+      raiz.style.setProperty("--sidebar-bg", tema.menu);
+      raiz.style.setProperty("--sidebar-bg-2", oscurecer(tema.menu, 12));
+    }
+  }
+
   function crearGrupo(grupo, archivoActivo, estaEnPaginas) {
     const fragmento = document.createDocumentFragment();
     const titulo = document.createElement("p");
     const navegacion = document.createElement("nav");
-
     titulo.className = "menu-seccion";
     titulo.textContent = grupo.titulo;
     navegacion.className = "menu-navegacion";
@@ -117,32 +174,26 @@
 
     const nombre = sesion?.nombre || usuarioOriginal?.querySelector("strong")?.textContent || "Administrador";
     const rol = sesion?.rol || "Administrador";
-
     const bloque = document.createElement("div");
     bloque.className = "menu-usuario";
-
     const resumen = document.createElement("div");
     resumen.className = "menu-usuario-resumen";
-
     const avatar = document.createElement("div");
     avatar.className = "menu-avatar";
     avatar.textContent = nombre.charAt(0).toUpperCase();
-
     const texto = document.createElement("div");
     texto.className = "menu-usuario-texto";
     const fuerte = document.createElement("strong");
     fuerte.textContent = nombre;
-    const pequeño = document.createElement("small");
-    pequeño.textContent = rol === "ADMINISTRADOR" ? "Administrador" : rol;
-    texto.append(fuerte, pequeño);
-
+    const pequeno = document.createElement("small");
+    pequeno.textContent = rol === "ADMINISTRADOR" ? "Administrador" : rol;
+    texto.append(fuerte, pequeno);
     const cerrar = document.createElement("button");
     cerrar.className = "menu-cerrar-sesion";
     cerrar.type = "button";
     cerrar.title = "Cerrar sesión";
     cerrar.setAttribute("aria-label", "Cerrar sesión");
     cerrar.appendChild(crearIcono("salir"));
-
     cerrar.addEventListener("click", () => {
       if (!window.confirm("¿Deseas cerrar la sesión actual?")) return;
       localStorage.removeItem("usuarioSesion");
@@ -151,16 +202,108 @@
       localStorage.removeItem("ventaConfirmada");
       window.location.href = estaEnPaginas ? "../index.html" : "index.html";
     });
-
     resumen.append(avatar, texto, cerrar);
     bloque.appendChild(resumen);
     sidebar.appendChild(bloque);
   }
 
+  function sincronizarInputsTema(tema) {
+    const mapa = {
+      colorPrincipal: tema.principal,
+      colorSecundario: tema.secundario,
+      colorMenu: tema.menu,
+      colorFondo: tema.fondo
+    };
+    Object.entries(mapa).forEach(([id, valor]) => {
+      const input = document.getElementById(id);
+      if (input && valor) input.value = valor;
+    });
+  }
+
+  function guardarTema(tema) {
+    localStorage.setItem("temaMichoacana", JSON.stringify(tema));
+    aplicarTemaGlobal(tema);
+    sincronizarInputsTema(tema);
+    window.dispatchEvent(new CustomEvent("temaMichoacanaCambiado", { detail: tema }));
+  }
+
+  function instalarPaletas() {
+    const panel = document.getElementById("panelColores");
+    if (!panel || panel.querySelector(".menu-paletas")) return;
+
+    const referencia = panel.querySelector(".opciones-colores");
+    if (!referencia) return;
+
+    const bloque = document.createElement("section");
+    bloque.className = "menu-paletas";
+    const titulo = document.createElement("h3");
+    titulo.className = "menu-paletas-titulo";
+    titulo.textContent = "Paletas";
+    const descripcion = document.createElement("p");
+    descripcion.className = "menu-paletas-descripcion";
+    descripcion.textContent = "Aplica una combinación completa a toda la interfaz.";
+    bloque.append(titulo, descripcion);
+
+    paletas.forEach(paleta => {
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "menu-paleta";
+      boton.dataset.paleta = paleta.id;
+
+      const info = document.createElement("span");
+      info.className = "menu-paleta-info";
+      const nombre = document.createElement("strong");
+      nombre.textContent = paleta.nombre;
+      const detalle = document.createElement("small");
+      detalle.textContent = paleta.descripcion;
+      info.append(nombre, detalle);
+
+      const muestras = document.createElement("span");
+      muestras.className = "menu-paleta-muestras";
+      [paleta.principal, paleta.secundario, paleta.menu, paleta.fondo].forEach(color => {
+        const muestra = document.createElement("span");
+        muestra.className = "menu-paleta-muestra";
+        muestra.style.background = color;
+        muestras.appendChild(muestra);
+      });
+
+      boton.append(info, muestras);
+      boton.addEventListener("click", () => {
+        document.querySelectorAll(".menu-paleta").forEach(el => el.classList.remove("seleccionada"));
+        boton.classList.add("seleccionada");
+        guardarTema({ ...paleta });
+      });
+      bloque.appendChild(boton);
+    });
+
+    panel.insertBefore(bloque, referencia);
+  }
+
+  function enlazarPersonalizacionManual() {
+    ["colorPrincipal", "colorSecundario", "colorMenu", "colorFondo"].forEach(id => {
+      const input = document.getElementById(id);
+      if (!input || input.dataset.temaCompartido === "1") return;
+      input.dataset.temaCompartido = "1";
+      input.addEventListener("input", () => {
+        const actual = temaGuardado() || paletas[0];
+        const tema = {
+          ...actual,
+          principal: document.getElementById("colorPrincipal")?.value || actual.principal,
+          secundario: document.getElementById("colorSecundario")?.value || actual.secundario,
+          menu: document.getElementById("colorMenu")?.value || actual.menu,
+          fondo: document.getElementById("colorFondo")?.value || actual.fondo
+        };
+        aplicarTemaGlobal(tema);
+        localStorage.setItem("temaMichoacana", JSON.stringify(tema));
+      });
+    });
+  }
+
   function construirMenu() {
+    aplicarTemaGlobal(temaGuardado());
+
     const sidebar = document.querySelector(".sidebar, .side");
     if (!sidebar) return;
-
     const marca = sidebar.querySelector(".marca");
     const usuario = sidebar.querySelector(".usuario-menu, .usuario, .user, .userbox");
     if (!marca) return;
@@ -174,10 +317,20 @@
     });
 
     gruposMenu.forEach(grupo => sidebar.appendChild(crearGrupo(grupo, archivoActivo, estaEnPaginas)));
-
     if (usuario) usuario.remove();
     construirUsuario(sidebar, usuario, estaEnPaginas);
+
+    instalarPaletas();
+    enlazarPersonalizacionManual();
   }
+
+  window.addEventListener("storage", evento => {
+    if (evento.key === "temaMichoacana" && evento.newValue) {
+      try { aplicarTemaGlobal(JSON.parse(evento.newValue)); } catch (_) {}
+    }
+  });
+
+  window.addEventListener("temaMichoacanaCambiado", evento => aplicarTemaGlobal(evento.detail));
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", construirMenu);

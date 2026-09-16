@@ -1,0 +1,23 @@
+@media (min-width:981px){
+  body{background:#fffafb}
+  .login{min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:50% 50%;background:#fffafb}
+  .login-imagen{position:relative;min-height:100vh;min-height:100dvh;padding:0;overflow:hidden;background-size:cover;background-position:center;background-repeat:no-repeat}
+  .login-imagen:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(237,43,133,.03),rgba(237,43,133,.08));pointer-events:none}
+  .contenido-imagen{position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:flex-start;padding:64px}
+  .copy-hero{margin:0;max-width:250px}
+  .titulo-marca{margin:0;color:rgba(189,55,119,.62);font-size:clamp(2.4rem,3.2vw,4rem);line-height:.92;letter-spacing:-.05em;font-weight:800;text-shadow:none}
+  .titulo-marca span{color:inherit}
+  .frase-principal,.detalle-amarillo,.frase-inferior{display:none}
+  .login-acceso{min-height:100vh;min-height:100dvh;padding:48px 7vw;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff 0%,#fffafb 100%)}
+  .formulario{width:100%;max-width:600px}
+  .logo{margin-bottom:20px}
+  .logo-imagen{width:150px;height:150px;border-radius:0;background:transparent;box-shadow:none}
+  .formulario h2{font-size:clamp(2.6rem,3.5vw,4rem);line-height:1.02;letter-spacing:-.055em}
+  .instruccion{margin:14px auto 42px;max-width:520px;font-size:1.08rem}
+  .etiqueta-campo{margin-bottom:12px;font-size:.96rem}
+  .codigo{gap:12px}
+  .codigo input{height:68px;border-radius:13px;font-size:1.35rem}
+  .ayuda{margin:11px 0 28px;font-size:.84rem}
+  .boton{min-height:68px;border-radius:13px;font-size:1.03rem}
+  .pie-login{margin-top:38px;font-size:.82rem}
+}

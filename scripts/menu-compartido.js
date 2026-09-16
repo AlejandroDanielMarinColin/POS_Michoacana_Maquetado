@@ -61,19 +61,99 @@
 
   const paletas = [
     {
-      id: "michoacana-clasica",
-      nombre: "Michoacana clásica",
-      descripcion: "Rosa de marca, menú profundo y fondo limpio",
+      id: "michoacana-moderna",
+      nombre: "Michoacana moderna",
+      descripcion: "Rosa de marca con grafito profundo",
       principal: "#ed2b85",
-      secundario: "#ffd43b",
-      menu: "#151a23",
-      fondo: "#f6f8fb",
+      secundario: "#f5c842",
+      menu: "#171b24",
+      fondo: "#f5f7fa",
       tarjeta: "#ffffff",
-      texto: "#17141d",
-      textoSecundario: "#716a74",
-      borde: "#e2e6ec"
+      texto: "#18151d",
+      textoSecundario: "#6f6a73",
+      borde: "#dde2e8"
+    },
+    {
+      id: "cereza-carbon",
+      nombre: "Cereza & carbón",
+      descripcion: "Elegante, cálida y con alto contraste",
+      principal: "#e11d48",
+      secundario: "#f59e0b",
+      menu: "#18181b",
+      fondo: "#f8f8fa",
+      tarjeta: "#ffffff",
+      texto: "#18181b",
+      textoSecundario: "#71717a",
+      borde: "#e4e4e7"
+    },
+    {
+      id: "indigo-profesional",
+      nombre: "Índigo profesional",
+      descripcion: "Sobria, tecnológica y administrativa",
+      principal: "#4f46e5",
+      secundario: "#0891b2",
+      menu: "#111827",
+      fondo: "#f8fafc",
+      tarjeta: "#ffffff",
+      texto: "#111827",
+      textoSecundario: "#64748b",
+      borde: "#e2e8f0"
+    },
+    {
+      id: "jade-grafito",
+      nombre: "Jade & grafito",
+      descripcion: "Natural, limpia y muy legible",
+      principal: "#059669",
+      secundario: "#d97706",
+      menu: "#17211e",
+      fondo: "#f5f9f7",
+      tarjeta: "#ffffff",
+      texto: "#17211e",
+      textoSecundario: "#65716c",
+      borde: "#dce6e1"
+    },
+    {
+      id: "ciruela-mauve",
+      nombre: "Ciruela & mauve",
+      descripcion: "Suave, premium y menos corporativa",
+      principal: "#7c3aed",
+      secundario: "#db2777",
+      menu: "#211827",
+      fondo: "#faf7fc",
+      tarjeta: "#ffffff",
+      texto: "#231f26",
+      textoSecundario: "#786f7d",
+      borde: "#e7dfea"
+    },
+    {
+      id: "atlantico",
+      nombre: "Azul Atlántico",
+      descripcion: "Fresca, clara y profesional",
+      principal: "#0284c7",
+      secundario: "#0d9488",
+      menu: "#0f172a",
+      fondo: "#f5f9fc",
+      tarjeta: "#ffffff",
+      texto: "#0f172a",
+      textoSecundario: "#64748b",
+      borde: "#dce6ee"
+    },
+    {
+      id: "cacao-coral",
+      nombre: "Cacao & coral",
+      descripcion: "Cálida, artesanal y diferente",
+      principal: "#c2410c",
+      secundario: "#d97706",
+      menu: "#29231f",
+      fondo: "#fbf8f5",
+      tarjeta: "#ffffff",
+      texto: "#29231f",
+      textoSecundario: "#786c64",
+      borde: "#e8dfd8"
     }
   ];
+
+  let paletaActiva = null;
 
   function nombreArchivoActual() {
     return window.location.pathname.split("/").pop() || "dashboard.html";
@@ -114,6 +194,16 @@
     return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
   }
 
+  function luminancia(hex) {
+    const rgb = hexARgb(hex);
+    if (!rgb) return 0;
+    const canales = [rgb.r, rgb.g, rgb.b].map(valor => {
+      const s = valor / 255;
+      return s <= .03928 ? s / 12.92 : Math.pow((s + .055) / 1.055, 2.4);
+    });
+    return .2126 * canales[0] + .7152 * canales[1] + .0722 * canales[2];
+  }
+
   function temaGuardado() {
     try { return JSON.parse(localStorage.getItem("temaMichoacana")); }
     catch (_) { return null; }
@@ -139,9 +229,16 @@
     if (tema.borde) raiz.style.setProperty("--borde", tema.borde);
 
     if (tema.menu) {
+      const menuClaro = luminancia(tema.menu) > .48;
       raiz.style.setProperty("--menu", tema.menu);
       raiz.style.setProperty("--sidebar-bg", tema.menu);
-      raiz.style.setProperty("--sidebar-bg-2", oscurecer(tema.menu, 12));
+      raiz.style.setProperty("--sidebar-bg-2", menuClaro ? oscurecer(tema.menu, 18) : oscurecer(tema.menu, 10));
+      raiz.style.setProperty("--sidebar-text", menuClaro ? "#17141d" : "#f4f7fb");
+      raiz.style.setProperty("--sidebar-item", menuClaro ? "#34313a" : "#c2cad5");
+      raiz.style.setProperty("--sidebar-icon", menuClaro ? "#514b57" : "#939eae");
+      raiz.style.setProperty("--sidebar-muted", menuClaro ? "rgba(23,20,29,.62)" : "#8f99aa");
+      raiz.style.setProperty("--sidebar-section", menuClaro ? "rgba(23,20,29,.55)" : "#6f7a8c");
+      raiz.style.setProperty("--sidebar-line", menuClaro ? "rgba(20,20,25,.12)" : "rgba(255,255,255,.08)");
     }
   }
 
@@ -220,11 +317,60 @@
     });
   }
 
+  function temaDesdeControles() {
+    const actual = temaGuardado() || paletas[0];
+    return {
+      ...actual,
+      principal: document.getElementById("colorPrincipal")?.value || actual.principal,
+      secundario: document.getElementById("colorSecundario")?.value || actual.secundario,
+      menu: document.getElementById("colorMenu")?.value || actual.menu,
+      fondo: document.getElementById("colorFondo")?.value || actual.fondo
+    };
+  }
+
   function guardarTema(tema) {
     localStorage.setItem("temaMichoacana", JSON.stringify(tema));
     aplicarTemaGlobal(tema);
     sincronizarInputsTema(tema);
     window.dispatchEvent(new CustomEvent("temaMichoacanaCambiado", { detail: tema }));
+  }
+
+  function marcarPaleta(id) {
+    document.querySelectorAll(".menu-paleta").forEach(boton => {
+      boton.classList.toggle("seleccionada", boton.dataset.paleta === id);
+    });
+  }
+
+  function crearBotonPaleta(paleta) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "menu-paleta";
+    boton.dataset.paleta = paleta.id;
+
+    const info = document.createElement("span");
+    info.className = "menu-paleta-info";
+    const nombre = document.createElement("strong");
+    nombre.textContent = paleta.nombre;
+    const descripcion = document.createElement("small");
+    descripcion.textContent = paleta.descripcion;
+    info.append(nombre, descripcion);
+
+    const muestras = document.createElement("span");
+    muestras.className = "menu-paleta-muestras";
+    [paleta.principal, paleta.secundario, paleta.menu, paleta.fondo].forEach(color => {
+      const muestra = document.createElement("span");
+      muestra.className = "menu-paleta-muestra";
+      muestra.style.background = color;
+      muestras.appendChild(muestra);
+    });
+
+    boton.append(info, muestras);
+    boton.addEventListener("click", () => {
+      paletaActiva = paleta;
+      guardarTema(paleta);
+      marcarPaleta(paleta.id);
+    });
+    return boton;
   }
 
   function instalarPaletas() {
@@ -234,76 +380,71 @@
     const referencia = panel.querySelector(".opciones-colores");
     if (!referencia) return;
 
-    const bloque = document.createElement("section");
-    bloque.className = "menu-paletas";
+    const seccion = document.createElement("section");
+    seccion.className = "menu-paletas";
     const titulo = document.createElement("h3");
     titulo.className = "menu-paletas-titulo";
-    titulo.textContent = "Paletas";
+    titulo.textContent = "Paletas completas";
     const descripcion = document.createElement("p");
     descripcion.className = "menu-paletas-descripcion";
-    descripcion.textContent = "Aplica una combinación completa a toda la interfaz.";
-    bloque.append(titulo, descripcion);
+    descripcion.textContent = "Cambia toda la interfaz con una combinación equilibrada.";
+    const grid = document.createElement("div");
+    grid.className = "menu-paletas-grid";
+    paletas.forEach(paleta => grid.appendChild(crearBotonPaleta(paleta)));
+    seccion.append(titulo, descripcion, grid);
+    referencia.parentNode.insertBefore(seccion, referencia);
 
-    paletas.forEach(paleta => {
-      const boton = document.createElement("button");
-      boton.type = "button";
-      boton.className = "menu-paleta";
-      boton.dataset.paleta = paleta.id;
-
-      const info = document.createElement("span");
-      info.className = "menu-paleta-info";
-      const nombre = document.createElement("strong");
-      nombre.textContent = paleta.nombre;
-      const detalle = document.createElement("small");
-      detalle.textContent = paleta.descripcion;
-      info.append(nombre, detalle);
-
-      const muestras = document.createElement("span");
-      muestras.className = "menu-paleta-muestras";
-      [paleta.principal, paleta.secundario, paleta.menu, paleta.fondo].forEach(color => {
-        const muestra = document.createElement("span");
-        muestra.className = "menu-paleta-muestra";
-        muestra.style.background = color;
-        muestras.appendChild(muestra);
-      });
-
-      boton.append(info, muestras);
-      boton.addEventListener("click", () => {
-        document.querySelectorAll(".menu-paleta").forEach(el => el.classList.remove("seleccionada"));
-        boton.classList.add("seleccionada");
-        guardarTema({ ...paleta });
-      });
-      bloque.appendChild(boton);
-    });
-
-    panel.insertBefore(bloque, referencia);
+    const guardado = temaGuardado();
+    if (guardado) {
+      const coincidente = paletas.find(p => p.id === guardado.id);
+      if (coincidente) marcarPaleta(coincidente.id);
+    }
   }
 
-  function enlazarPersonalizacionManual() {
-    ["colorPrincipal", "colorSecundario", "colorMenu", "colorFondo"].forEach(id => {
+  function instalarSincronizacionManual() {
+    const ids = ["colorPrincipal", "colorSecundario", "colorMenu", "colorFondo"];
+    ids.forEach(id => {
       const input = document.getElementById(id);
-      if (!input || input.dataset.temaCompartido === "1") return;
-      input.dataset.temaCompartido = "1";
+      if (!input || input.dataset.menuSync === "1") return;
+      input.dataset.menuSync = "1";
       input.addEventListener("input", () => {
-        const actual = temaGuardado() || paletas[0];
-        const tema = {
-          ...actual,
-          principal: document.getElementById("colorPrincipal")?.value || actual.principal,
-          secundario: document.getElementById("colorSecundario")?.value || actual.secundario,
-          menu: document.getElementById("colorMenu")?.value || actual.menu,
-          fondo: document.getElementById("colorFondo")?.value || actual.fondo
-        };
-        aplicarTemaGlobal(tema);
-        localStorage.setItem("temaMichoacana", JSON.stringify(tema));
+        paletaActiva = null;
+        marcarPaleta("");
+        aplicarTemaGlobal(temaDesdeControles());
       });
     });
+
+    const guardar = document.getElementById("guardarColores");
+    if (guardar && guardar.dataset.menuSync !== "1") {
+      guardar.dataset.menuSync = "1";
+      guardar.addEventListener("click", () => {
+        setTimeout(() => {
+          const guardado = temaGuardado() || {};
+          const extras = paletaActiva || {};
+          const combinado = { ...extras, ...guardado, ...temaDesdeControles() };
+          localStorage.setItem("temaMichoacana", JSON.stringify(combinado));
+          aplicarTemaGlobal(combinado);
+        }, 0);
+      });
+    }
+
+    const restablecer = document.getElementById("restablecerColores");
+    if (restablecer && restablecer.dataset.menuSync !== "1") {
+      restablecer.dataset.menuSync = "1";
+      restablecer.addEventListener("click", () => {
+        paletaActiva = null;
+        marcarPaleta("");
+        setTimeout(() => aplicarTemaGlobal(temaDesdeControles()), 0);
+      });
+    }
   }
 
   function construirMenu() {
-    aplicarTemaGlobal(temaGuardado());
-
     const sidebar = document.querySelector(".sidebar, .side");
     if (!sidebar) return;
+
+    aplicarTemaGlobal(temaGuardado());
+
     const marca = sidebar.querySelector(".marca");
     const usuario = sidebar.querySelector(".usuario-menu, .usuario, .user, .userbox");
     if (!marca) return;
@@ -321,14 +462,8 @@
     construirUsuario(sidebar, usuario, estaEnPaginas);
 
     instalarPaletas();
-    enlazarPersonalizacionManual();
+    instalarSincronizacionManual();
   }
-
-  window.addEventListener("storage", evento => {
-    if (evento.key === "temaMichoacana" && evento.newValue) {
-      try { aplicarTemaGlobal(JSON.parse(evento.newValue)); } catch (_) {}
-    }
-  });
 
   window.addEventListener("temaMichoacanaCambiado", evento => aplicarTemaGlobal(evento.detail));
 

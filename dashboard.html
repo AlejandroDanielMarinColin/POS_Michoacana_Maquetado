@@ -1336,7 +1336,374 @@
         padding: 18px;
       }
     }
-  </style>
+  
+
+    /* DASHBOARD ADMIN - DISEÑO 2026 */
+    .db-dashboard {
+      max-width: 1680px;
+      padding-top: 28px;
+    }
+
+    .db-encabezado {
+      margin-bottom: 20px;
+    }
+
+    .db-encabezado h1 {
+      margin: 0;
+      font-size: clamp(1.75rem, 2.4vw, 2.35rem);
+      letter-spacing: -0.045em;
+    }
+
+    .db-encabezado p {
+      margin: 7px 0 0;
+      color: #64748b;
+      font-size: 0.86rem;
+    }
+
+    .db-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .db-kpi,
+    .db-card {
+      border: 1px solid #e5ebf3;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 7px 24px rgba(15, 23, 42, 0.055);
+    }
+
+    .db-kpi {
+      min-height: 126px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .db-kpi-label {
+      color: #526789;
+      font-size: 0.88rem;
+      font-weight: 650;
+    }
+
+    .db-kpi-value {
+      margin-top: 8px;
+      color: #101a3a;
+      font-size: clamp(1.65rem, 2.2vw, 2.1rem);
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    .db-kpi-change {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #70809d;
+      font-size: 0.76rem;
+    }
+
+    .db-kpi-change strong {
+      color: #0abf73;
+      font-size: 0.82rem;
+    }
+
+    .db-kpi-change.db-expense strong {
+      color: #ff4d5a;
+    }
+
+    .db-trend {
+      font-size: 0.7rem;
+      line-height: 1;
+    }
+
+    .db-card {
+      padding: 20px 24px;
+    }
+
+    .db-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .db-card-title {
+      margin: 0;
+      color: #101a3a;
+      font-size: 1rem;
+      font-weight: 850;
+      letter-spacing: -0.015em;
+    }
+
+    .db-card-subtitle {
+      margin: 5px 0 0;
+      color: #64748b;
+      font-size: 0.78rem;
+    }
+
+    .db-chart-card {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+    }
+
+    .db-periodos {
+      display: inline-flex;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid #edf1f7;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+
+    .db-periodo {
+      min-width: 64px;
+      min-height: 34px;
+      padding: 0 13px;
+      border: 0;
+      border-right: 1px solid #edf1f7;
+      color: #526789;
+      background: transparent;
+      font-size: 0.72rem;
+      font-weight: 650;
+    }
+
+    .db-periodo:last-child {
+      border-right: 0;
+    }
+
+    .db-periodo.activo {
+      color: #0b67db;
+      background: #eaf3ff;
+      font-weight: 800;
+    }
+
+    .db-chart-layout {
+      height: 285px;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .db-y-axis {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2px 0 29px;
+      color: #5f7393;
+      font-size: 0.66rem;
+      text-align: right;
+    }
+
+    .db-chart-area {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) 29px;
+    }
+
+    .db-chart-canvas {
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+      border-left: 1px solid #e9eff7;
+      border-bottom: 1px solid #e9eff7;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(194, 208, 226, 0.52) 1px,
+          transparent 1px
+        ) 0 0 / 100% 20%,
+        linear-gradient(
+          to right,
+          rgba(214, 225, 238, 0.55) 1px,
+          transparent 1px
+        ) 0 0 / calc(100% / 13) 100%;
+    }
+
+    .db-chart-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+    }
+
+    .db-chart-fill {
+      fill: url("#dbRellenoAzul");
+    }
+
+    .db-chart-line {
+      fill: none;
+      stroke: #0d7bf4;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .db-chart-point {
+      fill: #ffffff;
+      stroke: #0d7bf4;
+      stroke-width: 3;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .db-x-axis {
+      display: grid;
+      grid-template-columns: repeat(14, minmax(0, 1fr));
+      align-items: end;
+      color: #5f7393;
+      font-size: 0.64rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .db-bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .db-table-wrap {
+      overflow-x: auto;
+    }
+
+    .db-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #17305f;
+      font-size: 0.78rem;
+    }
+
+    .db-table th {
+      padding: 10px 12px;
+      color: #536a92;
+      background: #f5f8fc;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .db-table th:first-child {
+      border-radius: 9px 0 0 9px;
+    }
+
+    .db-table th:last-child {
+      border-radius: 0 9px 9px 0;
+    }
+
+    .db-table td {
+      padding: 12px;
+      border-bottom: 1px solid #edf1f6;
+      vertical-align: middle;
+    }
+
+    .db-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .db-table .db-number,
+    .db-table .db-money {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .db-table .db-money {
+      font-weight: 750;
+    }
+
+    .db-rank {
+      width: 27px;
+      height: 27px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #164a9e;
+      background: #e9f2ff;
+      font-weight: 850;
+    }
+
+    .db-products-table th:nth-child(1),
+    .db-products-table td:nth-child(1) {
+      width: 52px;
+      text-align: center;
+    }
+
+    .db-products-table th:nth-child(3),
+    .db-products-table td:nth-child(3) {
+      width: 130px;
+      text-align: right;
+    }
+
+    .db-products-table th:nth-child(4),
+    .db-products-table td:nth-child(4) {
+      width: 120px;
+      text-align: right;
+    }
+
+    @media (max-width: 1180px) {
+      .db-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .db-bottom-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .db-dashboard {
+        padding-top: 22px;
+      }
+
+      .db-kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .db-kpi {
+        min-height: 112px;
+      }
+
+      .db-card {
+        padding: 18px;
+      }
+
+      .db-card-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .db-periodos {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .db-periodo {
+        flex: 1 0 auto;
+      }
+
+      .db-chart-layout {
+        height: 250px;
+        grid-template-columns: 44px minmax(620px, 1fr);
+      }
+
+      .db-chart-scroll {
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .db-table {
+        min-width: 520px;
+      }
+    }
+
+</style>
   <link rel="stylesheet" href="estilos/menu-compartido.css" />
   </head>
 
@@ -1598,375 +1965,238 @@
         </div>
       </header>
 
-      <section class="contenido">
-
-        <div class="encabezado">
-          <h1>¡Bienvenido, Administrador! </h1>
+      
+      <section class="contenido db-dashboard">
+        <div class="db-encabezado">
+          <h1>Dashboard</h1>
+          <p>Resumen general de tu punto de venta en tiempo real</p>
         </div>
 
-        <section class="indicadores">
-
-          <article class="tarjeta indicador">
-            <div class="indicador-superior">
-              <span class="indicador-titulo">
-                Ventas del día
-              </span>
-
-              <span class="indicador-icono">↗</span>
-            </div>
-
-            <div class="indicador-valor">
-              $12,450.00
-            </div>
-
-            <div class="indicador-detalle">
-              +8.2% vs. ayer
+        <section class="db-kpis" aria-label="Resumen del negocio">
+          <article class="db-kpi">
+            <span class="db-kpi-label">Ventas de hoy</span>
+            <strong class="db-kpi-value">$18,450</strong>
+            <div class="db-kpi-change">
+              <span class="db-trend">▲</span>
+              <strong>+12%</strong>
+              <span>vs. ayer</span>
             </div>
           </article>
 
-          <article class="tarjeta indicador">
-            <div class="indicador-superior">
-              <span class="indicador-titulo">
-                Pedidos pendientes
-              </span>
-
-              <span class="indicador-icono">▣</span>
-            </div>
-
-            <div class="indicador-valor">24</div>
-
-            <div class="indicador-detalle">
-              Por atender
+          <article class="db-kpi">
+            <span class="db-kpi-label">Ventas del mes</span>
+            <strong class="db-kpi-value">$284,320</strong>
+            <div class="db-kpi-change">
+              <span class="db-trend">▲</span>
+              <strong>+8%</strong>
+              <span>vs. mes anterior</span>
             </div>
           </article>
 
-          <article class="tarjeta indicador">
-            <div class="indicador-superior">
-              <span class="indicador-titulo">
-                Inventario bajo
-              </span>
-
-              <span class="indicador-icono">!</span>
-            </div>
-
-            <div class="indicador-valor">15</div>
-
-            <div class="indicador-detalle alerta">
-              Productos
+          <article class="db-kpi">
+            <span class="db-kpi-label">Gastos de hoy</span>
+            <strong class="db-kpi-value">$4,280</strong>
+            <div class="db-kpi-change db-expense">
+              <span class="db-trend">▲</span>
+              <strong>+6%</strong>
+              <span>vs. ayer</span>
             </div>
           </article>
 
-          <article class="tarjeta indicador">
-            <div class="indicador-superior">
-              <span class="indicador-titulo">
-                Sucursales activas
-              </span>
-
-              <span class="indicador-icono">⌂</span>
-            </div>
-
-            <div class="indicador-valor">7</div>
-
-            <div class="indicador-detalle">
-              En operación
+          <article class="db-kpi">
+            <span class="db-kpi-label">Gastos del mes</span>
+            <strong class="db-kpi-value">$62,940</strong>
+            <div class="db-kpi-change db-expense">
+              <span class="db-trend">▲</span>
+              <strong>+4%</strong>
+              <span>vs. mes anterior</span>
             </div>
           </article>
-
         </section>
 
-        <section class="seccion-graficas">
+        <article class="db-card db-chart-card">
+          <div class="db-card-header">
+            <div>
+              <h2 class="db-card-title">VENTAS</h2>
+              <p class="db-card-subtitle">Evolución de las ventas por hora</p>
+            </div>
 
-          <article class="tarjeta panel">
+            <div class="db-periodos" aria-label="Periodo de ventas">
+              <button class="db-periodo activo" type="button">Hoy</button>
+              <button class="db-periodo" type="button">7 días</button>
+              <button class="db-periodo" type="button">30 días</button>
+              <button class="db-periodo" type="button">Mes</button>
+              <button class="db-periodo" type="button">Año</button>
+            </div>
+          </div>
 
-            <div class="encabezado-grafica">
+          <div class="db-chart-scroll">
+            <div class="db-chart-layout">
+              <div class="db-y-axis" aria-hidden="true">
+                <span>3,000</span>
+                <span>2,500</span>
+                <span>2,000</span>
+                <span>1,500</span>
+                <span>1,000</span>
+                <span>500</span>
+                <span>0</span>
+              </div>
+
+              <div class="db-chart-area">
+                <div class="db-chart-canvas">
+                  <svg
+                    class="db-chart-svg"
+                    viewBox="0 0 1300 240"
+                    preserveAspectRatio="none"
+                    role="img"
+                    aria-label="Ventas por hora"
+                  >
+                    <defs>
+                      <linearGradient id="dbRellenoAzul" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#63aaf8" stop-opacity="0.34"></stop>
+                        <stop offset="100%" stop-color="#63aaf8" stop-opacity="0.05"></stop>
+                      </linearGradient>
+                    </defs>
+
+                    <path
+                      class="db-chart-fill"
+                      d="M0 220 L100 185 L200 152 L300 116 L400 72 L500 90 L600 136 L700 96 L800 80 L900 108 L1000 134 L1100 153 L1200 171 L1300 204 L1300 240 L0 240 Z"
+                    ></path>
+
+                    <polyline
+                      class="db-chart-line"
+                      points="0,220 100,185 200,152 300,116 400,72 500,90 600,136 700,96 800,80 900,108 1000,134 1100,153 1200,171 1300,204"
+                    ></polyline>
+
+                    <g>
+                      <circle class="db-chart-point" cx="0" cy="220" r="5"></circle>
+                      <circle class="db-chart-point" cx="100" cy="185" r="5"></circle>
+                      <circle class="db-chart-point" cx="200" cy="152" r="5"></circle>
+                      <circle class="db-chart-point" cx="300" cy="116" r="5"></circle>
+                      <circle class="db-chart-point" cx="400" cy="72" r="5"></circle>
+                      <circle class="db-chart-point" cx="500" cy="90" r="5"></circle>
+                      <circle class="db-chart-point" cx="600" cy="136" r="5"></circle>
+                      <circle class="db-chart-point" cx="700" cy="96" r="5"></circle>
+                      <circle class="db-chart-point" cx="800" cy="80" r="5"></circle>
+                      <circle class="db-chart-point" cx="900" cy="108" r="5"></circle>
+                      <circle class="db-chart-point" cx="1000" cy="134" r="5"></circle>
+                      <circle class="db-chart-point" cx="1100" cy="153" r="5"></circle>
+                      <circle class="db-chart-point" cx="1200" cy="171" r="5"></circle>
+                      <circle class="db-chart-point" cx="1300" cy="204" r="5"></circle>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="db-x-axis" aria-hidden="true">
+                  <span>08:00</span>
+                  <span>09:00</span>
+                  <span>10:00</span>
+                  <span>11:00</span>
+                  <span>12:00</span>
+                  <span>13:00</span>
+                  <span>14:00</span>
+                  <span>15:00</span>
+                  <span>16:00</span>
+                  <span>17:00</span>
+                  <span>18:00</span>
+                  <span>19:00</span>
+                  <span>20:00</span>
+                  <span>21:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <section class="db-bottom-grid">
+          <article class="db-card">
+            <div class="db-card-header">
               <div>
-                <h2>Ventas de la semana</h2>
-
-                <p class="panel-descripcion">
-                  Ingresos registrados por día
-                </p>
+                <h2 class="db-card-title">VENTAS POR SUCURSAL</h2>
+                <p class="db-card-subtitle">Resumen de ventas por sucursal en el periodo seleccionado</p>
               </div>
-
-              <select
-                class="selector-periodo"
-                id="periodoGrafica"
-              >
-                <option value="semana">
-                  Esta semana
-                </option>
-
-                <option value="anterior">
-                  Semana anterior
-                </option>
-              </select>
             </div>
 
-            <div class="resumen-grafica">
-              <strong id="totalGrafica">
-                $81,500.00
-              </strong>
-
-              <span>
-                +12.5% respecto a la semana anterior
-              </span>
-            </div>
-
-            <div class="contenedor-grafica">
-
-              <div class="eje-y">
-                <span>$20,000</span>
-                <span>$15,000</span>
-                <span>$10,000</span>
-                <span>$5,000</span>
-                <span>$0</span>
-              </div>
-
-              <div class="area-grafica">
-
-                <div class="lineas-fondo">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-
-                <svg
-                  class="grafica-svg"
-                  viewBox="0 0 700 240"
-                  preserveAspectRatio="none"
-                >
-                  <defs>
-                    <linearGradient
-                      id="rellenoRosa"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop
-                        offset="0%"
-                        stop-color="#ed2b85"
-                        stop-opacity="0.28"
-                      ></stop>
-
-                      <stop
-                        offset="100%"
-                        stop-color="#ed2b85"
-                        stop-opacity="0"
-                      ></stop>
-                    </linearGradient>
-                  </defs>
-
-                  <path
-                    id="areaVentas"
-                    class="area-ventas"
-                    d="
-                      M 0 190
-                      L 115 140
-                      L 230 115
-                      L 345 150
-                      L 460 105
-                      L 575 70
-                      L 700 110
-                      L 700 240
-                      L 0 240
-                      Z
-                    "
-                  ></path>
-
-                  <polyline
-                    id="lineaVentas"
-                    class="linea-ventas"
-                    points="
-                      0,190
-                      115,140
-                      230,115
-                      345,150
-                      460,105
-                      575,70
-                      700,110
-                    "
-                  ></polyline>
-
-                  <g id="puntosVentas">
-                    <circle cx="0" cy="190" r="5"></circle>
-                    <circle cx="115" cy="140" r="5"></circle>
-                    <circle cx="230" cy="115" r="5"></circle>
-                    <circle cx="345" cy="150" r="5"></circle>
-                    <circle cx="460" cy="105" r="5"></circle>
-                    <circle cx="575" cy="70" r="5"></circle>
-                    <circle cx="700" cy="110" r="5"></circle>
-                  </g>
-                </svg>
-
-                <div class="dias-grafica">
-                  <span>Lun</span>
-                  <span>Mar</span>
-                  <span>Mié</span>
-                  <span>Jue</span>
-                  <span>Vie</span>
-                  <span>Sáb</span>
-                  <span>Dom</span>
-                </div>
-
-              </div>
+            <div class="db-table-wrap">
+              <table class="db-table">
+                <thead>
+                  <tr>
+                    <th>Sucursal</th>
+                    <th class="db-number">Ventas</th>
+                    <th class="db-money">Total vendido</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Centro</td>
+                    <td class="db-number">128</td>
+                    <td class="db-money">$8,500</td>
+                  </tr>
+                  <tr>
+                    <td>Norte</td>
+                    <td class="db-number">94</td>
+                    <td class="db-money">$6,200</td>
+                  </tr>
+                  <tr>
+                    <td>Sur</td>
+                    <td class="db-number">61</td>
+                    <td class="db-money">$3,750</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </article>
 
-          <article class="tarjeta panel">
-            <h2>Ventas por categoría</h2>
-
-            <p class="panel-descripcion">
-              Distribución de las ventas
-            </p>
-
-            <div class="contenido-categorias">
-
-              <div class="grafica-dona">
-                <div class="centro-dona">
-                  <strong>1,250</strong>
-                  <span>Productos</span>
-                </div>
+          <article class="db-card">
+            <div class="db-card-header">
+              <div>
+                <h2 class="db-card-title">PRODUCTOS MÁS VENDIDOS</h2>
+                <p class="db-card-subtitle">Los productos con mayor rotación en el periodo</p>
               </div>
+            </div>
 
-              <div class="leyenda-categorias">
-
-                <div class="categoria">
-                  <span class="color-categoria rosa"></span>
-                  <span>Paletas</span>
-                  <strong>45%</strong>
-                </div>
-
-                <div class="categoria">
-                  <span class="color-categoria azul"></span>
-                  <span>Nieves</span>
-                  <strong>25%</strong>
-                </div>
-
-                <div class="categoria">
-                  <span class="color-categoria verde"></span>
-                  <span>Aguas</span>
-                  <strong>15%</strong>
-                </div>
-
-                <div class="categoria">
-                  <span class="color-categoria amarillo"></span>
-                  <span>Extras</span>
-                  <strong>10%</strong>
-                </div>
-
-                <div class="categoria">
-                  <span class="color-categoria morado"></span>
-                  <span>Promociones</span>
-                  <strong>5%</strong>
-                </div>
-
-              </div>
+            <div class="db-table-wrap">
+              <table class="db-table db-products-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="db-rank">1</span></td>
+                    <td>Producto A</td>
+                    <td class="db-number">86 unidades</td>
+                    <td class="db-money">$4,620</td>
+                  </tr>
+                  <tr>
+                    <td><span class="db-rank">2</span></td>
+                    <td>Producto B</td>
+                    <td class="db-number">61 unidades</td>
+                    <td class="db-money">$3,480</td>
+                  </tr>
+                  <tr>
+                    <td><span class="db-rank">3</span></td>
+                    <td>Producto C</td>
+                    <td class="db-number">49 unidades</td>
+                    <td class="db-money">$2,910</td>
+                  </tr>
+                  <tr>
+                    <td><span class="db-rank">4</span></td>
+                    <td>Producto D</td>
+                    <td class="db-number">38 unidades</td>
+                    <td class="db-money">$2,240</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </article>
         </section>
-
-        <section class="paneles-inferiores">
-
-          <article class="tarjeta panel">
-            <h2>Actividad reciente</h2>
-
-            <p class="panel-descripcion">
-              Últimos movimientos registrados.
-            </p>
-
-            <ul class="actividad">
-
-              <li>
-                <div>
-                  <strong>Venta registrada</strong>
-                  <small id="actividadSucursal">
-                    Matriz · Zitácuaro
-                  </small>
-                </div>
-
-                <span class="cantidad">$180.00</span>
-              </li>
-
-              <li>
-                <div>
-                  <strong>Pedido recibido</strong>
-                  <small>Sucursal Centro</small>
-                </div>
-
-                <span class="cantidad azul">
-                  #PED-0024
-                </span>
-              </li>
-
-              <li>
-                <div>
-                  <strong>Producto con stock bajo</strong>
-                  <small>Paleta de chocolate</small>
-                </div>
-
-                <span class="cantidad naranja">
-                  8 unidades
-                </span>
-              </li>
-
-              <li>
-                <div>
-                  <strong>Nuevo usuario registrado</strong>
-                  <small>Cajero · Sucursal Centro</small>
-                </div>
-
-                <span class="cantidad gris">
-                  Hace 15 min
-                </span>
-              </li>
-
-            </ul>
-          </article>
-
-          <article class="tarjeta panel">
-            <h2>Accesos rápidos</h2>
-
-            <p class="panel-descripcion">
-              Acciones frecuentes del sistema.
-            </p>
-
-            <div class="accesos">
-
-              <a
-                href="paginas/registrar-venta.html"
-                class="acceso principal"
-              >
-                🛒 Registrar venta
-              </a>
-
-              <a
-                href="paginas/inventario.html"
-                class="acceso"
-              >
-                ◇ Ver inventario
-              </a>
-
-              <a
-                href="paginas/usuarios.html"
-                class="acceso"
-              >
-                ♙ Gestionar usuarios
-              </a>
-
-              <a
-                href="paginas/reportes.html"
-                class="acceso"
-              >
-                ⌁ Ver reportes
-              </a>
-
-            </div>
-          </article>
-        </section>
-
       </section>
+
     </main>
   </div>
 

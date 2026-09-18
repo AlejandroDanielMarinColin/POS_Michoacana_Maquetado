@@ -1368,14 +1368,14 @@
     }
 
     .db-kpi-label {
-      color: #526789;
+      color: var(--texto-secundario);
       font-size: 0.88rem;
       font-weight: 650;
     }
 
     .db-kpi-value {
       margin-top: 8px;
-      color: #101a3a;
+      color: var(--texto);
       font-size: clamp(1.65rem, 2.2vw, 2.1rem);
       font-weight: 850;
       letter-spacing: -0.035em;
@@ -1387,7 +1387,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #70809d;
+      color: var(--texto-secundario);
       font-size: 0.76rem;
     }
 
@@ -1404,26 +1404,33 @@
     }
 
     .db-trend-icon {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 850;
       line-height: 1;
+    }
+
+    .db-trend-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .db-kpi-change.positive .db-trend-icon {
       color: #0abf73;
-      background: rgba(10, 191, 115, 0.12);
+      background: transparent;
     }
 
     .db-kpi-change.negative .db-trend-icon {
       color: #ff4d5a;
-      background: rgba(255, 77, 90, 0.12);
+      background: transparent;
     }
 
     .db-card {
@@ -1440,7 +1447,7 @@
 
     .db-card-title {
       margin: 0;
-      color: #101a3a;
+      color: var(--texto);
       font-size: 1rem;
       font-weight: 850;
       letter-spacing: -0.015em;
@@ -1448,7 +1455,7 @@
 
     .db-card-subtitle {
       margin: 5px 0 0;
-      color: #64748b;
+      color: var(--texto-secundario);
       font-size: 0.78rem;
     }
 
@@ -1472,7 +1479,7 @@
       padding: 0 13px;
       border: 0;
       border-right: 1px solid #edf1f7;
-      color: #526789;
+      color: var(--texto-secundario);
       background: transparent;
       font-size: 0.72rem;
       font-weight: 650;
@@ -1483,8 +1490,8 @@
     }
 
     .db-periodo.activo {
-      color: #0b67db;
-      background: #eaf3ff;
+      color: var(--principal);
+      background: var(--principal-claro);
       font-weight: 800;
     }
 
@@ -1500,7 +1507,7 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 2px 0 29px;
-      color: #5f7393;
+      color: var(--texto-secundario);
       font-size: 0.66rem;
       text-align: right;
     }
@@ -1545,7 +1552,7 @@
 
     .db-chart-line {
       fill: none;
-      stroke: #0d7bf4;
+      stroke: var(--principal);
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -1554,7 +1561,7 @@
 
     .db-chart-point {
       fill: #ffffff;
-      stroke: #0d7bf4;
+      stroke: var(--principal);
       stroke-width: 3;
       vector-effect: non-scaling-stroke;
     }
@@ -1563,7 +1570,7 @@
       display: grid;
       grid-template-columns: repeat(14, minmax(0, 1fr));
       align-items: end;
-      color: #5f7393;
+      color: var(--texto-secundario);
       font-size: 0.64rem;
       text-align: center;
       white-space: nowrap;
@@ -1575,6 +1582,33 @@
       gap: 18px;
     }
 
+    .db-more-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      color: var(--principal);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .db-more-link:hover {
+      opacity: 0.78;
+      transform: translateX(2px);
+    }
+
+    .db-more-link svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .db-table-wrap {
       overflow-x: auto;
     }
@@ -1583,14 +1617,14 @@
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      color: #17305f;
+      color: var(--texto);
       font-size: 0.78rem;
     }
 
     .db-table th {
       padding: 10px 12px;
-      color: #536a92;
-      background: #f5f8fc;
+      color: var(--texto-secundario);
+      background: var(--principal-claro);
       font-weight: 700;
       text-align: left;
     }
@@ -1629,8 +1663,8 @@
       display: inline-grid;
       place-items: center;
       border-radius: 50%;
-      color: #164a9e;
-      background: #e9f2ff;
+      color: var(--principal);
+      background: var(--principal-claro);
       font-weight: 850;
     }
 
@@ -1977,7 +2011,12 @@
             <span class="db-kpi-label">Ventas de hoy</span>
             <strong class="db-kpi-value">$18,450</strong>
             <div class="db-kpi-change positive">
-              <span class="db-trend-icon">↗</span>
+              <span class="db-trend-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 17l6-6 4 4 7-8"></path>
+                  <path d="M14 7h6v6"></path>
+                </svg>
+              </span>
               <strong>+12%</strong>
               <span>vs. ayer</span>
             </div>
@@ -1987,7 +2026,12 @@
             <span class="db-kpi-label">Ventas del mes</span>
             <strong class="db-kpi-value">$284,320</strong>
             <div class="db-kpi-change positive">
-              <span class="db-trend-icon">↗</span>
+              <span class="db-trend-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 17l6-6 4 4 7-8"></path>
+                  <path d="M14 7h6v6"></path>
+                </svg>
+              </span>
               <strong>+8%</strong>
               <span>vs. mes anterior</span>
             </div>
@@ -1997,7 +2041,12 @@
             <span class="db-kpi-label">Gastos de hoy</span>
             <strong class="db-kpi-value">$4,280</strong>
             <div class="db-kpi-change negative">
-              <span class="db-trend-icon">↗</span>
+              <span class="db-trend-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 17l6-6 4 4 7-8"></path>
+                  <path d="M14 7h6v6"></path>
+                </svg>
+              </span>
               <strong>+6%</strong>
               <span>vs. ayer</span>
             </div>
@@ -2007,7 +2056,12 @@
             <span class="db-kpi-label">Gastos del mes</span>
             <strong class="db-kpi-value">$62,940</strong>
             <div class="db-kpi-change negative">
-              <span class="db-trend-icon">↗</span>
+              <span class="db-trend-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 17l6-6 4 4 7-8"></path>
+                  <path d="M14 7h6v6"></path>
+                </svg>
+              </span>
               <strong>+4%</strong>
               <span>vs. mes anterior</span>
             </div>
@@ -2053,8 +2107,8 @@
                   >
                     <defs>
                       <linearGradient id="dbRellenoAzul" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#63aaf8" stop-opacity="0.34"></stop>
-                        <stop offset="100%" stop-color="#63aaf8" stop-opacity="0.05"></stop>
+                        <stop offset="0%" style="stop-color: var(--principal)" stop-opacity="0.30"></stop>
+                        <stop offset="100%" style="stop-color: var(--principal)" stop-opacity="0.04"></stop>
                       </linearGradient>
                     </defs>
 
@@ -2115,6 +2169,14 @@
                 <h2 class="db-card-title">VENTAS POR SUCURSAL</h2>
                 <p class="db-card-subtitle">Resumen de ventas por sucursal en el periodo seleccionado</p>
               </div>
+
+              <a class="db-more-link" href="paginas/reportes.html">
+                Ver más
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </a>
             </div>
 
             <div class="db-table-wrap">
@@ -2153,6 +2215,14 @@
                 <h2 class="db-card-title">PRODUCTOS MÁS VENDIDOS</h2>
                 <p class="db-card-subtitle">Los productos con mayor rotación en el periodo</p>
               </div>
+
+              <a class="db-more-link" href="paginas/reportes.html">
+                Ver más
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </a>
             </div>
 
             <div class="db-table-wrap">

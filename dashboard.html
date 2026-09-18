@@ -1354,7 +1354,7 @@
     .db-kpi,
     .db-card {
       border: 1px solid #e5ebf3;
-      border-radius: 16px;
+      border-radius: 12px;
       background: #ffffff;
       box-shadow: 0 7px 24px rgba(15, 23, 42, 0.055);
     }
@@ -1392,17 +1392,38 @@
     }
 
     .db-kpi-change strong {
-      color: #0abf73;
       font-size: 0.82rem;
     }
 
-    .db-kpi-change.db-expense strong {
+    .db-kpi-change.positive strong {
+      color: #0abf73;
+    }
+
+    .db-kpi-change.negative strong {
       color: #ff4d5a;
     }
 
-    .db-trend {
-      font-size: 0.7rem;
+    .db-trend-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 850;
       line-height: 1;
+    }
+
+    .db-kpi-change.positive .db-trend-icon {
+      color: #0abf73;
+      background: rgba(10, 191, 115, 0.12);
+    }
+
+    .db-kpi-change.negative .db-trend-icon {
+      color: #ff4d5a;
+      background: rgba(255, 77, 90, 0.12);
     }
 
     .db-card {
@@ -1955,8 +1976,8 @@
           <article class="db-kpi">
             <span class="db-kpi-label">Ventas de hoy</span>
             <strong class="db-kpi-value">$18,450</strong>
-            <div class="db-kpi-change">
-              <span class="db-trend">▲</span>
+            <div class="db-kpi-change positive">
+              <span class="db-trend-icon">↗</span>
               <strong>+12%</strong>
               <span>vs. ayer</span>
             </div>
@@ -1965,8 +1986,8 @@
           <article class="db-kpi">
             <span class="db-kpi-label">Ventas del mes</span>
             <strong class="db-kpi-value">$284,320</strong>
-            <div class="db-kpi-change">
-              <span class="db-trend">▲</span>
+            <div class="db-kpi-change positive">
+              <span class="db-trend-icon">↗</span>
               <strong>+8%</strong>
               <span>vs. mes anterior</span>
             </div>
@@ -1975,8 +1996,8 @@
           <article class="db-kpi">
             <span class="db-kpi-label">Gastos de hoy</span>
             <strong class="db-kpi-value">$4,280</strong>
-            <div class="db-kpi-change db-expense">
-              <span class="db-trend">▲</span>
+            <div class="db-kpi-change negative">
+              <span class="db-trend-icon">↗</span>
               <strong>+6%</strong>
               <span>vs. ayer</span>
             </div>
@@ -1985,8 +2006,8 @@
           <article class="db-kpi">
             <span class="db-kpi-label">Gastos del mes</span>
             <strong class="db-kpi-value">$62,940</strong>
-            <div class="db-kpi-change db-expense">
-              <span class="db-trend">▲</span>
+            <div class="db-kpi-change negative">
+              <span class="db-trend-icon">↗</span>
               <strong>+4%</strong>
               <span>vs. mes anterior</span>
             </div>

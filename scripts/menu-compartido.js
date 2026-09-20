@@ -136,6 +136,34 @@
       : `paginas/${archivo}`;
   }
 
+  function eliminarTitulosYDescripciones() {
+    document.querySelectorAll("main h1").forEach(titulo => {
+      const bloqueTexto = titulo.parentElement;
+      const encabezado = titulo.closest(
+        ".head, .encabezado, .encabezado-pagina, .cabecera-pagina, .page-header"
+      );
+      const descripcion = titulo.nextElementSibling;
+
+      if (descripcion && descripcion.tagName === "P") {
+        descripcion.remove();
+      }
+
+      titulo.remove();
+
+      if (bloqueTexto && bloqueTexto.children.length === 0) {
+        bloqueTexto.remove();
+      }
+
+      if (encabezado) {
+        if (encabezado.children.length === 0) {
+          encabezado.remove();
+        } else {
+          encabezado.style.justifyContent = "flex-end";
+        }
+      }
+    });
+  }
+
   function crearGrupo(grupo, archivoActivo, estaEnPaginas) {
     const fragmento = document.createDocumentFragment();
     const titulo = document.createElement("p");
@@ -239,9 +267,14 @@
     sidebar.style.background = "var(--menu)";
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", construirMenu);
-  } else {
+  function inicializarInterfazCompartida() {
+    eliminarTitulosYDescripciones();
     construirMenu();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", inicializarInterfazCompartida);
+  } else {
+    inicializarInterfazCompartida();
   }
 })();
